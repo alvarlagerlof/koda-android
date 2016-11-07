@@ -1,0 +1,37 @@
+<resources>
+
+    <string name="app_name">Koda.nu ALPHA</string>
+    
+    <string name="open_drawer">Öppna menyn</string>
+    <string name="close_drawer">Stäng menyn</string>
+    
+    <string name="anonymous">Anonym</string>
+    <string name="unnamed">Namnlös</string>
+    <string name="no_description">Ingen beskrivning</string>
+    <string name="characters">tecken</string>
+
+
+    <string name="says">säger</string>
+    <string name="how_to_scan">Skanna på en annan mobil</string>
+    <string name="scan_failed">Något gick snett!</string>
+    <string name="play_no_name">Spela</string>
+
+    <string name="menu_scan">Skanna kod</string>
+    <string name="menu_profile">Min profil</string>
+
+
+    <!-- My projects Edit info -->
+    <string name="edit_info_placeholder_title">Titel</string>
+    <string name="edit_info_placeholder_description">Beskrivning</string>
+    <string name="edit_info_placeholder_is_public">Ska vara publik</string>
+
+    <string name="edit_info_button_save">Spara</string>
+    <string name="edit_info_button_cancel">Avbryt</string>
+
+    <string name="edit_info_saved">Sparat</string>
+
+
+
+
+
+</resources>

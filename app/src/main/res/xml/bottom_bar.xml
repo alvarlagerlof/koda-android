@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tabs>
+    <tab
+        id="@+id/tab_projects"
+        icon="@drawable/ic_my_creations"
+        title="Mina projekt"
+        barColorWhenSelected="@color/colorPrimary" />
+
+    <tab
+        id="@+id/tab_api"
+        icon="@drawable/ic_code"
+        title="API"
+        barColorWhenSelected="@color/colorPrimary" />
+
+    <tab
+        id="@+id/tab_guides"
+        icon="@drawable/ic_youtube"
+        title="Guider"
+        barColorWhenSelected="@color/colorPrimary" />
+
+    <tab
+        id="@+id/tab_archive"
+        icon="@drawable/ic_archive"
+        title="Arkivet"
+        barColorWhenSelected="@color/colorPrimary" />
+
+    <tab
+        id="@+id/tab_settings"
+        icon="@drawable/ic_settings"
+        title="Inställningar"
+        barColorWhenSelected="@color/colorPrimary" />
+
+</tabs>

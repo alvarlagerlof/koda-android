@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/fontminus"
+        android:title="Mindre text"
+        android:icon="@drawable/ic_minus"
+        app:showAsAction="always"
+        android:orderInCategory="1"/>
+
+    <item
+        android:id="@+id/fontplus"
+        android:title="Större text"
+        android:icon="@drawable/ic_plus"
+        app:showAsAction="always"
+        android:orderInCategory="2"/>
+
+
+    <item
+        android:id="@+id/reload"
+        android:title="Ladda om"
+        android:icon="@drawable/ic_reload"
+        app:showAsAction="always"
+        android:orderInCategory="1"/>
+
+
+    <item
+        android:id="@+id/editor"
+        android:title="Redigera kod"
+        android:icon="@drawable/ic_code"
+        app:showAsAction="always"
+        android:orderInCategory="30" />
+
+    <item
+        android:id="@+id/webview"
+        android:title="Kör koden"
+        android:icon="@drawable/ic_play"
+        app:showAsAction="always"
+        android:orderInCategory="40" />
+
+</menu>

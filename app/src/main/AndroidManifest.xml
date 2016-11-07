@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.alvarlagerlof.koda">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+
+    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
+
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:hardwareAccelerated="true">
+
+        <activity
+            android:name=".MainAcitivty"
+            android:label="@string/app_name"
+            android:theme="@style/TransNav"
+            android:configChanges="orientation|screenSize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+
+        // Editor
+        <activity
+            android:name=".EditorActivity"
+            android:label="Editor"
+            android:parentActivityName=".MainAcitivty"
+            android:theme="@style/AppTheme"
+            android:configChanges="orientation|screenSize">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainAcitivty" />
+
+        </activity>
+
+
+        // Play
+        <activity
+            android:name=".PlayActivity"
+            android:parentActivityName=".MainAcitivty"
+            android:theme="@style/AppTheme"
+            android:configChanges="orientation|screenSize">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainAcitivty" />
+        </activity>
+
+        // Fullscreen
+        <activity
+            android:name=".FullscreenPlay"
+            android:parentActivityName=".MainAcitivty"
+            android:theme="@style/AppTheme"
+            android:configChanges="orientation|screenSize"
+            android:exported="true">
+
+        </activity>
+
+
+        // Comments
+        <activity
+            android:name=".Comments.CommentsActivity"
+            android:parentActivityName=".MainAcitivty"
+            android:theme="@style/AppTheme"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize">
+        </activity>
+
+
+        // Profile
+        <activity
+            android:name=".Profile.ProfileActivity"
+            android:parentActivityName=".MainAcitivty"
+            android:theme="@style/AppTheme"
+            android:label="Profil"
+            android:configChanges="orientation|screenSize">
+        </activity>
+
+
+        // Login
+        <activity
+            android:name=".Login.LoginActivity"
+            android:parentActivityName=".MainAcitivty"
+            android:theme="@style/TransNav"
+            android:configChanges="orientation|screenSize">
+        </activity>
+
+        // Forgot password
+        <activity
+            android:name=".Login.ForgotPasswordActivity"
+            android:parentActivityName=".MainAcitivty"
+            android:theme="@style/TransNav"
+            android:configChanges="orientation|screenSize">
+        </activity>
+
+
+        // New account
+        <activity
+            android:name=".Login.NewAccountActivity"
+            android:parentActivityName=".MainAcitivty"
+            android:theme="@style/TransNav"
+            android:configChanges="orientation|screenSize">
+        </activity>
+
+
+        // Min profil
+        <activity
+            android:name=".Settings.SettingsFragment"
+            android:parentActivityName=".MainAcitivty"
+            android:theme="@style/AppTheme"
+            android:label="Din profil"
+            android:configChanges="orientation|screenSize">
+        </activity>
+
+
+        // QrViewer
+        <activity
+            android:name=".QrCodeShare.QrViewer"
+            android:parentActivityName=".MainAcitivty"
+            android:theme="@style/TransNav"
+            android:label="Din profil"
+            android:configChanges="orientation|screenSize">
+        </activity>
+
+
+    </application>
+
+</manifest>
