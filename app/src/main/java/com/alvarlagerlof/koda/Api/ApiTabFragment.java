@@ -24,29 +24,29 @@ import okhttp3.Response;
 /**
  * Created by alvar on 2016-07-02.
  */
-public class Api2DFragment extends Fragment {
+public class ApiTabFragment extends Fragment {
 
-    RecyclerView recyclerView;
+    public String url;
+
+    ApiAdapter adapter;
     ArrayList<ApiObject> list;
-    Api2DAdapter api2DAdapter;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.api_tab, container, false);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-
         list = new ArrayList<>();
         list.add(new ApiObject("Loading", ""));
 
-        api2DAdapter = new Api2DAdapter(list);
+        adapter = new ApiAdapter(list);
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(api2DAdapter);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(adapter);
 
         getData getData = new getData();
-        getData.execute("2D");
+        getData.execute();
 
         return view;
     }
@@ -61,7 +61,7 @@ public class Api2DFragment extends Fragment {
 
                 OkHttpClient client = new OkHttpClient();
                 Request request = new Request.Builder()
-                        .url("http://ravla.org/api.php?dimension=" + strings[0])
+                        .url(url)
                         .build();
                 Response response = client.newCall(request).execute();
                 String result = response.body().string();
@@ -69,7 +69,9 @@ public class Api2DFragment extends Fragment {
 
                 json = new JSONArray(result);
 
-            } catch (Exception e) {}
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             return json;
         }
@@ -92,7 +94,7 @@ public class Api2DFragment extends Fragment {
                     }
                 }
 
-                api2DAdapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();
 
             }
         }

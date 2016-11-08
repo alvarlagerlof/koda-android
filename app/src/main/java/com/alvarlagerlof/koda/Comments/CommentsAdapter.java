@@ -28,8 +28,8 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private static final int TYPE_ITEM        = 2;
 
 
-    public CommentsAdapter(ArrayList<CommentsObject> myDataset) {
-        mDataset = myDataset;
+    public CommentsAdapter(ArrayList<CommentsObject> dataset) {
+        mDataset = dataset;
     }
 
 

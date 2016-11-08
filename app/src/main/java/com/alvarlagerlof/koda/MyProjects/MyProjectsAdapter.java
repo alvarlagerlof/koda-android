@@ -27,6 +27,7 @@ import java.util.ArrayList;
 
 public class MyProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    FragmentManager fragmentManager;
     private ArrayList<MyProjectsObject> dataset;
 
     private static final int TYPE_HEADER      = 0;
@@ -34,7 +35,6 @@ public class MyProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private static final int TYPE_ITEM        = 2;
 
 
-    FragmentManager fragmentManager;
 
 
     MyProjectsAdapter(ArrayList<MyProjectsObject> dataset, FragmentManager fragmentManager) {
@@ -44,7 +44,7 @@ public class MyProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 
     private static class ViewHolderHeader extends RecyclerView.ViewHolder  {
-        final TextView text1;
+        TextView text1;
 
         ViewHolderHeader(View itemView){
             super(itemView);
@@ -53,7 +53,6 @@ public class MyProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     private static class ViewHolderLoading extends RecyclerView.ViewHolder  {
-
         ViewHolderLoading(View itemView){
             super(itemView);
         }
@@ -114,20 +113,19 @@ public class MyProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         } else if (holder instanceof ViewHolderItem) {
             final Context context = ((ViewHolderItem) holder).title.getContext();
 
-            ((ViewHolderItem) holder).title.setText(dataset.get(position).getTitle());
-            ((ViewHolderItem) holder).date.setText(dataset.get(position).getUpdated());
+            ((ViewHolderItem) holder).title.setText(dataset.get(position).title);
+            ((ViewHolderItem) holder).date.setText(dataset.get(position).updated);
 
-            ((ViewHolderItem) holder).comments_num.setText(dataset.get(position).getCommentCount());
-
+            ((ViewHolderItem) holder).comments_num.setText(dataset.get(position).commentCount);
 
             ((ViewHolderItem) holder).itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, EditorActivity.class);
-                    intent.putExtra("private_id", dataset.get(position).getPrivateId());
-                    intent.putExtra("public_id", dataset.get(position).getPublicId());
-                    intent.putExtra("title", dataset.get(position).getTitle());
-                    intent.putExtra("code", dataset.get(position).getCode());
+                    intent.putExtra("private_id", dataset.get(position).privateId);
+                    intent.putExtra("public_id", dataset.get(position).publicId);
+                    intent.putExtra("title", dataset.get(position).title);
+                    intent.putExtra("code", dataset.get(position).code);
                     context.startActivity(intent);
                 }
             });
@@ -136,8 +134,8 @@ public class MyProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(((ViewHolderItem) holder).title.getContext(), CommentsActivity.class);
-                    intent.putExtra("public_id", dataset.get(position).getPublicId());
-                    intent.putExtra("title", dataset.get(position).getTitle());
+                    intent.putExtra("public_id", dataset.get(position).publicId);
+                    intent.putExtra("title", dataset.get(position).title);
                     ((ViewHolderItem) holder).title.getContext().startActivity(intent);
                 }
             });
@@ -148,11 +146,11 @@ public class MyProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 public void onClick(View v) {
                     MyProjectsBottomSheetFragment bottomSheetFragment = new MyProjectsBottomSheetFragment();
                     bottomSheetFragment.passData(fragmentManager,
-                            dataset.get(position).getPrivateId(),
-                            dataset.get(position).getPublicId(),
-                            dataset.get(position).getTitle(),
-                            dataset.get(position).getDescription(),
-                            dataset.get(position).getIsPublic(),
+                            dataset.get(position).privateId,
+                            dataset.get(position).publicId,
+                            dataset.get(position).title,
+                            dataset.get(position).description,
+                            dataset.get(position).isPublic,
                             position);
 
                     bottomSheetFragment.show(fragmentManager, bottomSheetFragment.getTag());
@@ -170,7 +168,7 @@ public class MyProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public int getItemViewType(int position) {
         if (position == 0) {
             return TYPE_HEADER;
-        } else if (dataset.get(position).getPrivateId().equals("Loading")) {
+        } else if (dataset.get(position).privateId.equals("Loading")) {
             return TYPE_LOADING;
         }
 

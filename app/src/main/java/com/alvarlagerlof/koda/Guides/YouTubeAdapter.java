@@ -35,8 +35,8 @@ public class YouTubeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     FragmentManager fragmentManager;
 
 
-    public YouTubeAdapter(ArrayList<YouTubeObject> myDataset) {
-        mDataset = myDataset;
+    public YouTubeAdapter(ArrayList<YouTubeObject> dataset) {
+        mDataset = dataset;
     }
 
 

@@ -1,7 +1,7 @@
 package com.alvarlagerlof.koda.Archive;
 
 /**
- * Created by alvar on 2016-07-02.
+ * Created author alvar on 2016-07-02.
  */
 
 import android.content.Context;
@@ -26,67 +26,68 @@ import com.alvarlagerlof.koda.R;
 import java.util.ArrayList;
 
 /**
- * Created by alvar on 2015-07-10.
+ * Created author alvar on 2015-07-10.
  */
 
 
-public class ArchiveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+class ArchiveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private ArrayList<ArchiveObject> mDataset;
+    // Init objects
+    private ArrayList<ArchiveObject> dataset;
+    private FragmentManager fragmentManager;
+    private Context context;
 
     private static final int TYPE_HEADER      = 0;
     private static final int TYPE_LOADING     = 1;
     private static final int TYPE_ITEM        = 2;
 
-    FragmentManager fragmentManager;
 
-    Context context;
 
-    public ArchiveAdapter(ArrayList<ArchiveObject> mDataset, FragmentManager fragmentManager, Context context) {
-        this.mDataset = mDataset;
+    // Get the data
+    ArchiveAdapter(ArrayList<ArchiveObject> dataset, FragmentManager fragmentManager, Context context) {
+        this.dataset = dataset;
         this.fragmentManager = fragmentManager;
         this.context = context;
     }
 
 
-    public static class ViewHolderHeader extends RecyclerView.ViewHolder  {
-        public final TextView text1;
+    // View holders
+    private static class ViewHolderHeader extends RecyclerView.ViewHolder  {
+        TextView text1;
 
-        public ViewHolderHeader(View itemView){
+        ViewHolderHeader(View itemView){
             super(itemView);
             text1 = (TextView) itemView.findViewById(R.id.text1);
         }
     }
 
-    public static class ViewHolderLoading extends RecyclerView.ViewHolder  {
-
-        public ViewHolderLoading(View itemView){
+    private static class ViewHolderLoading extends RecyclerView.ViewHolder  {
+        ViewHolderLoading(View itemView){
             super(itemView);
         }
     }
 
-    public static class ViewHolderItem extends RecyclerView.ViewHolder {
-        public final TextView title;
-        public final TextView by;
-        public final TextView description;
-        public final TextView likesNum;
-        public final TextView commentsNum;
-        public final TextView metaText;
-        public final ImageView heartImage;
+    private static class ViewHolderItem extends RecyclerView.ViewHolder {
+        TextView title;
+        TextView author;
+        TextView description;
+        TextView likesNum;
+        TextView commentsNum;
+        TextView metaText;
+        ImageView heartImage;
 
-        public final LinearLayout likes;
-        public final LinearLayout comment;
-        public final LinearLayout more;
+        LinearLayout likes;
+        LinearLayout comment;
+        LinearLayout more;
 
-        public final LinearLayout expandCollapse;
-        public final LinearLayout expandablePanel;
-        public final ImageView expandCollapseImage;
-
-
-        public ViewHolderItem(View itemView) {
+        LinearLayout expandCollapse;
+        LinearLayout expandablePanel;
+        ImageView expandCollapseImage;
+        
+        ViewHolderItem(View itemView) {
             super(itemView);
             title        = (TextView) itemView.findViewById(R.id.title);
-            by           = (TextView) itemView.findViewById(R.id.by);
+            author = (TextView) itemView.findViewById(R.id.by);
             description  = (TextView) itemView.findViewById(R.id.description);
             likesNum = (TextView) itemView.findViewById(R.id.likes_num);
             commentsNum = (TextView) itemView.findViewById(R.id.comments_num);
@@ -100,15 +101,13 @@ public class ArchiveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             expandCollapse = (LinearLayout) itemView.findViewById(R.id.expand_collapse);
             expandablePanel = (LinearLayout) itemView.findViewById(R.id.expandable_panel);
             expandCollapseImage = (ImageView) itemView.findViewById(R.id.expand_collapse_image);
-
-
         }
 
     }
 
 
 
-
+    // View for viewholder
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View headerView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_header, viewGroup, false);
@@ -128,19 +127,20 @@ public class ArchiveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
 
+    // Bind views
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof ViewHolderHeader) {
-            ((ViewHolderHeader) holder).text1.setText("Alla som programmerar i labbet kan välja att visa upp sin skapelse här. Populariteten ökar om någon plussar ett spel i listan, men om du vill plussa något måste du vara inloggad.");
+            ((ViewHolderHeader) holder).text1.setText("Alla som programmerar i labbet kan välja att visa upp sin skapelse här");
         } else if (holder instanceof ViewHolderItem) {
-            ((ViewHolderItem) holder).title.setText(mDataset.get(position).title);
-            ((ViewHolderItem) holder).by.setText(mDataset.get(position).author);
-            ((ViewHolderItem) holder).description.setText(mDataset.get(position).description);
-            ((ViewHolderItem) holder).likesNum.setText(mDataset.get(position).likeCount);
-            ((ViewHolderItem) holder).commentsNum.setText(mDataset.get(position).commentCount);
-            ((ViewHolderItem) holder).metaText.setText(mDataset.get(position).charCount + " tecken | Uppdaterad " + NiceDate.convert(mDataset.get(position).date));
+            ((ViewHolderItem) holder).title.setText(dataset.get(position).title);
+            ((ViewHolderItem) holder).author.setText(dataset.get(position).author);
+            ((ViewHolderItem) holder).description.setText(dataset.get(position).description);
+            ((ViewHolderItem) holder).likesNum.setText(dataset.get(position).likeCount);
+            ((ViewHolderItem) holder).commentsNum.setText(dataset.get(position).commentCount);
+            ((ViewHolderItem) holder).metaText.setText(dataset.get(position).charCount + " tecken | Uppdaterad " + NiceDate.convert(dataset.get(position).date));
 
-            if (mDataset.get(position).liked) {
+            if (dataset.get(position).liked) {
                 ((ViewHolderItem) holder).heartImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_heart));
             } else {
                 ((ViewHolderItem) holder).heartImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_heart_outline));
@@ -150,12 +150,11 @@ public class ArchiveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(((ViewHolderItem) holder).title.getContext(), PlayActivity.class);
-                    intent.putExtra("public_id", mDataset.get(position).publicId);
-                    intent.putExtra("title", mDataset.get(position).title);
+                    intent.putExtra("public_id", dataset.get(position).publicId);
+                    intent.putExtra("title", dataset.get(position).title);
                     ((ViewHolderItem) holder).title.getContext().startActivity(intent);
                 }
             });
-
 
             ((ViewHolderItem) holder).expandCollapse.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -171,21 +170,20 @@ public class ArchiveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             });
 
 
-
             ((ViewHolderItem) holder).likes.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    if (mDataset.get(position).liked) {
+                    if (dataset.get(position).liked) {
                         int likes = Integer.parseInt(String.valueOf(((ViewHolderItem) holder).likesNum.getText()));
                         likes -= 1;
                         ((ViewHolderItem) holder).likesNum.setText(String.valueOf(likes));
 
                         ((ViewHolderItem) holder).heartImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_heart_outline));
 
-                        mDataset.get(position).liked = false;
+                        dataset.get(position).liked = false;
 
-                        LikeDissLike.dislike(context, mDataset.get(position).publicId);
+                        LikeDissLike.dislike(context, dataset.get(position).publicId);
 
 
                     } else {
@@ -194,10 +192,10 @@ public class ArchiveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         ((ViewHolderItem) holder).likesNum.setText(String.valueOf(likes));
 
                         ((ViewHolderItem) holder).heartImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_heart));
-                        mDataset.get(position).liked = true;
+                        dataset.get(position).liked = true;
 
 
-                        LikeDissLike.like(context, mDataset.get(position).publicId);
+                        LikeDissLike.like(context, dataset.get(position).publicId);
 
                     }
 
@@ -208,8 +206,8 @@ public class ArchiveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(((ViewHolderItem) holder).title.getContext(), CommentsActivity.class);
-                    intent.putExtra("public_id", mDataset.get(position).publicId);
-                    intent.putExtra("title", mDataset.get(position).title);
+                    intent.putExtra("public_id", dataset.get(position).publicId);
+                    intent.putExtra("title", dataset.get(position).title);
                     ((ViewHolderItem) holder).title.getContext().startActivity(intent);
                 }
             });
@@ -218,7 +216,7 @@ public class ArchiveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 @Override
                 public void onClick(View v) {
                     ArchiveBottomSheetFragment bottomSheetFragment = new ArchiveBottomSheetFragment();
-                    bottomSheetFragment.passData(mDataset.get(position).publicId, mDataset.get(position).title, mDataset.get(position).author);
+                    bottomSheetFragment.passData(dataset.get(position).publicId, dataset.get(position).title, dataset.get(position).author);
 
                     bottomSheetFragment.show(fragmentManager, bottomSheetFragment.getTag());
                 }
@@ -232,7 +230,7 @@ public class ArchiveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public int getItemViewType(int position) {
         if (position == 0) {
             return TYPE_HEADER;
-        } else if (mDataset.get(position).publicId.equals("Loading")) {
+        } else if (dataset.get(position).publicId.equals("Loading")) {
             return TYPE_LOADING;
         }
         return TYPE_ITEM;
@@ -240,7 +238,7 @@ public class ArchiveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public int getItemCount() {
-        return mDataset.size();
+        return dataset.size();
     }
 
 

@@ -22,23 +22,20 @@
                 app:titleTextColor="#FFFFFF"
                 android:paddingTop="@dimen/app_bar_top_padding"/>
 
+            <android.support.design.widget.TabLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:id="@+id/tabs"
+                app:tabTextColor="#a5ffffff"
+                app:tabSelectedTextColor="#FFF"/>
+
         </android.support.design.widget.AppBarLayout>
 
-        <WebView
+        <android.support.v4.view.ViewPager
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/webview"
-            android:layout_below="@+id/appbarlayout"
-            android:visibility="invisible"/>
-
-        <com.alvarlagerlof.koda.ShaderEditor
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/editor_editext"
-            android:gravity="top|left"
-            android:textSize="15sp"
-            android:background="@android:color/transparent"
-            android:layout_below="@+id/appbarlayout"/>
+            android:layout_height="wrap_content"
+            android:id="@+id/viewpager"
+            android:layout_below="@id/appbarlayout"/>
 
     </RelativeLayout>
 

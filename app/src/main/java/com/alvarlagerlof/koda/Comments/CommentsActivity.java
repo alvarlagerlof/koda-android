@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.alvarlagerlof.koda.DividerItemDecoration;
+import com.alvarlagerlof.koda.PrefValues;
 import com.alvarlagerlof.koda.R;
 
 import org.json.JSONArray;
@@ -27,9 +28,6 @@ import okhttp3.Response;
 
 public class CommentsActivity extends AppCompatActivity {
 
-    Toolbar toolbar;
-    RecyclerView recyclerView;
-
     CommentsAdapter commentsAdapter;
     ArrayList<CommentsObject> list = new ArrayList<>();
 
@@ -39,20 +37,19 @@ public class CommentsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comments);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
+        // Init stuff
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_close);
-
         getSupportActionBar().setTitle("Kommentarer på " + getIntent().getStringExtra("title"));
 
+
         list.add(new CommentsObject("", "", ""));
-
         commentsAdapter = new CommentsAdapter(list);
-        final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setScrollContainer(false);
         recyclerView.addItemDecoration(new DividerItemDecoration(this));
         recyclerView.setAdapter(commentsAdapter);
@@ -79,7 +76,7 @@ public class CommentsActivity extends AppCompatActivity {
 
                 OkHttpClient client = new OkHttpClient();
                 Request request = new Request.Builder()
-                        .url("https://ravla.org/comments.php")
+                        .url(PrefValues.URL_COMMENTS)
                         .build();
                 Response response = client.newCall(request).execute();
                 String result = response.body().string();

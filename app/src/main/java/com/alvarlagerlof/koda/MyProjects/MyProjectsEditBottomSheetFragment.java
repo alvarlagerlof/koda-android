@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 
 import com.alvarlagerlof.koda.Animations;
 import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
+import com.alvarlagerlof.koda.PrefValues;
 import com.alvarlagerlof.koda.R;
 
 import java.io.IOException;
@@ -230,7 +231,7 @@ public class MyProjectsEditBottomSheetFragment extends BottomSheetDialogFragment
 
 
             Request request = new Request.Builder()
-                    .url("https://koda.nu/labbet/" + private_id)
+                    .url(PrefValues.URL_MY_PROJECTS_EDIT + private_id)
                     .post(formBody)
                     .build();
 

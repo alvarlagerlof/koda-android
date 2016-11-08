@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,7 @@ import android.view.ViewGroup;
 import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
 import com.alvarlagerlof.koda.DividerItemDecoration;
 import com.alvarlagerlof.koda.FastBase64;
+import com.alvarlagerlof.koda.PrefValues;
 import com.alvarlagerlof.koda.R;
 
 import org.json.JSONArray;
@@ -31,13 +31,12 @@ import okhttp3.Response;
 import okhttp3.internal.JavaNetCookieJar;
 
 /**
- * Created by alvar on 2016-07-02.
+ * Created author alvar on 2016-07-02.
  */
 public class ArchiveFragment extends Fragment {
 
-    RecyclerView recyclerView;
     ArchiveAdapter archiveAdapter;
-    ArrayList<ArchiveObject> list = new ArrayList<>();
+    ArrayList<ArchiveObject> list;
 
 
     @Override
@@ -46,18 +45,15 @@ public class ArchiveFragment extends Fragment {
 
         list.add(new ArchiveObject("", "", "", "", "", "", "", "", false));
 
-        archiveAdapter = new ArchiveAdapter(list, getActivity().getSupportFragmentManager(), getContext());
-        final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        ArchiveAdapter archiveAdapter = new ArchiveAdapter(list, getActivity().getSupportFragmentManager(), getContext());
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setScrollContainer(false);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext()));
         recyclerView.setAdapter(archiveAdapter);
 
         getData getData = new getData();
-        getData.execute("0");
-
+        getData.execute();
 
         return view;
     }
@@ -85,7 +81,7 @@ public class ArchiveFragment extends Fragment {
 
 
                 Request request = new Request.Builder()
-                        .url("https://koda.nu/arkivet_json/" + strings[0])
+                        .url(PrefValues.URL_ARCHIVE)
                         .build();
                 Response response = client.newCall(request).execute();
                 String result = response.body().string();
@@ -93,7 +89,9 @@ public class ArchiveFragment extends Fragment {
 
                 json = new JSONArray(result);
 
-            } catch (Exception e) {}
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             return json;
         }

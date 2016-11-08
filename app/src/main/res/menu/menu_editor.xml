@@ -25,18 +25,4 @@
         android:orderInCategory="1"/>
 
 
-    <item
-        android:id="@+id/editor"
-        android:title="Redigera kod"
-        android:icon="@drawable/ic_code"
-        app:showAsAction="always"
-        android:orderInCategory="30" />
-
-    <item
-        android:id="@+id/webview"
-        android:title="Kör koden"
-        android:icon="@drawable/ic_play"
-        app:showAsAction="always"
-        android:orderInCategory="40" />
-
 </menu>

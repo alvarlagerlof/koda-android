@@ -10,6 +10,7 @@ import android.view.MenuItem;
 
 import com.alvarlagerlof.koda.DividerItemDecoration;
 import com.alvarlagerlof.koda.NiceDate;
+import com.alvarlagerlof.koda.PrefValues;
 import com.alvarlagerlof.koda.R;
 
 import org.json.JSONArray;
@@ -77,7 +78,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                 OkHttpClient client = new OkHttpClient();
                 Request request = new Request.Builder()
-                        .url("https://ravla.org/profile.txt")
+                        .url(PrefValues.URL_PROFILE)
                         .build();
                 Response response = client.newCall(request).execute();
                 String result = response.body().string();

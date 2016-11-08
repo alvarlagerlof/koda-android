@@ -3,81 +3,49 @@ package com.alvarlagerlof.koda.Api;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.alvarlagerlof.koda.PrefValues;
 import com.alvarlagerlof.koda.R;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.alvarlagerlof.koda.ViewPagerAdapter;
 
 /**
  * Created by alvar on 2016-07-02.
  */
+
 public class FragmentApi extends Fragment {
-
-    RecyclerView recyclerView;
-    TabLayout tabLayout;
-    ViewPager viewPager;
-
-    ViewPagerAdapter adapter;
-
-    View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_api, container, false);
+        View view = inflater.inflate(R.layout.fragment_api, container, false);
+        ViewPager viewPager = (ViewPager) view.findViewById(R.id.viewpager);
+        TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tab_layout);
 
-        viewPager = (ViewPager) view.findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
+        // Set up the adapter
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
 
-        tabLayout = (TabLayout) view.findViewById(R.id.tab_layout);
+        // 2D
+        ApiTabFragment apiTabFragment2D = new ApiTabFragment();
+        apiTabFragment2D.url = PrefValues.URL_API_2D;
+        adapter.addFragment(apiTabFragment2D, "2D");
+
+        // 3D
+        ApiTabFragment apiTabFragment3D = new ApiTabFragment();
+        apiTabFragment3D.url = PrefValues.URL_API_3D;
+        adapter.addFragment(apiTabFragment3D, "3D");
+
+        viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
 
         return view;
     }
 
 
-    private void setupViewPager(ViewPager viewPager) {
-        adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
-        adapter.addFragment(new Api2DFragment(), "2D");
-        adapter.addFragment(new Api3DFragment(), "3D");
-        viewPager.setAdapter(adapter);
-    }
+    // The adapter
 
-    class ViewPagerAdapter extends FragmentStatePagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
-
-        public ViewPagerAdapter(FragmentManager manager) {
-            super(manager);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
-
-        public void addFragment(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
-        }
-    }
 
 }
 

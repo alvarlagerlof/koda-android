@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialogFragment;
@@ -14,21 +13,9 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
 import com.alvarlagerlof.koda.FullscreenPlay;
-import com.alvarlagerlof.koda.MainAcitivty;
-import com.alvarlagerlof.koda.PrefValues;
 import com.alvarlagerlof.koda.QrCodeShare.QrViewer;
 import com.alvarlagerlof.koda.R;
-import com.google.firebase.crash.FirebaseCrash;
-
-import java.net.CookieHandler;
-import java.net.CookieManager;
-import java.net.CookiePolicy;
-
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.internal.JavaNetCookieJar;
 
 /**
  * Created by alvar on 2016-07-03.
@@ -176,7 +163,14 @@ public class MyProjectsBottomSheetFragment extends BottomSheetDialogFragment {
                 alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "TA BORT", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        new delete().execute(private_id);
+                        MyProjectsDelete deleteTask = new MyProjectsDelete();
+                        deleteTask.setListener(getContext(), private_id, position, new MyProjectsDelete.MyProjectsDeleteListener() {
+                                    @Override
+                                    public void onPreExecuteConcluded() {}
+                                    @Override
+                                    public void onPostExecuteConcluded() {}
+                                });
+                        deleteTask.execute();
                         dismiss();
                     }
                 });
@@ -196,41 +190,5 @@ public class MyProjectsBottomSheetFragment extends BottomSheetDialogFragment {
 
     }
 
-
-    class delete extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            MainAcitivty.fragmentMyProjects.removeItemAt(position);
-        }
-
-        @Override
-        protected String doInBackground(String... strings) {
-            try {
-
-                CookieHandler cookieHandler = new CookieManager(
-                        new PersistentCookieStore(getContext()), CookiePolicy.ACCEPT_ALL);
-
-                OkHttpClient client = new OkHttpClient.Builder()
-                        .cookieJar(new JavaNetCookieJar(cookieHandler))
-                        .build();
-
-
-                Request request = new Request.Builder()
-                        .url(PrefValues.URL_MY_PROJECTS_DELETE + strings[0])
-                        .build();
-                client.newCall(request).execute();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                FirebaseCrash.report(e);
-            }
-
-            return "";
-        }
-
-
-    }
 
 }

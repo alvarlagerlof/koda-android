@@ -21,24 +21,26 @@ import java.util.ArrayList;
  */
 
 
-public class Api2DAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+class ApiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private ArrayList<ApiObject> mDataset;
-    public Api2DAdapter(ArrayList<ApiObject> myDataset) {
-        mDataset = myDataset;
+    // Init objects
+    private final int TYPE_LOADING = 0;
+    private final int TYPE_ITEM    = 1;
+    private ArrayList<ApiObject> dataset;
+
+
+    // Get the data
+    ApiAdapter(ArrayList<ApiObject> dataset) {
+        this.dataset = dataset;
     }
 
-    public final int TYPE_LOADING = 0;
-    public final int TYPE_ITEM    = 1;
 
+    // View holders
+    private static class ViewHolderItem extends RecyclerView.ViewHolder {
+        final TextView command;
+        final TextView description;
 
-
-    public static class ViewHolderItem extends RecyclerView.ViewHolder {
-        public final TextView command;
-        public final TextView description;
-
-
-        public ViewHolderItem(View itemView) {
+        ViewHolderItem(View itemView) {
             super(itemView);
             command = (TextView) itemView.findViewById(R.id.command);
             description = (TextView) itemView.findViewById(R.id.description);
@@ -46,18 +48,14 @@ public class Api2DAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     }
 
-    public static class ViewHolderLoading extends RecyclerView.ViewHolder {
-
-        public ViewHolderLoading(View itemView) {
+    private static class ViewHolderLoading extends RecyclerView.ViewHolder {
+        ViewHolderLoading(View itemView) {
             super(itemView);
-
         }
-
     }
 
 
-
-
+    // View for viewholder
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View loadingView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_loading, viewGroup, false);
@@ -74,28 +72,29 @@ public class Api2DAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
 
+    // Populate viewholder
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof ViewHolderItem) {
             Context context = ((ViewHolderItem) holder).command.getContext();
 
-            ((ViewHolderItem) holder).command.setText(mDataset.get(position).getmCommand());
+            ((ViewHolderItem) holder).command.setText(dataset.get(position).command);
             Typeface type = Typeface.createFromAsset(context.getAssets(), "SourceCodePro-Regular.ttf");
             ((ViewHolderItem) holder).command.setTypeface(type);
 
-            ((ViewHolderItem) holder).description.setText(mDataset.get(position).getmDescription());
+            ((ViewHolderItem) holder).description.setText(dataset.get(position).description);
         }
     }
 
 
     @Override
     public int getItemCount() {
-        return mDataset.size();
+        return dataset.size();
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (mDataset.get(position).getmCommand().equals("Loading")) {
+        if (dataset.get(position).command.equals("Loading")) {
             return TYPE_LOADING;
         }
         return TYPE_ITEM;

@@ -16,7 +16,7 @@ import com.alvarlagerlof.koda.QrCodeShare.QrViewer;
 import com.alvarlagerlof.koda.R;
 
 /**
- * Created by alvar on 2016-07-03.
+ * Created author alvar on 2016-07-03.
  */
 public class ArchiveBottomSheetFragment extends BottomSheetDialogFragment {
 

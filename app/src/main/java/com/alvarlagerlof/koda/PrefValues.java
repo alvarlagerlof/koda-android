@@ -15,12 +15,12 @@ public class PrefValues {
     public static final String URL_MY_PROJECTS = BASE_URL + API_VERSION + "labbet";
     public static final String URL_MY_PROJECTS_CREATE_NEW = BASE_URL + API_VERSION + "skapa/";
     public static final String URL_MY_PROJECTS_EDIT = BASE_URL + API_VERSION + "/";
-    public static final String URL_MY_PROJECTS_DELETE = BASE_URL + API_VERSION + "delete/";
+    public static final String URL_MY_PROJECTS_DELETE = BASE_URL + "delete/";
 
 
     // API
-    public static final String URL_API_2D = BASE_URL + API_VERSION + "api2D";
-    public static final String URL_API_3D = BASE_URL + API_VERSION + "api3D";
+    public static final String URL_API_2D = "https://ravla.org/api.php";
+    public static final String URL_API_3D = "https://ravla.org/api.php?dimension=3D";
 
 
     // Archive
