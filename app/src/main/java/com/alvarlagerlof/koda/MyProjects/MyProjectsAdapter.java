@@ -15,7 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alvarlagerlof.koda.Comments.CommentsActivity;
-import com.alvarlagerlof.koda.EditorActivity;
+import com.alvarlagerlof.koda.Editor.EditorActivity;
 import com.alvarlagerlof.koda.R;
 
 import java.util.ArrayList;
@@ -37,29 +37,29 @@ public class MyProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     FragmentManager fragmentManager;
 
 
-    public MyProjectsAdapter(ArrayList<MyProjectsObject> dataset, FragmentManager fragmentManager) {
+    MyProjectsAdapter(ArrayList<MyProjectsObject> dataset, FragmentManager fragmentManager) {
         this.dataset = dataset;
         this.fragmentManager = fragmentManager;
     }
 
 
-    public static class ViewHolderHeader extends RecyclerView.ViewHolder  {
-        public final TextView text1;
+    private static class ViewHolderHeader extends RecyclerView.ViewHolder  {
+        final TextView text1;
 
-        public ViewHolderHeader(View itemView){
+        ViewHolderHeader(View itemView){
             super(itemView);
             text1 = (TextView) itemView.findViewById(R.id.text1);
         }
     }
 
-    public static class ViewHolderLoading extends RecyclerView.ViewHolder  {
+    private static class ViewHolderLoading extends RecyclerView.ViewHolder  {
 
-        public ViewHolderLoading(View itemView){
+        ViewHolderLoading(View itemView){
             super(itemView);
         }
     }
 
-    public static class ViewHolderItem extends RecyclerView.ViewHolder {
+    private static class ViewHolderItem extends RecyclerView.ViewHolder {
         public final TextView title;
         public final TextView date;
         //public final TextView likesNum;
@@ -127,6 +127,7 @@ public class MyProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     intent.putExtra("private_id", dataset.get(position).getPrivateId());
                     intent.putExtra("public_id", dataset.get(position).getPublicId());
                     intent.putExtra("title", dataset.get(position).getTitle());
+                    intent.putExtra("code", dataset.get(position).getCode());
                     context.startActivity(intent);
                 }
             });

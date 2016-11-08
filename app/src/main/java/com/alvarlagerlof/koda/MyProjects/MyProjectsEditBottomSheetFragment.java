@@ -126,8 +126,6 @@ public class MyProjectsEditBottomSheetFragment extends BottomSheetDialogFragment
         descriptionInput.setText(description);
         publicCheckbox.setChecked(isPublic);
 
-        Log.d("is_public", String.valueOf(isPublic));
-
         // Keyboard
         titleInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override

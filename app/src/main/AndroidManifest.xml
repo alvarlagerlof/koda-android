@@ -31,7 +31,7 @@
 
         // Editor
         <activity
-            android:name=".EditorActivity"
+            android:name=".Editor.EditorActivity"
             android:label="Editor"
             android:parentActivityName=".MainAcitivty"
             android:theme="@style/AppTheme"

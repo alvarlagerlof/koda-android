@@ -1,4 +1,4 @@
-package com.alvarlagerlof.koda;
+package com.alvarlagerlof.koda.Editor;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -28,6 +28,8 @@ import android.widget.TextView;
 
 import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
 import com.alvarlagerlof.koda.MyProjects.MyProjectsRealmObject;
+import com.alvarlagerlof.koda.R;
+import com.alvarlagerlof.koda.ShaderEditor;
 
 import java.io.IOException;
 import java.net.CookieHandler;
@@ -54,6 +56,7 @@ public class EditorActivity extends AppCompatActivity {
     String private_id;
     String public_id;
     String title;
+    String code;
 
     int fontSize = 15;
 
@@ -78,21 +81,24 @@ public class EditorActivity extends AppCompatActivity {
             private_id = sharedPreferences.getString("private_id", "null");
             public_id = sharedPreferences.getString("public_id", "null");
             title = sharedPreferences.getString("title", "null");
+            code = sharedPreferences.getString("code", "null");
         } else {
             private_id = extras.getString("private_id");
             public_id = extras.getString("public_id");
             title = extras.getString("title");
+            code = extras.getString("code");
 
             SharedPreferences sharedPreferences = getSharedPreferences("Prefs", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("private_id", private_id);
             editor.putString("public_id", public_id);
             editor.putString("title", title);
+            editor.putString("code", title);
             editor.apply();
         }
 
-        realm = Realm.getDefaultInstance();
 
+        editorEdittext.setText(code);
 
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setLoadWithOverviewMode(true);
@@ -188,12 +194,6 @@ public class EditorActivity extends AppCompatActivity {
         });
 
 
-        // Set code
-        MyProjectsRealmObject object = realm.where(MyProjectsRealmObject.class)
-                .contains("privateId", private_id)
-                .findFirst();
-
-        editorEdittext.setText(object.getCode());
 
         
         Typeface type = Typeface.createFromAsset(getAssets(),"SourceCodePro-Regular.ttf");
@@ -308,10 +308,27 @@ public class EditorActivity extends AppCompatActivity {
                 webView.setVisibility(View.VISIBLE);
                 editorEdittext.setVisibility(View.INVISIBLE);
                 webView.loadData(String.valueOf(editorEdittext.getText()), "text/html", "UTF-8");
-                //webView.loadDataWithBaseURL(null, String.valueOf(editorEdittext.getText()), "text/html", "UTF-8", null);
-                //webView.loadUrl("http://koda.nu/arkivet/" + public_id);
-                save save = new save();
-                save.execute(String.valueOf(editorEdittext.getCleanText()));
+                webView.loadDataWithBaseURL("file:///android-asset", String.valueOf(editorEdittext.getText()), "text/html", "UTF-8", null);
+                //save save = new save();
+                //save.execute(String.valueOf(editorEdittext.getCleanText()));
+
+
+                EditorSave aTask = new EditorSave();
+                aTask.setListener(new EditorSave.EditorSaveListener() {
+                    @Override
+                    public void onPreExecuteConcluded() {
+                        // gui stuff
+                    }
+
+                    @Override
+                    public void onPostExecuteConcluded(String result) {
+                        // gui stuff
+                    }
+                });
+                aTask.execute();
+
+                
+
                 toolbar.getMenu().findItem(R.id.webview).setVisible(false);
                 toolbar.getMenu().findItem(R.id.editor).setVisible(true);
                 toolbar.getMenu().findItem(R.id.fontminus).setVisible(false);

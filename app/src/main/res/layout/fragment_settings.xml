@@ -73,25 +73,51 @@
     </FrameLayout>
 
     <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/listDivider"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/click"
+        android:clickable="true"
+        android:padding="16dp"
+        android:id="@+id/about">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Om appen"
+            style="@style/textMedium"/>
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?android:attr/listDivider"/>
 
-   <LinearLayout
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:background="@drawable/click"
-       android:clickable="true"
-       android:padding="16dp"
-       android:id="@+id/logout">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/listDivider"/>
 
-       <TextView
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:text="Logga ut"
-           style="@style/textMedium"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/click"
+        android:clickable="true"
+        android:padding="16dp"
+        android:id="@+id/logout">
 
-   </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Logga ut"
+            style="@style/textMedium"/>
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

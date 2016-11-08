@@ -16,6 +16,8 @@ import android.widget.LinearLayout;
 
 import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
 import com.alvarlagerlof.koda.FullscreenPlay;
+import com.alvarlagerlof.koda.MainAcitivty;
+import com.alvarlagerlof.koda.PrefValues;
 import com.alvarlagerlof.koda.QrCodeShare.QrViewer;
 import com.alvarlagerlof.koda.R;
 import com.google.firebase.crash.FirebaseCrash;
@@ -198,6 +200,12 @@ public class MyProjectsBottomSheetFragment extends BottomSheetDialogFragment {
     class delete extends AsyncTask<String, Void, String> {
 
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            MainAcitivty.fragmentMyProjects.removeItemAt(position);
+        }
+
+        @Override
         protected String doInBackground(String... strings) {
             try {
 
@@ -210,10 +218,9 @@ public class MyProjectsBottomSheetFragment extends BottomSheetDialogFragment {
 
 
                 Request request = new Request.Builder()
-                        .url("https://koda.nu/delete/" + strings[0])
+                        .url(PrefValues.URL_MY_PROJECTS_DELETE + strings[0])
                         .build();
-                //client.newCall(request).execute();
-
+                client.newCall(request).execute();
 
             } catch (Exception e) {
                 e.printStackTrace();

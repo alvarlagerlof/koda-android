@@ -1,5 +1,6 @@
 package com.alvarlagerlof.koda.MyProjects;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -7,17 +8,22 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
+import com.alvarlagerlof.koda.ConnectionUtils;
 import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
 import com.alvarlagerlof.koda.DividerItemDecoration;
-import com.alvarlagerlof.koda.EditorActivity;
+import com.alvarlagerlof.koda.Editor.EditorActivity;
 import com.alvarlagerlof.koda.FastBase64;
 import com.alvarlagerlof.koda.NiceDate;
+import com.alvarlagerlof.koda.PrefValues;
 import com.alvarlagerlof.koda.R;
 
 import org.json.JSONArray;
@@ -31,8 +37,10 @@ import java.util.ArrayList;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.internal.JavaNetCookieJar;
 
@@ -67,15 +75,43 @@ public class FragmentMyProjects extends Fragment {
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext()));
         recyclerView.setAdapter(myProjectsAdapter);
 
-        final getData getData = new getData();
-        getData.execute("");
+        new getData().execute("");
 
 
         floatingActionButton = (FloatingActionButton) view.findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new createNew().execute("");
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("Title");
+
+                final EditText input = new EditText(getContext());
+                input.setInputType(InputType.TYPE_CLASS_TEXT);
+                builder.setView(input);
+
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String title = String.valueOf(input.getText());
+                        if (title == null || title.equals("")) {
+                            title = "Namnlös";
+                        }
+                        createNew createNew = new createNew();
+                        createNew.title = title;
+                        createNew.execute();
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
+
+
             }
         });
 
@@ -84,6 +120,10 @@ public class FragmentMyProjects extends Fragment {
     }
 
 
+    public void removeItemAt(int pos) {
+        projectsList.remove(pos);
+        myProjectsAdapter.notifyDataSetChanged();
+    }
 
     public class getData extends AsyncTask<String, Void, String> {
 
@@ -108,13 +148,15 @@ public class FragmentMyProjects extends Fragment {
 
 
                 Request request = new Request.Builder()
-                        .url("https://koda.nu/labbet_json")
+                        .url(PrefValues.URL_MY_PROJECTS)
                         .build();
                 Response response = client.newCall(request).execute();
 
                 json = response.body().string();
 
-            } catch (Exception e) {}
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             return json;
         }
@@ -164,7 +206,7 @@ public class FragmentMyProjects extends Fragment {
                             String title                 = FastBase64.decode(gameJsonObject.getString("title"));
                             String updated                = gameJsonObject.getString("updated");
                             final String description     = FastBase64.decode(gameJsonObject.getString("description"));
-                            final boolean isPublic       = false; //gameJsonObject.getBoolean("is_public");
+                            final boolean isPublic       = gameJsonObject.getString("public").equals("CHECKED");
 
                             final String likeCount       = gameJsonObject.getString("likes");
                             final String commentCount    = "0"; //jsonObject.getString("comment_count");
@@ -246,57 +288,94 @@ public class FragmentMyProjects extends Fragment {
 
     class createNew extends AsyncTask<String, Void, JSONObject> {
 
+        public String title = null;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            String offlineId = "offline_" + String.valueOf(System.currentTimeMillis());
+            final String finalOfflineId = offlineId;
+
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+
+                    MyProjectsRealmObject object = realm.createObject(MyProjectsRealmObject.class);
+                    object.setPrivateId(finalOfflineId);
+                    object.setPublicId("");
+                    object.setTitle(title);
+                    object.setUpdated(String.valueOf(System.currentTimeMillis() / 1000L));
+                    object.setDescription("");
+                    object.setIsPublic(false);
+                    object.setLikeCount("0");
+                    object.setCommentCount("0");
+                    object.setCharCount("");
+                    object.setCode("<script src=\"http://koda.nu/simple.js\">\n" +
+                            "\n" +
+                            "  circle(100, 100, 20, \"red\");\n" +
+                            "\n" +
+                            "</script>");
+                }
+            });
+
+            projectsList.add(new MyProjectsObject(offlineId,
+                    "",
+                    title,
+                    String.valueOf(System.currentTimeMillis() / 1000L),
+                    "",
+                    false,
+                    "",
+                    "",
+                    "",
+                    ""));
+            myProjectsAdapter.notifyDataSetChanged();
+
+            Intent intent = new Intent(getContext(), EditorActivity.class);
+            intent.putExtra("private_id", offlineId);
+            intent.putExtra("public_id", "");
+            intent.putExtra("code", "<script src=\"http://koda.nu/simple.js\">\n" +
+                    "\n" +
+                    "  circle(100, 100, 20, \"red\");\n" +
+                    "\n" +
+                    "</script>");
+            startActivity(intent);
+
+        }
+
         @Override
         protected JSONObject doInBackground(String... strings) {
-            String json = null;
-            try {
 
-                CookieHandler cookieHandler = new CookieManager(
-                        new PersistentCookieStore(getContext()), CookiePolicy.ACCEPT_ALL);
-
-                OkHttpClient client = new OkHttpClient.Builder()
-                        .cookieJar(new JavaNetCookieJar(cookieHandler))
-                        .build();
-
-
-                Request request = new Request.Builder()
-                        .url("https://koda.nu/skapajson")
-                        .build();
-                Response response = client.newCall(request).execute();
-                json = response.body().string();;
-
-            } catch (Exception e) {
-
-            }
-
-            JSONObject jsonObject = null;
-            try {
-                jsonObject = new JSONObject(json);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            return jsonObject;
-        }
-
-
-        protected void onPostExecute(JSONObject jsonObject) {
-
-            if (jsonObject != null) {
-
+            if (ConnectionUtils.isConnected(getContext())) {
                 try {
 
-                    Intent intent = new Intent(getActivity(), EditorActivity.class);
-                    intent.putExtra("private_id", jsonObject.getString("private_id"));
-                    intent.putExtra("public_id", jsonObject.getString("public_id"));
-                    startActivity(intent);
+                    CookieHandler cookieHandler = new CookieManager(
+                            new PersistentCookieStore(getContext()), CookiePolicy.ACCEPT_ALL);
 
-                } catch (JSONException e) {
+                    OkHttpClient client = new OkHttpClient.Builder()
+                            .cookieJar(new JavaNetCookieJar(cookieHandler))
+                            .build();
+
+                    RequestBody formBody = new FormBody.Builder()
+                            .add("title", title)
+                            .build();
+
+                    Request request = new Request.Builder()
+                            .url(PrefValues.URL_MY_PROJECTS_CREATE_NEW)
+                            .post(formBody)
+                            .build();
+
+                    Response response = client.newCall(request).execute();
+                    response.body().close();
+
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-
             }
+
+            return null;
         }
+
     }
 
 

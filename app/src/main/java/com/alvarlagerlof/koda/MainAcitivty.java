@@ -42,6 +42,8 @@ public class MainAcitivty extends AppCompatActivity {
 
     LinearLayout fragment_container;
 
+    public static FragmentMyProjects fragmentMyProjects;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -115,9 +117,9 @@ public class MainAcitivty extends AppCompatActivity {
             public void onTabSelected(@IdRes int tabId) {
                 switch (tabId) {
                     case R.id.tab_projects:
-                        FragmentMyProjects fragmentMyCreations = new FragmentMyProjects();
+                        fragmentMyProjects = new FragmentMyProjects();
                         FragmentTransaction ftMyCreations = getSupportFragmentManager().beginTransaction();
-                        ftMyCreations.replace(R.id.fragment_container, fragmentMyCreations);
+                        ftMyCreations.replace(R.id.fragment_container, fragmentMyProjects);
                         ftMyCreations.addToBackStack(null);
                         ftMyCreations.commit();
                         toolbar.setTitle("Mina projekt");
