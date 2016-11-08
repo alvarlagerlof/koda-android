@@ -14,42 +14,29 @@ import com.alvarlagerlof.koda.R;
 
 import java.util.ArrayList;
 
-import io.realm.Realm;
-
 /**
  * Created by alvar on 2016-07-02.
  */
 public class FragmentMyProjects extends Fragment {
 
     MyProjectsAdapter adapter;
-    FloatingActionButton floatingActionButton;
-
     ArrayList<MyProjectsObject> projectsList = new ArrayList<>();
-
-    Realm realm;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_my_projects, container, false);
 
-        realm = Realm.getDefaultInstance();
-
-        projectsList.add(new MyProjectsObject("", "", "", "", "", false, "", "", "", ""));
-
         adapter = new MyProjectsAdapter(projectsList, getActivity().getSupportFragmentManager());
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setScrollContainer(false);
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext()));
         recyclerView.setAdapter(adapter);
 
+
+        // Get data
         MyProjectsGetData dataTask = new MyProjectsGetData();
-        dataTask.setListener(
-                getContext(),
-                projectsList,
-                adapter,
-                new MyProjectsGetData.Listener() {
+        dataTask.setListener(getContext(), projectsList, adapter, new MyProjectsGetData.Listener() {
                     @Override
                     public void onPreExecuteConcluded() {}
                     @Override
@@ -58,7 +45,8 @@ public class FragmentMyProjects extends Fragment {
         dataTask.execute();
 
 
-        floatingActionButton = (FloatingActionButton) view.findViewById(R.id.floatingActionButton);
+        // Add button
+        FloatingActionButton floatingActionButton = (FloatingActionButton) view.findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

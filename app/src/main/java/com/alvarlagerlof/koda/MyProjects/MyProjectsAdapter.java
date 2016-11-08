@@ -30,9 +30,8 @@ public class MyProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     FragmentManager fragmentManager;
     private ArrayList<MyProjectsObject> dataset;
 
-    private static final int TYPE_HEADER      = 0;
-    private static final int TYPE_LOADING     = 1;
-    private static final int TYPE_ITEM        = 2;
+    private static final int TYPE_LOADING     = 0;
+    private static final int TYPE_ITEM        = 1;
 
 
 
@@ -87,13 +86,10 @@ public class MyProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View headerView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_header, viewGroup, false);
         View loadingView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_loading, viewGroup, false);
         View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.my_projects_item, viewGroup, false);
 
         switch (i) {
-            case TYPE_HEADER:
-                return new ViewHolderHeader(headerView);
             case TYPE_LOADING:
                 return new ViewHolderLoading(loadingView);
             case TYPE_ITEM:
@@ -106,11 +102,7 @@ public class MyProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-        if (holder instanceof ViewHolderHeader) {
-
-            ((ViewHolderHeader) holder).text1.setText("Här samlas alla din projekt");
-
-        } else if (holder instanceof ViewHolderItem) {
+       if (holder instanceof ViewHolderItem) {
             final Context context = ((ViewHolderItem) holder).title.getContext();
 
             ((ViewHolderItem) holder).title.setText(dataset.get(position).title);
@@ -166,9 +158,8 @@ public class MyProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public int getItemViewType(int position) {
-        if (position == 0) {
-            return TYPE_HEADER;
-        } else if (dataset.get(position).privateId.equals("Loading")) {
+
+        if (dataset.get(position).privateId.equals("Loading")) {
             return TYPE_LOADING;
         }
 

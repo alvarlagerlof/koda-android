@@ -36,7 +36,7 @@ import okhttp3.internal.JavaNetCookieJar;
 public class ArchiveFragment extends Fragment {
 
     ArchiveAdapter archiveAdapter;
-    ArrayList<ArchiveObject> list;
+    ArrayList<ArchiveObject> list = new ArrayList<>();
 
 
     @Override
@@ -58,7 +58,7 @@ public class ArchiveFragment extends Fragment {
         return view;
     }
 
-    class getData extends AsyncTask<String, Void, JSONArray> {
+    class getData extends AsyncTask<String, Void, String> {
 
         @Override
         protected void onPreExecute() {
@@ -68,8 +68,8 @@ public class ArchiveFragment extends Fragment {
         }
 
         @Override
-        protected JSONArray doInBackground(String... strings) {
-            JSONArray json = null;
+        protected String doInBackground(String... strings) {
+            String result = null;
             try {
 
                 CookieHandler cookieHandler = new CookieManager(
@@ -84,24 +84,26 @@ public class ArchiveFragment extends Fragment {
                         .url(PrefValues.URL_ARCHIVE)
                         .build();
                 Response response = client.newCall(request).execute();
-                String result = response.body().string();
+                result = response.body().string();
 
 
-                json = new JSONArray(result);
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
-            return json;
+            return result;
         }
 
 
-        protected void onPostExecute(JSONArray jsonArray) {
+        protected void onPostExecute(String json) {
 
-            if (jsonArray != null) {
+            if (json != null) {
 
                 list.remove(list.size() - 1);
+
+                JSONArray jsonArray = new JSONArray(json);
+
 
                 for (int i = 0; i < jsonArray.length(); i++) {
                     try {

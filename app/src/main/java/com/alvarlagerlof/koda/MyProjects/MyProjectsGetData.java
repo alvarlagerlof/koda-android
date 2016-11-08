@@ -102,7 +102,7 @@ class MyProjectsGetData extends AsyncTask<Void, Void, String> {
 
         if (json != null) {
 
-            list.remove(list.size() - 1);
+            list.clear();
 
             JSONObject jsonObject = null;
             JSONArray games = null;
@@ -191,7 +191,7 @@ class MyProjectsGetData extends AsyncTask<Void, Void, String> {
 
         } else {
 
-            list.remove(list.size() - 1);
+            list.clear();
 
             RealmResults<MyProjectsRealmObject> realmObjects = Realm.getDefaultInstance().where(MyProjectsRealmObject.class).findAll();
 
