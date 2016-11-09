@@ -37,7 +37,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     ProgressBar progressBar;
 
 
-    ImageView background;
 
     LinearLayout emailView;
     LinearLayout resultView;
@@ -54,7 +53,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         nextButton = (Button) findViewById(R.id.next_button);
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
-        background = (ImageView) findViewById(R.id.background);
 
         emailView = (LinearLayout) findViewById(R.id.email_view);
         resultView = (LinearLayout) findViewById(R.id.result_view);
@@ -62,9 +60,9 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         resultTextView = (TextView) findViewById(R.id.result_text);
 
 
-        Glide.with(background.getContext())
+        Glide.with(this)
                 .load("https://hd.unsplash.com/photo-1461632830798-3adb3034e4c8")
-                .into(background);
+                .into((ImageView) findViewById(R.id.background));
 
     }
 
@@ -82,6 +80,9 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
         new PasswordAsync().execute();
     }
+
+
+
 
     class PasswordAsync extends AsyncTask<Void, Integer, String> {
 

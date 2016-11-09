@@ -24,5 +24,12 @@
         app:showAsAction="always"
         android:orderInCategory="1"/>
 
+    <item
+        android:id="@+id/colorpicker"
+        android:title="Lägg till färg"
+        android:icon="@drawable/ic_colorpicker"
+        app:showAsAction="always"
+        android:orderInCategory="3"/>
+
 
 </menu>

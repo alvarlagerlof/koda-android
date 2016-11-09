@@ -100,6 +100,7 @@ public class EditorActivity extends AppCompatActivity {
                         // Editor
                         editorRunFragment.clearWebView();
 
+                        toolbar.getMenu().findItem(R.id.colorpicker).setVisible(true);
                         toolbar.getMenu().findItem(R.id.fontminus).setVisible(true);
                         toolbar.getMenu().findItem(R.id.fontplus).setVisible(true);
                         toolbar.getMenu().findItem(R.id.reload).setVisible(false);
@@ -109,6 +110,7 @@ public class EditorActivity extends AppCompatActivity {
                         editorRunFragment.setCode(editorEditFragment.getCode());
                         editorRunFragment.startLoad();
 
+                        toolbar.getMenu().findItem(R.id.colorpicker).setVisible(false);
                         toolbar.getMenu().findItem(R.id.fontminus).setVisible(false);
                         toolbar.getMenu().findItem(R.id.fontplus).setVisible(false);
                         toolbar.getMenu().findItem(R.id.reload).setVisible(true);
@@ -149,6 +151,10 @@ public class EditorActivity extends AppCompatActivity {
 
             case R.id.reload:
                 editorRunFragment.reload();
+                return true;
+
+            case R.id.colorpicker:
+                editorEditFragment.chooseColor(EditorActivity.this, 0xffffffff);
                 return true;
 
             case android.R.id.home:

@@ -19,8 +19,8 @@ public class PrefValues {
 
 
     // API
-    public static final String URL_API_2D = "https://ravla.org/api.php";
-    public static final String URL_API_3D = "https://ravla.org/api.php?dimension=3D";
+    public static final String URL_API_2D = BASE_URL + "libs/api_2d_sv.json";
+    public static final String URL_API_3D = BASE_URL + "libs/api_3d_sv.json";
 
 
     // Archive
@@ -28,10 +28,11 @@ public class PrefValues {
 
 
     // Settings
-    public static final String URL_SETTINGS_SAVE_NICK = BASE_URL + API_VERSION + "labbet";
+    public static final String URL_SETTINGS_SAVE_NICK = BASE_URL + "labbet";
     public static final String PREF_NICK = "nick";
     public static final String PREF_EMAIL = "email";
     public static final String PREF_NOTIFICATIONS = "notifications";
+    public static final String PREF_PASSWORD = "password";
 
 
     // Comments
@@ -46,5 +47,10 @@ public class PrefValues {
     // Other
     public static final String URL_LIKE = BASE_URL + API_VERSION + "plus/";
     public static final String URL_DISSLIKE = BASE_URL + API_VERSION + "plus/";
+
+    // Login
+    public static final String URL_LOGIN = BASE_URL + "login";
+    public static final String URL_LOGIN_FORGOT = BASE_URL + "login";
+    public static final String URL_LOGIN_CREATE = BASE_URL + "login";
 
 }

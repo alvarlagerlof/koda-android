@@ -2,6 +2,6 @@
 <resources>
 
     <dimen name="app_bar_top_padding">25dp</dimen>
-
+    <dimen name="navigation_height">52dp</dimen>
 
 </resources>

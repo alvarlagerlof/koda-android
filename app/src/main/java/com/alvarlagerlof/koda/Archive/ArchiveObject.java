@@ -1,6 +1,6 @@
 package com.alvarlagerlof.koda.Archive;
 
-public class ArchiveObject {
+class ArchiveObject {
     String publicId;
     String title;
     String author;
@@ -11,7 +11,7 @@ public class ArchiveObject {
     String charCount;
     Boolean liked;
 
-    public ArchiveObject(String publicId, String title, String author, String description, String date, String likeCount, String commentCount, String charCount, Boolean liked) {
+    ArchiveObject(String publicId, String title, String author, String description, String date, String likeCount, String commentCount, String charCount, Boolean liked) {
         this.publicId = publicId;
         this.title = title;
         this.author = author;

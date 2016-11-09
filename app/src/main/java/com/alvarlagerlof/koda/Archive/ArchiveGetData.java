@@ -46,6 +46,7 @@ class ArchiveGetData extends AsyncTask<Void, Void, String> {
     @Override
     final protected void onPreExecute() {
 
+        list.add(new ArchiveObject("", "", "", "", "", "", "", "", false));
         list.add(new ArchiveObject("Loading", "", "", "", "", "", "", "", false));
         adapter.notifyDataSetChanged();
 
@@ -88,7 +89,8 @@ class ArchiveGetData extends AsyncTask<Void, Void, String> {
 
         if (json != null) {
 
-            list.remove(list.size() - 1);
+            list.clear();
+            list.add(new ArchiveObject("", "", "", "", "", "", "", "", false));
 
             try {
                 JSONArray jsonArray = new JSONArray(json);

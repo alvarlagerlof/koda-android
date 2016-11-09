@@ -10,13 +10,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
 import com.alvarlagerlof.koda.MainAcitivty;
+import com.alvarlagerlof.koda.PrefValues;
 import com.alvarlagerlof.koda.R;
 import com.bumptech.glide.Glide;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.CookieHandler;
@@ -37,9 +44,9 @@ public class LoginActivity extends AppCompatActivity {
 
     TextInputEditText email;
     TextInputEditText password;
-    TextView signUp;
 
-    ImageView background;
+    TextView errorText;
+
 
 
     @Override
@@ -49,15 +56,12 @@ public class LoginActivity extends AppCompatActivity {
 
         email = (TextInputEditText) findViewById(R.id.email);
         password = (TextInputEditText) findViewById(R.id.password);
-        signUp = (TextView) findViewById(R.id.sign_up);
-        background = (ImageView) findViewById(R.id.background);
 
-        signUp.setText(Html.fromHtml("Har du inget konto? <b>Skapa ett!</b>"));
+        errorText = (TextView) findViewById(R.id.error);
 
-
-        Glide.with(background.getContext())
+        Glide.with(LoginActivity.this)
                 .load("https://hd.unsplash.com/photo-1461749280684-dccba630e2f6")
-                .into(background);
+                .into((ImageView) findViewById(R.id.background));
 
     }
 
@@ -65,8 +69,8 @@ public class LoginActivity extends AppCompatActivity {
     public void login(View view) {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString("email", email.getText().toString());
-        editor.commit();
+        editor.putString("email", email.getText().toString()); //TODO: SECURE THIS
+        editor.apply();
 
         new LoginAsync().execute();
     }
@@ -101,41 +105,69 @@ public class LoginActivity extends AppCompatActivity {
 
         protected String doInBackground(Void...arg0) {
 
-            CookieHandler cookieHandler = new CookieManager(
-                    new PersistentCookieStore(LoginActivity.this), CookiePolicy.ACCEPT_ALL);
+            String result = null;
 
-            OkHttpClient client = new OkHttpClient.Builder()
-                    .cookieJar(new JavaNetCookieJar(cookieHandler))
-                    .build();
+            OkHttpClient client = new OkHttpClient.Builder().build();
 
             RequestBody formBody = new FormBody.Builder()
                     .add("email", emailString)
                     .add("password", passwordString)
+                    .add("headless", "thisIsHeadLess")
                     .build();
 
-
             Request request = new Request.Builder()
-                    .url("https://koda.nu/login")
+                    .url(PrefValues.URL_LOGIN)
                     .post(formBody)
                     .build();
 
             try {
                 Response response = client.newCall(request).execute();
-                Log.d("response", response.toString());
+                result = response.body().string();
+                response.body().close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
 
-            return "";
+            return result;
         }
 
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
-            Intent intent = new Intent(LoginActivity.this, MainAcitivty.class);
-            startActivity(intent);
+            if (s != null) {
+                try {
+                    JSONObject object = new JSONObject(s);
+                    String access = object.getString("access");
+
+                    if (access.equals("granted")) {
+
+                        PreferenceManager.getDefaultSharedPreferences(LoginActivity.this)
+                                .edit()
+                                .putString(PrefValues.PREF_EMAIL, emailString)
+                                .putString(PrefValues.PREF_PASSWORD, passwordString)
+                                .apply();
+
+                        Intent intent = new Intent(LoginActivity.this, MainAcitivty.class);
+                        startActivity(intent);
+                    } else {
+                        errorText.setVisibility(View.VISIBLE);
+
+                        Animation fadeIn = new AlphaAnimation(0, 1);
+                        fadeIn.setInterpolator(new DecelerateInterpolator()); //add this
+                        fadeIn.setDuration(300);
+                        fadeIn.setFillAfter(true);
+
+                        errorText.setAnimation(fadeIn);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
         }
     }
 

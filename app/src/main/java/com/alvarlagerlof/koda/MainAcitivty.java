@@ -68,41 +68,6 @@ public class MainAcitivty extends AppCompatActivity {
         Realm.setDefaultConfiguration(realmConfiguration);
 
 
-
-
-        // create OnAmbilWarnaListener instance
-        // new color can be retrieved in onOk() event
-        /*OnAmbilWarnaListener onAmbilWarnaListener = new OnAmbilWarnaListener() {
-            @Override
-            public void onCancel(AmbilWarnaDialogFragment dialogFragment) {
-                Log.d("TAG", "onCancel()");
-            }
-
-            @Override
-            public void onOk(AmbilWarnaDialogFragment dialogFragment, int color) {
-                Log.d("TAG", "onOk(). Color: " + color);
-            }
-        };
-
-        // create new instance of AmbilWarnaDialogFragment and set OnAmbilWarnaListener listener to it
-        // show dialog fragment with some tag value
-        FragmentTransaction fttest = getSupportFragmentManager().beginTransaction();
-        AmbilWarnaDialogFragment fragment = AmbilWarnaDialogFragment.newInstance(ContextCompat.getColor(this, R.color.colorPrimary));
-        fragment.setOnAmbilWarnaListener(onAmbilWarnaListener);
-
-        fragment.show(fttest, "color_picker_dialog");*/
-
-        // TODO: MAKE IT WORK AND PUT IN IN THE RIGHT PLACE
-
-
-
-
-
-
-
-
-
-
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         appBarLayout = (AppBarLayout) findViewById(R.id.appbarlayout);
         fragment_container = (LinearLayout) findViewById(R.id.fragment_container);
