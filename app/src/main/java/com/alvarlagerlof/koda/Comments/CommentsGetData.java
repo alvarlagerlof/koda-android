@@ -1,4 +1,4 @@
-package com.alvarlagerlof.koda.Archive;
+package com.alvarlagerlof.koda.Comments;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 
 import com.alvarlagerlof.koda.ConnectionUtils;
 import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
-import com.alvarlagerlof.koda.FastBase64;
 import com.alvarlagerlof.koda.PrefValues;
 import com.alvarlagerlof.koda.R;
 
@@ -18,7 +17,6 @@ import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.util.ArrayList;
-import java.util.Random;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -29,24 +27,26 @@ import okhttp3.internal.JavaNetCookieJar;
  * Created by alvar on 2016-11-08.
  */
 
-class ArchiveGetData extends AsyncTask<Void, Void, String> {
+class CommentsGetData extends AsyncTask<Void, Void, String> {
 
     private Context context;
-    private ArrayList<ArchiveObject> list;
+    private ArrayList<CommentsObject> list;
     private RecyclerView.Adapter adapter;
 
-    ArchiveGetData(Context context, ArrayList<ArchiveObject> list, RecyclerView.Adapter adapter) {
+    CommentsGetData(Context context, ArrayList<CommentsObject> list, RecyclerView.Adapter adapter) {
         this.context = context;
         this.list = list;
         this.adapter = adapter;
     }
 
 
+
+
     // Code here
     @Override
     final protected void onPreExecute() {
 
-        list.add(new ArchiveObject("Loading", "", "", "", "", "", "", "", false));
+        list.add(new CommentsObject("Loading", "", ""));
         adapter.notifyDataSetChanged();
 
     }
@@ -64,7 +64,7 @@ class ArchiveGetData extends AsyncTask<Void, Void, String> {
                         .build();
 
                 Request request = new Request.Builder()
-                        .url(PrefValues.URL_ARCHIVE)
+                        .url(PrefValues.URL_COMMENTS)
                         .build();
 
                 Response response = client.newCall(request).execute();
@@ -88,40 +88,37 @@ class ArchiveGetData extends AsyncTask<Void, Void, String> {
 
         if (json != null) {
 
-            list.remove(list.size() - 1);
+            list.clear();
 
             try {
+
                 JSONArray jsonArray = new JSONArray(json);
+
                 for (int i = 0; i < jsonArray.length(); i++) {
                     try {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-                        String title        = FastBase64.decode(jsonObject.getString("title"));
-                        String author       = FastBase64.decode(jsonObject.getString("author"));
-                        String description  = FastBase64.decode(jsonObject.getString("description"));
-                        String updated      = jsonObject.getString("updated");
-                        String publicID     = jsonObject.getString("publicID");
-                        String likesCount   = jsonObject.getString("likes");
-                        String commentCount = String.valueOf(new Random().nextInt(100) + 1);
-                        String charCount    = String.valueOf(new Random().nextInt(400) + 1);
-                        Boolean liked       = jsonObject.getBoolean("liked");
+                        String by      = jsonObject.getString("author");
+                        String date    = jsonObject.getString("date");
+                        String comment = jsonObject.getString("comment");
 
-                        if (title.equals("")) title = context.getString(R.string.unnamed);
-                        if (author.equals("")) author = context.getString(R.string.anonymous);
-                        if (description.equals("")) description = context.getString(R.string.no_description);
 
-                        list.add(new ArchiveObject(publicID, title, author, description, updated, likesCount, commentCount, charCount, liked));
+                        if (jsonObject.isNull("author")) {
+                            by = context.getString(R.string.anonymous);
+                        } else if (by.equals("")) {
+                            by = context.getString(R.string.anonymous);
+                        }
 
+                        list.add(new CommentsObject(by, date, comment));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
 
+                adapter.notifyDataSetChanged();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
-            adapter.notifyDataSetChanged();
 
         }
         

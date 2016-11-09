@@ -113,13 +113,7 @@ public class EditorActivity extends AppCompatActivity {
                         toolbar.getMenu().findItem(R.id.fontplus).setVisible(false);
                         toolbar.getMenu().findItem(R.id.reload).setVisible(true);
 
-                        EditorSave saveTask = new EditorSave();
-                        saveTask.setListener(EditorActivity.this, private_id, editorEditFragment.getCode(), new EditorSave.EditorSaveListener() {
-                            @Override
-                            public void onPreExecuteConcluded() {}
-                            @Override
-                            public void onPostExecuteConcluded() {}
-                        });
+                        EditorSave saveTask = new EditorSave(EditorActivity.this, private_id, editorEditFragment.getCode());
                         saveTask.execute();
                 }
             }

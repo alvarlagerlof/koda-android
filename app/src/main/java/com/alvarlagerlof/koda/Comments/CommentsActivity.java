@@ -1,6 +1,5 @@
 package com.alvarlagerlof.koda.Comments;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,18 +8,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.alvarlagerlof.koda.DividerItemDecoration;
-import com.alvarlagerlof.koda.PrefValues;
 import com.alvarlagerlof.koda.R;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 /**
  * Created by alvar on 2016-08-15.
@@ -28,8 +18,8 @@ import okhttp3.Response;
 
 public class CommentsActivity extends AppCompatActivity {
 
-    CommentsAdapter commentsAdapter;
     ArrayList<CommentsObject> list = new ArrayList<>();
+    CommentsAdapter adapter = new CommentsAdapter(list);
 
 
     @Override
@@ -37,90 +27,26 @@ public class CommentsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comments);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
-        // Init stuff
+        // Init toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_close);
         getSupportActionBar().setTitle("Kommentarer på " + getIntent().getStringExtra("title"));
 
 
-        list.add(new CommentsObject("", "", ""));
-        commentsAdapter = new CommentsAdapter(list);
-
+        // Init RecylerView
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setScrollContainer(false);
         recyclerView.addItemDecoration(new DividerItemDecoration(this));
-        recyclerView.setAdapter(commentsAdapter);
-
-        getData getData = new getData();
-        getData.execute();
-
-    }
+        recyclerView.setAdapter(adapter);
 
 
-    class getData extends AsyncTask<String, Void, JSONArray> {
+        // Get data
+        CommentsGetData dataTask = new CommentsGetData(this, list, adapter);
+        dataTask.execute();
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            list.add(new CommentsObject("Loading", "", ""));
-            commentsAdapter.notifyDataSetChanged();
-        }
-
-        @Override
-        protected JSONArray doInBackground(String... strings) {
-            JSONArray json = null;
-            try {
-
-                OkHttpClient client = new OkHttpClient();
-                Request request = new Request.Builder()
-                        .url(PrefValues.URL_COMMENTS)
-                        .build();
-                Response response = client.newCall(request).execute();
-                String result = response.body().string();
-
-
-                json = new JSONArray(result);
-
-            } catch (Exception e) {}
-
-            return json;
-        }
-
-
-        protected void onPostExecute(JSONArray jsonArray) {
-
-            if (jsonArray != null) {
-
-                list.remove(list.size() - 1);
-
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    try {
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-                        String by      = jsonObject.getString("author");
-                        String date    = jsonObject.getString("date");
-                        String comment = jsonObject.getString("comment");
-
-
-                        if (jsonObject.isNull("author")) {
-                            by = getString(R.string.anonymous);
-                        } else if (by.equals("")) {
-                            by = getString(R.string.anonymous);
-                        }
-
-                        list.add(new CommentsObject(by, date, comment));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                commentsAdapter.notifyDataSetChanged();
-
-            }
-        }
     }
 
 

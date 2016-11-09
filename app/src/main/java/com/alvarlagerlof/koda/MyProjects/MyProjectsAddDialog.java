@@ -34,18 +34,7 @@ public class MyProjectsAddDialog {
             public void onClick(DialogInterface dialog, int which) {
                 String title = String.valueOf(input.getText());
 
-                MyProjectsAdd createTask = new MyProjectsAdd();
-                createTask.setListener(
-                        context,
-                        (title == null || title.equals("")) ? "Namnlös" : title,
-                        list,
-                        adapter,
-                        new MyProjectsAdd.MyProjectsCreateListener() {
-                            @Override
-                            public void onPreExecuteConcluded() {}
-                            @Override
-                            public void onPostExecuteConcluded() {}
-                        });
+                MyProjectsAdd createTask = new MyProjectsAdd(context, (title == null || title.equals("")) ? "Namnlös" : title, list, adapter);
                 createTask.execute();
 
             }

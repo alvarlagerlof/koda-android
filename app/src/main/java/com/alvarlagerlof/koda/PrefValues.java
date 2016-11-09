@@ -35,12 +35,12 @@ public class PrefValues {
 
 
     // Comments
-    public static final String URL_COMMENTS = BASE_URL + API_VERSION + "";                 // TODO: NOT DONE YET
+    public static final String URL_COMMENTS = "https://ravla.org/comments.php";            // TODO: NOT DONE YET
     public static final String URL_COMMENTS_ADD = BASE_URL + API_VERSION + "kommentera/";  // TODO: ADD THIS IN THE CODE
 
 
     // Profile
-    public static final String URL_PROFILE = BASE_URL + API_VERSION + "profile/";  // TODO: NOT DONE YET
+    public static final String URL_PROFILE = "https://ravla.org/profile.txt";  // TODO: NOT DONE YET
 
 
 }

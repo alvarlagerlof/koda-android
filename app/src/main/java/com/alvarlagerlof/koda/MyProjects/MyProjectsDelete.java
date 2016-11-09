@@ -22,21 +22,15 @@ import okhttp3.internal.JavaNetCookieJar;
  */
 
 class MyProjectsDelete extends AsyncTask<Void, Void, Void> {
-    interface MyProjectsDeleteListener {
-        void onPreExecuteConcluded();
-        void onPostExecuteConcluded();
-    }
 
     private Context context;
     private String privateID;
     private int position;
-    private MyProjectsDeleteListener listener;
 
-    final void setListener(Context context, String privateID, int position, MyProjectsDeleteListener listener) {
+    MyProjectsDelete(Context context, String privateID, int position) {
         this.context = context;
         this.privateID = privateID;
         this.position = position;
-        this.listener = listener;
     }
 
 
@@ -48,7 +42,6 @@ class MyProjectsDelete extends AsyncTask<Void, Void, Void> {
     final protected void onPreExecute() {
         MainAcitivty.fragmentMyProjects.removeItemAt(position);
 
-        if (listener != null) listener.onPreExecuteConcluded();
     }
 
     @Override
@@ -81,6 +74,5 @@ class MyProjectsDelete extends AsyncTask<Void, Void, Void> {
 
     @Override
     final protected void onPostExecute(Void aVoid) {
-        if (listener != null) listener.onPostExecuteConcluded();
     }
 }

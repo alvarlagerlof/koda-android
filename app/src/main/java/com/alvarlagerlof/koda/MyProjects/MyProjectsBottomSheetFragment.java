@@ -163,13 +163,7 @@ public class MyProjectsBottomSheetFragment extends BottomSheetDialogFragment {
                 alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "TA BORT", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        MyProjectsDelete deleteTask = new MyProjectsDelete();
-                        deleteTask.setListener(getContext(), private_id, position, new MyProjectsDelete.MyProjectsDeleteListener() {
-                                    @Override
-                                    public void onPreExecuteConcluded() {}
-                                    @Override
-                                    public void onPostExecuteConcluded() {}
-                                });
+                        MyProjectsDelete deleteTask = new MyProjectsDelete(getContext(), private_id, position);
                         deleteTask.execute();
                         dismiss();
                     }

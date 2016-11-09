@@ -35,13 +35,7 @@ public class FragmentMyProjects extends Fragment {
 
 
         // Get data
-        MyProjectsGetData dataTask = new MyProjectsGetData();
-        dataTask.setListener(getContext(), projectsList, adapter, new MyProjectsGetData.Listener() {
-                    @Override
-                    public void onPreExecuteConcluded() {}
-                    @Override
-                    public void onPostExecuteConcluded(String json) {}
-                });
+        MyProjectsGetData dataTask = new MyProjectsGetData(getContext(), projectsList, adapter);
         dataTask.execute();
 
 

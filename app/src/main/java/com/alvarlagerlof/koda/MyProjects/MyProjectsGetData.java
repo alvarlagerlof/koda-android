@@ -34,21 +34,15 @@ import okhttp3.internal.JavaNetCookieJar;
  */
 
 class MyProjectsGetData extends AsyncTask<Void, Void, String> {
-    interface Listener {
-        void onPreExecuteConcluded();
-        void onPostExecuteConcluded(String json);
-    }
 
     private Context context;
     private ArrayList<MyProjectsObject> list;
     private RecyclerView.Adapter adapter;
-    private Listener listener;
 
-    final void setListener(Context context, ArrayList<MyProjectsObject> list, RecyclerView.Adapter adapter, Listener listener) {
+    MyProjectsGetData(Context context, ArrayList<MyProjectsObject> list, RecyclerView.Adapter adapter) {
         this.context = context;
         this.list = list;
         this.adapter = adapter;
-        this.listener = listener;
     }
 
 
@@ -62,7 +56,6 @@ class MyProjectsGetData extends AsyncTask<Void, Void, String> {
         list.add(new MyProjectsObject("Loading", "", "",  "", "", false, "", "", "", ""));
         adapter.notifyDataSetChanged();
 
-        if (listener != null) listener.onPreExecuteConcluded();
     }
 
     @Override
@@ -218,6 +211,5 @@ class MyProjectsGetData extends AsyncTask<Void, Void, String> {
 
         }
         
-        if (listener != null) listener.onPostExecuteConcluded("");
     }
 }

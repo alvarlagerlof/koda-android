@@ -31,10 +31,9 @@ import java.util.ArrayList;
 
 public class ProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    // Init objects
     private FragmentManager fragmentManager;
-
     private ArrayList<ProfileObject> dataset;
-
     private Context context;
 
     private static final int TYPE_HEADER      = 0;
@@ -42,18 +41,20 @@ public class ProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private static final int TYPE_ITEM        = 2;
 
 
-    public ProfileAdapter(ArrayList<ProfileObject> dataset, FragmentManager fragmentManager, Context context) {
+    // Get data
+    ProfileAdapter(ArrayList<ProfileObject> dataset, FragmentManager fragmentManager, Context context) {
         this.dataset = dataset;
         this.fragmentManager = fragmentManager;
         this.context = context;
     }
 
 
-    public static class ViewHolderHeader extends RecyclerView.ViewHolder  {
-        public final TextView author;
-        public final TextView numberOfProjects;
+    // Viewholders
+    private static class ViewHolderHeader extends RecyclerView.ViewHolder  {
+        TextView author;
+        TextView numberOfProjects;
 
-        public ViewHolderHeader(View itemView){
+        ViewHolderHeader(View itemView){
             super(itemView);
             author = (TextView) itemView.findViewById(R.id.author);
             numberOfProjects = (TextView) itemView.findViewById(R.id.numberOfProjects);
@@ -61,31 +62,31 @@ public class ProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
-    public static class ViewHolderLoading extends RecyclerView.ViewHolder  {
-        public ViewHolderLoading(View itemView){
+    private static class ViewHolderLoading extends RecyclerView.ViewHolder  {
+        ViewHolderLoading(View itemView){
             super(itemView);
         }
     }
 
-    public static class ViewHolderItem extends RecyclerView.ViewHolder {
-        public final TextView title;
-        public final TextView by;
-        public final TextView description;
-        public final TextView likesNum;
-        public final TextView commentsNum;
-        public final TextView charCount;
-        public final ImageView heartImage;
+    private static class ViewHolderItem extends RecyclerView.ViewHolder {
+        TextView title;
+        TextView by;
+        TextView description;
+        TextView likesNum;
+        TextView commentsNum;
+        TextView charCount;
+        ImageView heartImage;
 
-        public final LinearLayout likes;
-        public final LinearLayout comment;
-        public final LinearLayout more;
+        LinearLayout likes;
+        LinearLayout comment;
+        LinearLayout more;
 
-        public final LinearLayout expandCollapse;
-        public final LinearLayout expandablePanel;
-        public final ImageView expandCollapseImage;
+        LinearLayout expandCollapse;
+        LinearLayout expandablePanel;
+        ImageView expandCollapseImage;
 
 
-        public ViewHolderItem(View itemView) {
+        ViewHolderItem(View itemView) {
             super(itemView);
             title        = (TextView) itemView.findViewById(R.id.title);
             by           = (TextView) itemView.findViewById(R.id.by);

@@ -25,21 +25,15 @@ import okhttp3.internal.JavaNetCookieJar;
  */
 
 class EditorSave extends AsyncTask<Void, Void, Void> {
-    interface EditorSaveListener {
-        void onPreExecuteConcluded();
-        void onPostExecuteConcluded();
-    }
 
     private Context context;
-    private EditorSaveListener listener;
     private String privateID;
     private String code;
 
-    final void setListener(Context context, String privateID, String code, EditorSaveListener listener) {
+    EditorSave(Context context, String privateID, String code) {
         this.context = context;
         this.privateID = privateID;
         this.code = code;
-        this.listener = listener;
     }
 
 
@@ -50,7 +44,6 @@ class EditorSave extends AsyncTask<Void, Void, Void> {
     @Override
     final protected void onPreExecute() {
 
-        if (listener != null) listener.onPreExecuteConcluded();
     }
 
     @Override
@@ -97,6 +90,5 @@ class EditorSave extends AsyncTask<Void, Void, Void> {
         object.setCode(code);
         realm.commitTransaction();
 
-        if (listener != null) listener.onPostExecuteConcluded();
     }
 }

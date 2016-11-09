@@ -29,23 +29,17 @@ import okhttp3.internal.JavaNetCookieJar;
  */
 
 class MyProjectsAdd extends AsyncTask<Void, Void, Void> {
-    interface MyProjectsCreateListener {
-        void onPreExecuteConcluded();
-        void onPostExecuteConcluded();
-    }
 
     private Context context;
     private String title;
     private ArrayList<MyProjectsObject> list;
     private RecyclerView.Adapter adapter;
-    private MyProjectsCreateListener listener;
 
-    final void setListener(Context context, String title, ArrayList<MyProjectsObject> list, RecyclerView.Adapter adapter, MyProjectsCreateListener listener) {
+    MyProjectsAdd(Context context, String title, ArrayList<MyProjectsObject> list, RecyclerView.Adapter adapter) {
         this.context = context;
         this.title = title;
         this.list = list;
         this.adapter = adapter;
-        this.listener = listener;
     }
 
 
@@ -110,7 +104,6 @@ class MyProjectsAdd extends AsyncTask<Void, Void, Void> {
                 "</script>");
         context.startActivity(intent);
 
-        if (listener != null) listener.onPreExecuteConcluded();
     }
 
     @Override
@@ -149,7 +142,5 @@ class MyProjectsAdd extends AsyncTask<Void, Void, Void> {
     @Override
     final protected void onPostExecute(Void aVoid) {
 
-
-        if (listener != null) listener.onPostExecuteConcluded();
     }
 }
