@@ -16,10 +16,9 @@ import java.util.ArrayList;
  * Created by alvar on 2016-11-08.
  */
 
-public class MyProjectsAddDialog {
+class MyProjectsAddDialog {
 
-    public void showDialog(final Context context, final ArrayList<MyProjectsObject> list, final RecyclerView.Adapter adapter) {
-
+    MyProjectsAddDialog(final Context context, final ArrayList<MyProjectsObject> list, final RecyclerView.Adapter adapter) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Vad ska den heta?");
 
@@ -47,7 +46,6 @@ public class MyProjectsAddDialog {
         });
 
         builder.show();
-
     }
 
 }

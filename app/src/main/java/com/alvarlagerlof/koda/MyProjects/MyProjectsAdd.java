@@ -6,7 +6,7 @@ import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
-import com.alvarlagerlof.koda.ConnectionUtils;
+import com.alvarlagerlof.koda.Utils.ConnectionUtils;
 import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
 import com.alvarlagerlof.koda.Editor.EditorActivity;
 import com.alvarlagerlof.koda.PrefValues;

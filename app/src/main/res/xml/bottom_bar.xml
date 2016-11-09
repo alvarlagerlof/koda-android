@@ -2,31 +2,31 @@
 <tabs>
     <tab
         id="@+id/tab_projects"
-        icon="@drawable/ic_my_creations"
+        icon="@drawable/ic_tab_my_projects"
         title="Mina projekt"
         barColorWhenSelected="@color/colorPrimary" />
 
     <tab
         id="@+id/tab_api"
-        icon="@drawable/ic_code"
+        icon="@drawable/ic_tab_api"
         title="API"
         barColorWhenSelected="@color/colorPrimary" />
 
     <tab
         id="@+id/tab_guides"
-        icon="@drawable/ic_youtube"
+        icon="@drawable/ic_tab_guides"
         title="Guider"
         barColorWhenSelected="@color/colorPrimary" />
 
     <tab
         id="@+id/tab_archive"
-        icon="@drawable/ic_archive"
+        icon="@drawable/ic_tab_archive"
         title="Arkivet"
         barColorWhenSelected="@color/colorPrimary" />
 
     <tab
         id="@+id/tab_settings"
-        icon="@drawable/ic_settings"
+        icon="@drawable/ic_tab_settings"
         title="Inställningar"
         barColorWhenSelected="@color/colorPrimary" />
 

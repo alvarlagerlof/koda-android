@@ -4,9 +4,9 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 
-import com.alvarlagerlof.koda.ConnectionUtils;
+import com.alvarlagerlof.koda.Utils.ConnectionUtils;
 import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
-import com.alvarlagerlof.koda.FastBase64;
+import com.alvarlagerlof.koda.Utils.Base64Utils;
 import com.alvarlagerlof.koda.PrefValues;
 import com.alvarlagerlof.koda.R;
 
@@ -96,9 +96,9 @@ class ArchiveGetData extends AsyncTask<Void, Void, String> {
                     try {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-                        String title        = FastBase64.decode(jsonObject.getString("title"));
-                        String author       = FastBase64.decode(jsonObject.getString("author"));
-                        String description  = FastBase64.decode(jsonObject.getString("description"));
+                        String title        = Base64Utils.decode(jsonObject.getString("title"));
+                        String author       = Base64Utils.decode(jsonObject.getString("author"));
+                        String description  = Base64Utils.decode(jsonObject.getString("description"));
                         String updated      = jsonObject.getString("updated");
                         String publicID     = jsonObject.getString("publicID");
                         String likesCount   = jsonObject.getString("likes");

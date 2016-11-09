@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 
-import com.alvarlagerlof.koda.ConnectionUtils;
+import com.alvarlagerlof.koda.Utils.ConnectionUtils;
 import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
 import com.alvarlagerlof.koda.PrefValues;
 import com.alvarlagerlof.koda.R;
@@ -81,7 +81,6 @@ class CommentsGetData extends AsyncTask<Void, Void, String> {
 
         return null;
     }
-
 
     @Override
     final protected void onPostExecute(String json) {

@@ -18,7 +18,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import com.alvarlagerlof.koda.Animations;
+import com.alvarlagerlof.koda.Utils.AnimationUtils;
 import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
 import com.alvarlagerlof.koda.PrefValues;
 import com.alvarlagerlof.koda.R;
@@ -207,8 +207,8 @@ public class MyProjectsEditBottomSheetFragment extends BottomSheetDialogFragment
             titleInput.clearFocus();
             descriptionInput.clearFocus();
 
-            //Animations.fadeOut(content);
-            Animations.fadeIn(processing);
+            //AnimationUtils.fadeOut(content);
+            AnimationUtils.fadeIn(processing);
 
         }
 
@@ -262,8 +262,8 @@ public class MyProjectsEditBottomSheetFragment extends BottomSheetDialogFragment
             object.setIsPublic(publicCheckbox.isChecked());
             realm.commitTransaction();
 
-            //Animations.fadeOut(processing);
-            Animations.fadeIn(saved);
+            //AnimationUtils.fadeOut(processing);
+            AnimationUtils.fadeIn(saved);
 
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {

@@ -5,23 +5,23 @@
 
         <item
             android:id="@+id/action_my_creations"
-            android:icon="@drawable/ic_my_creations"
+            android:icon="@drawable/ic_tab_my_projects"
             android:title="Dina projekt"
             android:checked="true"/>
 
         <item
             android:id="@+id/action_api"
-            android:icon="@drawable/ic_code"
+            android:icon="@drawable/ic_tab_api"
             android:title="API"/>
 
         <item
             android:id="@+id/action_guides"
-            android:icon="@drawable/ic_youtube"
+            android:icon="@drawable/ic_tab_guides"
             android:title="Guider" />
 
         <item
             android:id="@+id/action_archive"
-            android:icon="@drawable/ic_archive"
+            android:icon="@drawable/ic_tab_archive"
             android:title="Arkivet" />
 
 

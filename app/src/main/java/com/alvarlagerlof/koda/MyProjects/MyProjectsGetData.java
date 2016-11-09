@@ -6,10 +6,10 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.alvarlagerlof.koda.ConnectionUtils;
+import com.alvarlagerlof.koda.Utils.ConnectionUtils;
 import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
-import com.alvarlagerlof.koda.FastBase64;
-import com.alvarlagerlof.koda.NiceDate;
+import com.alvarlagerlof.koda.Utils.Base64Utils;
+import com.alvarlagerlof.koda.Utils.DateConversionUtils;
 import com.alvarlagerlof.koda.PrefValues;
 import com.alvarlagerlof.koda.R;
 
@@ -105,7 +105,7 @@ class MyProjectsGetData extends AsyncTask<Void, Void, String> {
                 jsonObject = new JSONObject(json);
 
                 games = jsonObject.getJSONArray("games");
-                nick = FastBase64.decode(jsonObject.getJSONObject("user").getString("nick"));
+                nick = Base64Utils.decode(jsonObject.getJSONObject("user").getString("nick"));
 
                 SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
                 SharedPreferences.Editor editor = sharedPref.edit();
@@ -132,22 +132,22 @@ class MyProjectsGetData extends AsyncTask<Void, Void, String> {
                         final String privateID       = gameJsonObject.getString("privateID");
                         final String publicID        = gameJsonObject.getString("publicID");
 
-                        String title                 = FastBase64.decode(gameJsonObject.getString("title"));
+                        String title                 = Base64Utils.decode(gameJsonObject.getString("title"));
                         String updated                = gameJsonObject.getString("updated");
-                        final String description     = FastBase64.decode(gameJsonObject.getString("description"));
+                        final String description     = Base64Utils.decode(gameJsonObject.getString("description"));
                         final boolean isPublic       = gameJsonObject.getString("public").equals("CHECKED");
 
                         final String likeCount       = gameJsonObject.getString("likes");
                         final String commentCount    = "0"; //jsonObject.getString("comment_count");
                         final String charCount       = gameJsonObject.getString("charcount");
-                        final String code            = FastBase64.decode(gameJsonObject.getString("code"));
+                        final String code            = Base64Utils.decode(gameJsonObject.getString("code"));
 
 
                         if (title.equals("")) {
                             title = context.getString(R.string.unnamed);
                         }
 
-                        updated = NiceDate.convert(updated) + " | " + likeCount + " likes";
+                        updated = DateConversionUtils.convert(updated) + " | " + likeCount + " likes";
 
 
 

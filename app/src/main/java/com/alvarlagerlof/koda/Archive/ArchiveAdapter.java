@@ -16,11 +16,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.alvarlagerlof.koda.Animations;
+import com.alvarlagerlof.koda.Utils.AnimationUtils;
 import com.alvarlagerlof.koda.Comments.CommentsActivity;
 import com.alvarlagerlof.koda.LikeDissLike;
-import com.alvarlagerlof.koda.NiceDate;
+import com.alvarlagerlof.koda.Utils.DateConversionUtils;
 import com.alvarlagerlof.koda.PlayActivity;
+import com.alvarlagerlof.koda.PrefValues;
 import com.alvarlagerlof.koda.R;
 
 import java.util.ArrayList;
@@ -138,7 +139,7 @@ class ArchiveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((ViewHolderItem) holder).description.setText(dataset.get(position).description);
             ((ViewHolderItem) holder).likesNum.setText(dataset.get(position).likeCount);
             ((ViewHolderItem) holder).commentsNum.setText(dataset.get(position).commentCount);
-            ((ViewHolderItem) holder).metaText.setText(dataset.get(position).charCount + " tecken | Uppdaterad " + NiceDate.convert(dataset.get(position).date));
+            ((ViewHolderItem) holder).metaText.setText(dataset.get(position).charCount + " tecken | Uppdaterad " + DateConversionUtils.convert(dataset.get(position).date));
 
             if (dataset.get(position).liked) {
                 ((ViewHolderItem) holder).heartImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_heart));
@@ -161,10 +162,10 @@ class ArchiveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 public void onClick(View v) {
                     if (((ViewHolderItem) holder).expandablePanel.getVisibility() == View.GONE) {
                         ((ViewHolderItem) holder).expandCollapseImage.setImageDrawable(ContextCompat.getDrawable(((ViewHolderItem) holder).expandablePanel.getContext(), R.drawable.ic_collapse));
-                        Animations.expand(((ViewHolderItem) holder).expandablePanel);
+                        AnimationUtils.expand(((ViewHolderItem) holder).expandablePanel);
                     } else {
                         ((ViewHolderItem) holder).expandCollapseImage.setImageDrawable(ContextCompat.getDrawable(((ViewHolderItem) holder).expandablePanel.getContext(), R.drawable.ic_expand));
-                        Animations.collapse(((ViewHolderItem) holder).expandablePanel);
+                        AnimationUtils.collapse(((ViewHolderItem) holder).expandablePanel);
                     }
                 }
             });
@@ -175,27 +176,18 @@ class ArchiveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 public void onClick(View v) {
 
                     if (dataset.get(position).liked) {
-                        int likes = Integer.parseInt(String.valueOf(((ViewHolderItem) holder).likesNum.getText()));
-                        likes -= 1;
-                        ((ViewHolderItem) holder).likesNum.setText(String.valueOf(likes));
 
+                        ((ViewHolderItem) holder).likesNum.setText(String.valueOf(Integer.parseInt(String.valueOf(Integer.parseInt(String.valueOf(((ViewHolderItem) holder).likesNum.getText())) - 1))));
                         ((ViewHolderItem) holder).heartImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_heart_outline));
-
                         dataset.get(position).liked = false;
-
-                        LikeDissLike.dislike(context, dataset.get(position).publicId);
-
+                        new LikeDissLike(context, PrefValues.URL_DISSLIKE, dataset.get(position).publicId);
 
                     } else {
-                        int likes = Integer.parseInt(String.valueOf(((ViewHolderItem) holder).likesNum.getText()));
-                        likes += 1;
-                        ((ViewHolderItem) holder).likesNum.setText(String.valueOf(likes));
 
+                        ((ViewHolderItem) holder).likesNum.setText(String.valueOf(Integer.parseInt(String.valueOf(((ViewHolderItem) holder).likesNum.getText()) + 1)));
                         ((ViewHolderItem) holder).heartImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_heart));
                         dataset.get(position).liked = true;
-
-
-                        LikeDissLike.like(context, dataset.get(position).publicId);
+                        new LikeDissLike(context, PrefValues.URL_LIKE, dataset.get(position).publicId);
 
                     }
 

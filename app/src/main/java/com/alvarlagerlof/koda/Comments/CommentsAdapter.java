@@ -19,41 +19,40 @@ import java.util.ArrayList;
  */
 
 
-public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private ArrayList<CommentsObject> mDataset;
-
     private static final int TYPE_HEADER      = 0;
     private static final int TYPE_LOADING     = 1;
     private static final int TYPE_ITEM        = 2;
 
 
-    public CommentsAdapter(ArrayList<CommentsObject> dataset) {
+    CommentsAdapter(ArrayList<CommentsObject> dataset) {
         mDataset = dataset;
     }
 
 
-    public static class ViewHolderHeader extends RecyclerView.ViewHolder  {
-        public final TextView text1;
+    private static class ViewHolderHeader extends RecyclerView.ViewHolder  {
+        TextView text1;
 
-        public ViewHolderHeader(View itemView){
+        ViewHolderHeader(View itemView){
             super(itemView);
             text1 = (TextView) itemView.findViewById(R.id.text1);
         }
     }
 
-    public static class ViewHolderLoading extends RecyclerView.ViewHolder  {
-        public ViewHolderLoading(View itemView){
+    private static class ViewHolderLoading extends RecyclerView.ViewHolder  {
+        ViewHolderLoading(View itemView){
             super(itemView);
         }
     }
 
-    public static class ViewHolderItem extends RecyclerView.ViewHolder {
-        public final TextView by;
-        public final TextView date;
-        public final TextView comment;
+    private static class ViewHolderItem extends RecyclerView.ViewHolder {
+        TextView by;
+        TextView date;
+        TextView comment;
 
-        public ViewHolderItem(View itemView) {
+        ViewHolderItem(View itemView) {
             super(itemView);
             by      = (TextView) itemView.findViewById(R.id.by);
             date = (TextView) itemView.findViewById(R.id.date);

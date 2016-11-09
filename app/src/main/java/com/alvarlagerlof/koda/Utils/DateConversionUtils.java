@@ -1,4 +1,4 @@
-package com.alvarlagerlof.koda;
+package com.alvarlagerlof.koda.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -7,7 +7,7 @@ import java.util.Date;
  * Created by alvar on 2016-10-15.
  */
 
-public class NiceDate {
+public class DateConversionUtils {
 
     public static String convert(String timestamp) {
 

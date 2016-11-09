@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TextInputEditText;
@@ -13,7 +12,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,17 +26,6 @@ import com.alvarlagerlof.koda.Login.LoginActivity;
 import com.alvarlagerlof.koda.PrefValues;
 import com.alvarlagerlof.koda.R;
 import com.bumptech.glide.Glide;
-
-import java.io.IOException;
-import java.net.CookieHandler;
-import java.net.CookieManager;
-import java.net.CookiePolicy;
-
-import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.internal.JavaNetCookieJar;
 
 
 /**
@@ -87,8 +74,8 @@ public class SettingsFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                updateNickName updateNickName = new updateNickName();
-                updateNickName.execute(String.valueOf(nickName.getText()));
+                SettingsUpdateNick nickTask = new SettingsUpdateNick(getContext(), String.valueOf(nickName.getText()));
+                nickTask.execute();
             }
 
         });
@@ -178,39 +165,7 @@ public class SettingsFragment extends Fragment {
     }
 
 
-    class updateNickName extends AsyncTask<String, Void, Void> {
 
-        @Override
-        protected Void doInBackground(String... params) {
-
-            CookieHandler cookieHandler = new CookieManager(
-                    new PersistentCookieStore(getContext()), CookiePolicy.ACCEPT_ALL);
-
-            OkHttpClient client = new OkHttpClient.Builder()
-                    .cookieJar(new JavaNetCookieJar(cookieHandler))
-                    .build();
-
-            FormBody data = new FormBody.Builder()
-                    .add(PrefValues.PREF_NICK, params[0])
-                    .build();
-
-            Request request = new Request.Builder()
-                    .url(PrefValues.URL_SETTINGS_SAVE_NICK)
-                    .post(data)
-                    .build();
-
-
-            try {
-                Response response = client.newCall(request).execute();
-                Log.d("response", response.toString());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-    }
 
 
 }

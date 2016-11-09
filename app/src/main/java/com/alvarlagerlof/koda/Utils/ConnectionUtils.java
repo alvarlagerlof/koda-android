@@ -1,4 +1,4 @@
-package com.alvarlagerlof.koda;
+package com.alvarlagerlof.koda.Utils;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

@@ -44,7 +44,7 @@ public class FragmentMyProjects extends Fragment {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new MyProjectsAddDialog().showDialog(getContext(), projectsList, adapter);
+                new MyProjectsAddDialog(getContext(), projectsList, adapter);
             }
         });
 

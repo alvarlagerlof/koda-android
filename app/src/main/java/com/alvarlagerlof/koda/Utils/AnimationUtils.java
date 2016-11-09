@@ -1,4 +1,4 @@
-package com.alvarlagerlof.koda;
+package com.alvarlagerlof.koda.Utils;
 
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 /**
  * Created by alvar on 2016-09-04.
  */
-public class Animations {
+public class AnimationUtils {
 
     public static void fadeIn(final View view) {
 

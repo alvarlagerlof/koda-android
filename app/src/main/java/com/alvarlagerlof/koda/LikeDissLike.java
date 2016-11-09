@@ -2,7 +2,6 @@ package com.alvarlagerlof.koda;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
 
@@ -20,62 +19,38 @@ import okhttp3.internal.JavaNetCookieJar;
  * Created by alvar on 2016-10-15.
  */
 
-public class LikeDissLike {
+public class LikeDissLike extends AsyncTask<Void, Void, String> {
 
-    private static class MyTaskParams {
-        Context context;
-        String url;
+    private Context context;
+    private String url;
 
-        MyTaskParams(Context context, String url) {
-            this.context = context;
-            this.url = url;
-        }
-    }
-
-    public static void like(Context context, String publicID) {
-        MyTaskParams params = new MyTaskParams(context, "https://koda.nu/plus/" + publicID);
-
-        runLikeDissLike runLikeDissLike = new runLikeDissLike();
-        runLikeDissLike.execute(params);
-    }
-
-    public static void dislike(Context context, String publicID) {
-        MyTaskParams params = new MyTaskParams(context, "https://koda.nu/minus/" + publicID);
-
-        runLikeDissLike runLikeDissLike = new runLikeDissLike();
-        runLikeDissLike.execute(params);
+    public LikeDissLike(Context context, String url, String publicID) {
+        this.context = context;
+        this.url = url + publicID;
     }
 
 
+    @Override
+    protected String doInBackground(Void... params) {
+        CookieHandler cookieHandler = new CookieManager(
+                new PersistentCookieStore(context), CookiePolicy.ACCEPT_ALL);
 
-    static class runLikeDissLike extends AsyncTask<MyTaskParams, Void, Void> {
+        OkHttpClient client = new OkHttpClient.Builder()
+                .cookieJar(new JavaNetCookieJar(cookieHandler))
+                .build();
 
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
 
-        @Override
-        protected Void doInBackground(MyTaskParams... params) {
-
-            CookieHandler cookieHandler = new CookieManager(
-                    new PersistentCookieStore(params[0].context), CookiePolicy.ACCEPT_ALL);
-
-            OkHttpClient client = new OkHttpClient.Builder()
-                    .cookieJar(new JavaNetCookieJar(cookieHandler))
-                    .build();
-
-            Request request = new Request.Builder()
-                    .url(params[0].url)
-                    .build();
-
-
-            try {
-                Response response = client.newCall(request).execute();
-                Log.d("response", response.toString());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return null;
+        try {
+            Response response = client.newCall(request).execute();
+            response.body().close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
+        return null;
     }
-
 }
+

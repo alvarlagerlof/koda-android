@@ -43,4 +43,8 @@ public class PrefValues {
     public static final String URL_PROFILE = "https://ravla.org/profile.txt";  // TODO: NOT DONE YET
 
 
+    // Other
+    public static final String URL_LIKE = BASE_URL + API_VERSION + "plus/";
+    public static final String URL_DISSLIKE = BASE_URL + API_VERSION + "plus/";
+
 }

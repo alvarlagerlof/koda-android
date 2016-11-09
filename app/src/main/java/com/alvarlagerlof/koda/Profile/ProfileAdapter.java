@@ -16,10 +16,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.alvarlagerlof.koda.Animations;
+import com.alvarlagerlof.koda.Utils.AnimationUtils;
 import com.alvarlagerlof.koda.Comments.CommentsActivity;
 import com.alvarlagerlof.koda.LikeDissLike;
 import com.alvarlagerlof.koda.PlayActivity;
+import com.alvarlagerlof.koda.PrefValues;
 import com.alvarlagerlof.koda.R;
 
 import java.util.ArrayList;
@@ -29,9 +30,8 @@ import java.util.ArrayList;
  */
 
 
-public class ProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+class ProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    // Init objects
     private FragmentManager fragmentManager;
     private ArrayList<ProfileObject> dataset;
     private Context context;
@@ -41,7 +41,6 @@ public class ProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private static final int TYPE_ITEM        = 2;
 
 
-    // Get data
     ProfileAdapter(ArrayList<ProfileObject> dataset, FragmentManager fragmentManager, Context context) {
         this.dataset = dataset;
         this.fragmentManager = fragmentManager;
@@ -49,7 +48,6 @@ public class ProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
 
-    // Viewholders
     private static class ViewHolderHeader extends RecyclerView.ViewHolder  {
         TextView author;
         TextView numberOfProjects;
@@ -109,6 +107,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
 
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View headerView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.profile_header, viewGroup, false);
@@ -166,10 +165,10 @@ public class ProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 public void onClick(View v) {
                     if (((ProfileAdapter.ViewHolderItem) holder).expandablePanel.getVisibility() == View.GONE) {
                         ((ProfileAdapter.ViewHolderItem) holder).expandCollapseImage.setImageDrawable(ContextCompat.getDrawable(((ProfileAdapter.ViewHolderItem) holder).expandablePanel.getContext(), R.drawable.ic_collapse));
-                        Animations.expand(((ProfileAdapter.ViewHolderItem) holder).expandablePanel);
+                        AnimationUtils.expand(((ProfileAdapter.ViewHolderItem) holder).expandablePanel);
                     } else {
                         ((ProfileAdapter.ViewHolderItem) holder).expandCollapseImage.setImageDrawable(ContextCompat.getDrawable(((ProfileAdapter.ViewHolderItem) holder).expandablePanel.getContext(), R.drawable.ic_expand));
-                        Animations.collapse(((ProfileAdapter.ViewHolderItem) holder).expandablePanel);
+                        AnimationUtils.collapse(((ProfileAdapter.ViewHolderItem) holder).expandablePanel);
                     }
                 }
             });
@@ -181,24 +180,18 @@ public class ProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 public void onClick(View v) {
 
                     if (dataset.get(position).liked) {
-                        int likes = Integer.parseInt(String.valueOf(((ProfileAdapter.ViewHolderItem) holder).likesNum.getText()));
-                        likes -= 1;
-                        ((ProfileAdapter.ViewHolderItem) holder).likesNum.setText(String.valueOf(likes));
+
+                        ((ProfileAdapter.ViewHolderItem) holder).likesNum.setText(String.valueOf(Integer.parseInt(String.valueOf(Integer.parseInt(String.valueOf(((ProfileAdapter.ViewHolderItem) holder).likesNum.getText())) - 1))));
                         ((ProfileAdapter.ViewHolderItem) holder).heartImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_heart_outline));
-
                         dataset.get(position).liked = false;
-
-                        LikeDissLike.dislike(context, dataset.get(position).publicId);
+                        new LikeDissLike(context, PrefValues.URL_DISSLIKE, dataset.get(position).publicId);
 
                     } else {
-                        int likes = Integer.parseInt(String.valueOf(((ProfileAdapter.ViewHolderItem) holder).likesNum.getText()));
-                        likes += 1;
-                        ((ProfileAdapter.ViewHolderItem) holder).likesNum.setText(String.valueOf(likes));
+
+                        ((ProfileAdapter.ViewHolderItem) holder).likesNum.setText(String.valueOf(Integer.parseInt(String.valueOf(((ProfileAdapter.ViewHolderItem) holder).likesNum.getText()) + 1)));
                         ((ProfileAdapter.ViewHolderItem) holder).heartImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_heart));
-
                         dataset.get(position).liked = true;
-
-                        LikeDissLike.like(context, dataset.get(position).publicId);
+                        new LikeDissLike(context, PrefValues.URL_LIKE, dataset.get(position).publicId);
                     }
 
                 }

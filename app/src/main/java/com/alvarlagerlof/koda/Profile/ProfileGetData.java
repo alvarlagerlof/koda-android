@@ -4,9 +4,9 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 
-import com.alvarlagerlof.koda.ConnectionUtils;
+import com.alvarlagerlof.koda.Utils.ConnectionUtils;
 import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
-import com.alvarlagerlof.koda.NiceDate;
+import com.alvarlagerlof.koda.Utils.DateConversionUtils;
 import com.alvarlagerlof.koda.PrefValues;
 
 import org.json.JSONArray;
@@ -108,7 +108,7 @@ class ProfileGetData extends AsyncTask<Void, Void, String> {
                     String title          = projectsJsonObject.getString("title");
                     String author         = projectsJsonObject.getString("author");
                     String description    = projectsJsonObject.getString("description");
-                    String updated        = "Uppdaterad " + NiceDate.convert(projectsJsonObject.getString("updated"));
+                    String updated        = "Uppdaterad " + DateConversionUtils.convert(projectsJsonObject.getString("updated"));
                     String publicID       = projectsJsonObject.getString("publicID");
                     String like_count     = projectsJsonObject.getString("like_count");
                     String comment_count  = projectsJsonObject.getString("comment_count");

@@ -3,7 +3,7 @@ package com.alvarlagerlof.koda.MyProjects;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.alvarlagerlof.koda.ConnectionUtils;
+import com.alvarlagerlof.koda.Utils.ConnectionUtils;
 import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
 import com.alvarlagerlof.koda.MainAcitivty;
 import com.alvarlagerlof.koda.PrefValues;

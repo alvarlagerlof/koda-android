@@ -1,11 +1,11 @@
-package com.alvarlagerlof.koda;
+package com.alvarlagerlof.koda.Utils;
 
 import java.io.UnsupportedEncodingException;
 
 /**
  * Created by alvar on 2016-08-31.
  */
-public class FastBase64 {
+public class Base64Utils {
 
     public static String decode(String encoded) {
 
