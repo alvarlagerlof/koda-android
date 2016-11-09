@@ -54,7 +54,7 @@ public class FullscreenPlay extends AppCompatActivity {
                         }
                     });
         }
-        setContentView(R.layout.activity_play_fullscreen);
+        setContentView(R.layout.play_fullscreen_activity);
 
 
         // From intent

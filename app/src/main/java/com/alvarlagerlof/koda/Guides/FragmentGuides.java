@@ -29,7 +29,7 @@ public class FragmentGuides extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_guides, container, false);
+        view = inflater.inflate(R.layout.guides_fragment, container, false);
 
         ArrayList<YouTubeObject> list = new ArrayList<>();
         list.add(new YouTubeObject("https://i.ytimg.com/vi/mvLdugZHHL8/hqdefault.jpg?custom=true&w=640&h=369&jpg444=true&jpgq=90&sp=68&sigh=DkqvRBnUGz3ZtAxYrBjJswZGKHw",

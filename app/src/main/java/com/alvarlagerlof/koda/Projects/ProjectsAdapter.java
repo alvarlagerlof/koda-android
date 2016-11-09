@@ -1,4 +1,4 @@
-package com.alvarlagerlof.koda.MyProjects;
+package com.alvarlagerlof.koda.Projects;
 
 /**
  * Created by alvar on 2016-07-02.
@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.alvarlagerlof.koda.Comments.CommentsActivity;
 import com.alvarlagerlof.koda.Editor.EditorActivity;
 import com.alvarlagerlof.koda.R;
 
@@ -25,31 +24,22 @@ import java.util.ArrayList;
  */
 
 
-public class MyProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    FragmentManager fragmentManager;
-    private ArrayList<MyProjectsObject> dataset;
 
+    private FragmentManager fragmentManager;
+    private ArrayList<ProjectsObject> dataset;
     private static final int TYPE_LOADING     = 0;
     private static final int TYPE_ITEM        = 1;
 
 
 
 
-    MyProjectsAdapter(ArrayList<MyProjectsObject> dataset, FragmentManager fragmentManager) {
+    ProjectsAdapter(ArrayList<ProjectsObject> dataset, FragmentManager fragmentManager) {
         this.dataset = dataset;
         this.fragmentManager = fragmentManager;
     }
 
-
-    private static class ViewHolderHeader extends RecyclerView.ViewHolder  {
-        TextView text1;
-
-        ViewHolderHeader(View itemView){
-            super(itemView);
-            text1 = (TextView) itemView.findViewById(R.id.text1);
-        }
-    }
 
     private static class ViewHolderLoading extends RecyclerView.ViewHolder  {
         ViewHolderLoading(View itemView){
@@ -58,36 +48,25 @@ public class MyProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     private static class ViewHolderItem extends RecyclerView.ViewHolder {
-        public final TextView title;
-        public final TextView date;
-        //public final TextView likesNum;
-        public final TextView comments_num;
+        TextView title;
+        TextView meta;
+        LinearLayout more;
 
-        //public final LinearLayout likes;
-        public final LinearLayout comment;
-        public final LinearLayout more;
-
-        public ViewHolderItem(View itemView) {
+        ViewHolderItem(View itemView) {
             super(itemView);
-            title        = (TextView) itemView.findViewById(R.id.title);
-            date           = (TextView) itemView.findViewById(R.id.date);
-            //likesNum    = (TextView) itemView.findViewById(R.id.likesNum);
-            comments_num = (TextView) itemView.findViewById(R.id.coments_num);
-
-            //likes       = (LinearLayout) itemView.findViewById(R.id.likes);
-            comment     = (LinearLayout) itemView.findViewById(R.id.comments);
-            more        = (LinearLayout) itemView.findViewById(R.id.more);
+            title = (TextView) itemView.findViewById(R.id.title);
+            meta = (TextView) itemView.findViewById(R.id.meta);
+            more = (LinearLayout) itemView.findViewById(R.id.more);
         }
 
     }
 
 
 
-
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View loadingView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_loading, viewGroup, false);
-        View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.my_projects_item, viewGroup, false);
+        View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.projects_item, viewGroup, false);
 
         switch (i) {
             case TYPE_LOADING:
@@ -106,29 +85,18 @@ public class MyProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             final Context context = ((ViewHolderItem) holder).title.getContext();
 
             ((ViewHolderItem) holder).title.setText(dataset.get(position).title);
-            ((ViewHolderItem) holder).date.setText(dataset.get(position).updated);
+            ((ViewHolderItem) holder).meta.setText(dataset.get(position).updated);
 
-            ((ViewHolderItem) holder).comments_num.setText(dataset.get(position).commentCount);
 
             ((ViewHolderItem) holder).itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, EditorActivity.class);
-                    intent.putExtra("private_id", dataset.get(position).privateId);
-                    intent.putExtra("public_id", dataset.get(position).publicId);
+                    intent.putExtra("privateID", dataset.get(position).privateId);
+                    intent.putExtra("publicID", dataset.get(position).publicId);
                     intent.putExtra("title", dataset.get(position).title);
                     intent.putExtra("code", dataset.get(position).code);
                     context.startActivity(intent);
-                }
-            });
-
-            ((ViewHolderItem) holder).comment.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(((ViewHolderItem) holder).title.getContext(), CommentsActivity.class);
-                    intent.putExtra("public_id", dataset.get(position).publicId);
-                    intent.putExtra("title", dataset.get(position).title);
-                    ((ViewHolderItem) holder).title.getContext().startActivity(intent);
                 }
             });
 
@@ -136,7 +104,7 @@ public class MyProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             ((ViewHolderItem) holder).more.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    MyProjectsBottomSheetFragment bottomSheetFragment = new MyProjectsBottomSheetFragment();
+                    ProjectsBottomSheetFragment bottomSheetFragment = new ProjectsBottomSheetFragment();
                     bottomSheetFragment.passData(fragmentManager,
                             dataset.get(position).privateId,
                             dataset.get(position).publicId,
@@ -156,16 +124,11 @@ public class MyProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
 
+
     @Override
     public int getItemViewType(int position) {
-
-        if (dataset.get(position).privateId.equals("Loading")) {
-            return TYPE_LOADING;
-        }
-
-        return TYPE_ITEM;
+        return dataset.get(position).privateId.equals("Loading") ? TYPE_LOADING : TYPE_ITEM;
     }
-
 
     @Override
     public int getItemCount() {

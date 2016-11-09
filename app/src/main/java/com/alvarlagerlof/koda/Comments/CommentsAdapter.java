@@ -55,7 +55,7 @@ class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         ViewHolderItem(View itemView) {
             super(itemView);
             by      = (TextView) itemView.findViewById(R.id.by);
-            date = (TextView) itemView.findViewById(R.id.date);
+            date = (TextView) itemView.findViewById(R.id.meta);
             comment = (TextView) itemView.findViewById(R.id.comment);
         }
 

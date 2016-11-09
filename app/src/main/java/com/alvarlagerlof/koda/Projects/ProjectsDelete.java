@@ -1,4 +1,4 @@
-package com.alvarlagerlof.koda.MyProjects;
+package com.alvarlagerlof.koda.Projects;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -21,13 +21,13 @@ import okhttp3.internal.JavaNetCookieJar;
  * Created by alvar on 08/11/16.
  */
 
-class MyProjectsDelete extends AsyncTask<Void, Void, Void> {
+class ProjectsDelete extends AsyncTask<Void, Void, Void> {
 
     private Context context;
     private String privateID;
     private int position;
 
-    MyProjectsDelete(Context context, String privateID, int position) {
+    ProjectsDelete(Context context, String privateID, int position) {
         this.context = context;
         this.privateID = privateID;
         this.position = position;

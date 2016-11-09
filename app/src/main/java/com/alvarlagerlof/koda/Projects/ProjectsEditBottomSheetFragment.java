@@ -1,4 +1,4 @@
-package com.alvarlagerlof.koda.MyProjects;
+package com.alvarlagerlof.koda.Projects;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -39,7 +39,7 @@ import okhttp3.internal.JavaNetCookieJar;
 /**
  * Created by alvar on 2016-07-03.
  */
-public class MyProjectsEditBottomSheetFragment extends BottomSheetDialogFragment {
+public class ProjectsEditBottomSheetFragment extends BottomSheetDialogFragment {
 
     String private_id;
     String public_id;
@@ -96,7 +96,7 @@ public class MyProjectsEditBottomSheetFragment extends BottomSheetDialogFragment
     @Override
     public void setupDialog(final Dialog dialog, int style) {
         super.setupDialog(dialog, style);
-        final View contentView = View.inflate(getContext(), R.layout.sheet_my_projects_edit, null);
+        final View contentView = View.inflate(getContext(), R.layout.projects_edit_sheet, null);
         dialog.setContentView(contentView);
 
         CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) ((View) contentView.getParent()).getLayoutParams();
@@ -178,18 +178,20 @@ public class MyProjectsEditBottomSheetFragment extends BottomSheetDialogFragment
     }
 
 
+    // TODO: IF OPENED AGAIN, NEW DATA NOT THERE
+
     class saveAsync extends AsyncTask<Void, Integer, String> {
 
         String titleString;
         String descriptionString;
-        String checkedString;
+        Boolean checked;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             titleString = titleInput.getText().toString();
             descriptionString = descriptionInput.getText().toString();
-            checkedString = publicCheckbox.isChecked() ? "CHECKED" : "";
+            checked = publicCheckbox.isChecked();
 
             if (titleString.equals("")) {
                 titleString = getString(R.string.unnamed);
@@ -226,7 +228,7 @@ public class MyProjectsEditBottomSheetFragment extends BottomSheetDialogFragment
                     .add("title", titleString)
                     .add("description", descriptionString)
                     .add("author", "")
-                    .add("publicOrNot", checkedString)
+                    .add("publicOrNot", String.valueOf(checked))
                     .build();
 
 
@@ -252,7 +254,7 @@ public class MyProjectsEditBottomSheetFragment extends BottomSheetDialogFragment
 
             // Save to realm
             Realm realm = Realm.getDefaultInstance();
-            MyProjectsRealmObject object = realm.where(MyProjectsRealmObject.class)
+            ProjectsRealmObject object = realm.where(ProjectsRealmObject.class)
                     .equalTo("privateId", private_id)
                     .findFirst();
 

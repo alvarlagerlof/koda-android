@@ -19,9 +19,8 @@ import com.alvarlagerlof.koda.Archive.ArchiveFragment;
 import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
 import com.alvarlagerlof.koda.Guides.FragmentGuides;
 import com.alvarlagerlof.koda.Login.LoginActivity;
-import com.alvarlagerlof.koda.MyProjects.FragmentMyProjects;
+import com.alvarlagerlof.koda.Projects.ProjectsFragment;
 import com.alvarlagerlof.koda.Settings.SettingsFragment;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.roughike.bottombar.BottomBar;
@@ -35,27 +34,23 @@ import io.realm.RealmConfiguration;
  */
 public class MainAcitivty extends AppCompatActivity {
 
-    private FirebaseAnalytics mFirebaseAnalytics;
-
     Toolbar toolbar;
     AppBarLayout appBarLayout;
 
     LinearLayout fragment_container;
 
-    public static FragmentMyProjects fragmentMyProjects;
+    public static ProjectsFragment fragmentMyProjects;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        setContentView(R.layout.main_activity);
 
         // Login
         if (new PersistentCookieStore(this).getCookies().size() < 1 || PreferenceManager.getDefaultSharedPreferences(this).getString("email", null) == null) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
+            Toast.makeText(this, String.valueOf(new PersistentCookieStore(this).getCookies().size() < 1), Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, LoginActivity.class));
         }
 
 
@@ -73,7 +68,7 @@ public class MainAcitivty extends AppCompatActivity {
         fragment_container = (LinearLayout) findViewById(R.id.fragment_container);
 
         setSupportActionBar(toolbar);
-        toolbar.setTitle("Mina projekt");
+        toolbar.setTitle("Projekt");
 
 
         BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
@@ -82,12 +77,12 @@ public class MainAcitivty extends AppCompatActivity {
             public void onTabSelected(@IdRes int tabId) {
                 switch (tabId) {
                     case R.id.tab_projects:
-                        fragmentMyProjects = new FragmentMyProjects();
+                        fragmentMyProjects = new ProjectsFragment();
                         FragmentTransaction ftMyCreations = getSupportFragmentManager().beginTransaction();
                         ftMyCreations.replace(R.id.fragment_container, fragmentMyProjects);
                         ftMyCreations.addToBackStack(null);
                         ftMyCreations.commit();
-                        toolbar.setTitle("Mina projekt");
+                        toolbar.setTitle("Projekt");
                         break;
                     case R.id.tab_api:
                         FragmentApi fragmentApi = new FragmentApi();
@@ -127,7 +122,7 @@ public class MainAcitivty extends AppCompatActivity {
         });
 
         if (savedInstanceState == null) {
-            FragmentMyProjects fragmentMyCreations = new FragmentMyProjects();
+            ProjectsFragment fragmentMyCreations = new ProjectsFragment();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.add(R.id.fragment_container, fragmentMyCreations).commit();
         }

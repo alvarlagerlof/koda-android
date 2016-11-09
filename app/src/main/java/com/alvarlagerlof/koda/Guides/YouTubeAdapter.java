@@ -66,7 +66,7 @@ public class YouTubeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.guides_item, viewGroup, false);
-        View moreView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.guides_more_item, viewGroup, false);
+        View moreView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.guides_showall_item, viewGroup, false);
 
         switch (i) {
             case TYPE_ITEM:

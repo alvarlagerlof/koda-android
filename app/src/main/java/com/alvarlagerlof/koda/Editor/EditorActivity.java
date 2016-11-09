@@ -33,7 +33,7 @@ public class EditorActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_editor);
+        setContentView(R.layout.editor_activity);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);

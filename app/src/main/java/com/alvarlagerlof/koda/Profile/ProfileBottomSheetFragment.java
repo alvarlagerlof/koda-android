@@ -56,7 +56,7 @@ public class ProfileBottomSheetFragment extends BottomSheetDialogFragment {
     @Override
     public void setupDialog(final Dialog dialog, int style) {
         super.setupDialog(dialog, style);
-        final View contentView = View.inflate(getContext(), R.layout.sheet_profile, null);
+        final View contentView = View.inflate(getContext(), R.layout.profile_sheet, null);
         dialog.setContentView(contentView);
 
         CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) ((View) contentView.getParent()).getLayoutParams();

@@ -198,7 +198,7 @@ public class ShaderEditor extends EditText {
             start = Math.max( 0, m.end()-1 );
         else
         {
-            // add an empty line between the last #endif
+            // projects_add an empty line between the last #endif
             // and the now following uniform
             if( (start = endIndexOfLastEndIf( e )) > -1 )
                 statement = "\n"+statement;
@@ -539,7 +539,7 @@ public class ShaderEditor extends EditText {
             indent += dest.subSequence( istart, iend );
         }
 
-        // add new indent
+        // projects_add new indent
         if( pt < 0 )
             indent += "\t";
 

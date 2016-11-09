@@ -1,11 +1,11 @@
-package com.alvarlagerlof.koda.MyProjects;
+package com.alvarlagerlof.koda.Projects;
 
 import io.realm.RealmObject;
 
 /**
  * Created by alvar on 2016-07-02.
  */
-public class MyProjectsRealmObject extends RealmObject {
+public class ProjectsRealmObject extends RealmObject {
     private String privateId;
     private String publicId;
     private String title;

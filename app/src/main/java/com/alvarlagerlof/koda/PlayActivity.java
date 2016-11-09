@@ -61,7 +61,7 @@ public class PlayActivity extends AppCompatActivity {
                         }
                     });
         }
-        setContentView(R.layout.activity_play);
+        setContentView(R.layout.play_activity);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         webView = (WebView) findViewById(R.id.webview);

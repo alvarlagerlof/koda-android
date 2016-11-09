@@ -1,4 +1,4 @@
-package com.alvarlagerlof.koda.MyProjects;
+package com.alvarlagerlof.koda.Projects;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -33,13 +33,13 @@ import okhttp3.internal.JavaNetCookieJar;
  * Created by alvar on 2016-11-08.
  */
 
-class MyProjectsGetData extends AsyncTask<Void, Void, String> {
+class ProjectsGetData extends AsyncTask<Void, Void, String> {
 
     private Context context;
-    private ArrayList<MyProjectsObject> list;
+    private ArrayList<ProjectsObject> list;
     private RecyclerView.Adapter adapter;
 
-    MyProjectsGetData(Context context, ArrayList<MyProjectsObject> list, RecyclerView.Adapter adapter) {
+    ProjectsGetData(Context context, ArrayList<ProjectsObject> list, RecyclerView.Adapter adapter) {
         this.context = context;
         this.list = list;
         this.adapter = adapter;
@@ -53,7 +53,7 @@ class MyProjectsGetData extends AsyncTask<Void, Void, String> {
     @Override
     final protected void onPreExecute() {
 
-        list.add(new MyProjectsObject("Loading", "", "",  "", "", false, "", "", "", ""));
+        list.add(new ProjectsObject("Loading", "", "",  "", "", false, "", "", "", ""));
         adapter.notifyDataSetChanged();
 
     }
@@ -121,7 +121,7 @@ class MyProjectsGetData extends AsyncTask<Void, Void, String> {
                 Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
                     @Override
                     public void execute(Realm realm) {
-                        realm.delete(MyProjectsRealmObject.class);
+                        realm.delete(ProjectsRealmObject.class);
                     }
                 });
 
@@ -151,14 +151,14 @@ class MyProjectsGetData extends AsyncTask<Void, Void, String> {
 
 
 
-                        list.add(new MyProjectsObject(privateID, publicID, title, updated, description, isPublic, likeCount, commentCount, charCount, code));
+                        list.add(new ProjectsObject(privateID, publicID, title, updated, description, isPublic, likeCount, commentCount, charCount, code));
 
                         final String finalTitle = title;
                         final String finalUpdated = updated;
                         Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
                             @Override
                             public void execute(Realm realm) {
-                                MyProjectsRealmObject object = realm.createObject(MyProjectsRealmObject.class);
+                                ProjectsRealmObject object = realm.createObject(ProjectsRealmObject.class);
                                 object.setPrivateId(privateID);
                                 object.setPublicId(publicID);
                                 object.setTitle(finalTitle);
@@ -186,7 +186,7 @@ class MyProjectsGetData extends AsyncTask<Void, Void, String> {
 
             list.clear();
 
-            RealmResults<MyProjectsRealmObject> realmObjects = Realm.getDefaultInstance().where(MyProjectsRealmObject.class).findAll();
+            RealmResults<ProjectsRealmObject> realmObjects = Realm.getDefaultInstance().where(ProjectsRealmObject.class).findAll();
 
             for (int i = 0; i < realmObjects.size(); i++) {
 
@@ -203,7 +203,7 @@ class MyProjectsGetData extends AsyncTask<Void, Void, String> {
                 String charCount    = realmObjects.get(i).getCharCount();
                 String code         = realmObjects.get(i).getCode();
 
-                list.add(new MyProjectsObject(privateID, publicID, title, updated, description, isPublic, likeCount, commentCount, charCount, code));
+                list.add(new ProjectsObject(privateID, publicID, title, updated, description, isPublic, likeCount, commentCount, charCount, code));
 
             }
 

@@ -16,8 +16,6 @@ import com.flask.colorpicker.OnColorSelectedListener;
 import com.flask.colorpicker.builder.ColorPickerClickListener;
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 
-import io.realm.internal.Context;
-
 /**
  * Created by alvar on 2016-11-08.
  */
@@ -32,7 +30,7 @@ public class EditorEditFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_editor_edit, container, false);
+        View view = inflater.inflate(R.layout.editor_edit_fragment, container, false);
         editor = (ShaderEditor) view.findViewById(R.id.editor_editext);
 
         editor.setText(code);

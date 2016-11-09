@@ -15,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alvarlagerlof.koda.MainAcitivty;
 import com.alvarlagerlof.koda.PrefValues;
@@ -59,7 +58,7 @@ public class NewAccountActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_new_account);
+        setContentView(R.layout.login_new_account_activity);
 
         email = (TextInputEditText) findViewById(R.id.email);
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
@@ -158,7 +157,7 @@ public class NewAccountActivity extends AppCompatActivity {
                                 .edit()
                                 .putString(PrefValues.PREF_EMAIL, jsonObject.getString("username"))
                                 .putString(PrefValues.PREF_PASSWORD, jsonObject.getString("password"))
-                                .apply();
+                                .commit();
 
 
                         Animation fadeOut = new AlphaAnimation(1, 0);
@@ -187,7 +186,7 @@ public class NewAccountActivity extends AppCompatActivity {
 
 
                         Animation fadeIn = new AlphaAnimation(0, 1);
-                        fadeIn.setInterpolator(new DecelerateInterpolator()); //add this
+                        fadeIn.setInterpolator(new DecelerateInterpolator()); //projects_add this
                         fadeIn.setDuration(500);
                         fadeIn.setStartOffset(1000);
                         fadeIn.setFillAfter(true);
@@ -224,7 +223,7 @@ public class NewAccountActivity extends AppCompatActivity {
 
 
                         Animation fadeIn = new AlphaAnimation(0, 1);
-                        fadeIn.setInterpolator(new DecelerateInterpolator()); //add this
+                        fadeIn.setInterpolator(new DecelerateInterpolator()); //projects_add this
                         fadeIn.setDuration(500);
                         fadeIn.setStartOffset(1000);
                         fadeIn.setFillAfter(true);
@@ -250,7 +249,7 @@ public class NewAccountActivity extends AppCompatActivity {
     public void reset(View view) {
 
         final Animation fadeIn = new AlphaAnimation(0, 1);
-        fadeIn.setInterpolator(new DecelerateInterpolator()); //add this
+        fadeIn.setInterpolator(new DecelerateInterpolator()); //projects_add this
         fadeIn.setDuration(500);
         fadeIn.setStartOffset(1000);
         fadeIn.setFillAfter(true);

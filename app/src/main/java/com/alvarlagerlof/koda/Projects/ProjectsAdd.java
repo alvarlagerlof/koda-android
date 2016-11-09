@@ -1,4 +1,4 @@
-package com.alvarlagerlof.koda.MyProjects;
+package com.alvarlagerlof.koda.Projects;
 
 import android.content.Context;
 import android.content.Intent;
@@ -28,14 +28,14 @@ import okhttp3.internal.JavaNetCookieJar;
  * Created by alvar on 08/11/16.
  */
 
-class MyProjectsAdd extends AsyncTask<Void, Void, Void> {
+class ProjectsAdd extends AsyncTask<Void, Void, Void> {
 
     private Context context;
     private String title;
-    private ArrayList<MyProjectsObject> list;
+    private ArrayList<ProjectsObject> list;
     private RecyclerView.Adapter adapter;
 
-    MyProjectsAdd(Context context, String title, ArrayList<MyProjectsObject> list, RecyclerView.Adapter adapter) {
+    ProjectsAdd(Context context, String title, ArrayList<ProjectsObject> list, RecyclerView.Adapter adapter) {
         this.context = context;
         this.title = title;
         this.list = list;
@@ -57,7 +57,7 @@ class MyProjectsAdd extends AsyncTask<Void, Void, Void> {
             @Override
             public void execute(Realm realm) {
 
-                MyProjectsRealmObject object = realm.createObject(MyProjectsRealmObject.class);
+                ProjectsRealmObject object = realm.createObject(ProjectsRealmObject.class);
                 object.setPrivateId(finalOfflineId);
                 object.setPublicId("");
                 object.setTitle(title);
@@ -75,7 +75,7 @@ class MyProjectsAdd extends AsyncTask<Void, Void, Void> {
             }
         });
 
-        MyProjectsObject object = new MyProjectsObject(offlineId,
+        ProjectsObject object = new ProjectsObject(offlineId,
                 "",
                 title,
                 String.valueOf(System.currentTimeMillis() / 1000L),
@@ -95,8 +95,8 @@ class MyProjectsAdd extends AsyncTask<Void, Void, Void> {
         adapter.notifyDataSetChanged();
 
         Intent intent = new Intent(context, EditorActivity.class);
-        intent.putExtra("private_id", offlineId);
-        intent.putExtra("public_id", "");
+        intent.putExtra("privateID", offlineId);
+        intent.putExtra("publicID", "");
         intent.putExtra("code", "<script src=\"http://koda.nu/simple.js\">\n" +
                 "\n" +
                 "  circle(100, 100, 20, \"red\");\n" +

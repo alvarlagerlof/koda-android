@@ -73,6 +73,38 @@
         android:background="@drawable/click"
         android:paddingTop="16dp"
         android:paddingBottom="16dp"
+        android:id="@+id/comments">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_comment"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Kommentarer"
+            android:layout_gravity="center_vertical"
+            style="@style/textMedium"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        android:layout_marginLeft="56dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:clickable="true"
+        android:background="@drawable/click"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
         android:id="@+id/add_to_homescreen">
 
         <ImageView
@@ -123,11 +155,6 @@
 
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="?android:attr/listDivider"
-        android:layout_marginLeft="56dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"

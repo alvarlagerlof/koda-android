@@ -41,7 +41,7 @@ public class QrViewer extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_qr_view);
+        setContentView(R.layout.qr_view_activity);
 
         qrImageView = (ImageView) findViewById(R.id.qr_image_view);
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
@@ -111,7 +111,7 @@ public class QrViewer extends AppCompatActivity {
                 });
 
                 Animation fadeIn = new AlphaAnimation(0, 1);
-                fadeIn.setInterpolator(new DecelerateInterpolator()); //add this
+                fadeIn.setInterpolator(new DecelerateInterpolator()); //projects_add this
                 fadeIn.setDuration(300);
                 fadeIn.setStartOffset(300);
                 fadeIn.setFillAfter(true);

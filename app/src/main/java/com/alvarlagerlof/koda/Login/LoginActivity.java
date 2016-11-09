@@ -7,8 +7,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -52,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.login_activty);
 
         email = (TextInputEditText) findViewById(R.id.email);
         password = (TextInputEditText) findViewById(R.id.password);
@@ -107,7 +105,12 @@ public class LoginActivity extends AppCompatActivity {
 
             String result = null;
 
-            OkHttpClient client = new OkHttpClient.Builder().build();
+            CookieHandler cookieHandler = new CookieManager(
+                    new PersistentCookieStore(LoginActivity.this), CookiePolicy.ACCEPT_ALL);
+
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .cookieJar(new JavaNetCookieJar(cookieHandler))
+                    .build();
 
             RequestBody formBody = new FormBody.Builder()
                     .add("email", emailString)
@@ -138,24 +141,21 @@ public class LoginActivity extends AppCompatActivity {
 
             if (s != null) {
                 try {
-                    JSONObject object = new JSONObject(s);
-                    String access = object.getString("access");
-
-                    if (access.equals("granted")) {
+                    if (new JSONObject(s).getString("access").equals("granted")) {
 
                         PreferenceManager.getDefaultSharedPreferences(LoginActivity.this)
                                 .edit()
                                 .putString(PrefValues.PREF_EMAIL, emailString)
                                 .putString(PrefValues.PREF_PASSWORD, passwordString)
-                                .apply();
+                                .commit();
 
-                        Intent intent = new Intent(LoginActivity.this, MainAcitivty.class);
-                        startActivity(intent);
+                        startActivity(new Intent(LoginActivity.this, MainAcitivty.class));
+
                     } else {
                         errorText.setVisibility(View.VISIBLE);
 
                         Animation fadeIn = new AlphaAnimation(0, 1);
-                        fadeIn.setInterpolator(new DecelerateInterpolator()); //add this
+                        fadeIn.setInterpolator(new DecelerateInterpolator()); //projects_add this
                         fadeIn.setDuration(300);
                         fadeIn.setFillAfter(true);
 

@@ -25,7 +25,7 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.profile_activity);
 
         // Init toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);

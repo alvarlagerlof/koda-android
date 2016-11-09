@@ -16,7 +16,7 @@ public class AnimationUtils {
     public static void fadeIn(final View view) {
 
         Animation fadeIn = new AlphaAnimation(0, 1);
-        fadeIn.setInterpolator(new DecelerateInterpolator()); //add this
+        fadeIn.setInterpolator(new DecelerateInterpolator()); //projects_add this
         fadeIn.setDuration(300);
         fadeIn.setFillAfter(true);
         fadeIn.setAnimationListener(new Animation.AnimationListener() {

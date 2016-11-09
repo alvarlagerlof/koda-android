@@ -24,7 +24,7 @@ public class ArchiveFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_archive, container, false);
+        View view = inflater.inflate(R.layout.archive_fragment, container, false);
 
         adapter = new ArchiveAdapter(list, getActivity().getSupportFragmentManager(), getContext());
 

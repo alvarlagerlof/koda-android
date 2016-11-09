@@ -25,7 +25,7 @@ public class CommentsActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_comments);
+        setContentView(R.layout.comments_activty);
 
 
         // Init toolbar

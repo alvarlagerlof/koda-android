@@ -47,7 +47,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_forgot_pass);
+        setContentView(R.layout.login_forgot_pass_activity);
 
         email = (TextInputEditText) findViewById(R.id.email);
         nextButton = (Button) findViewById(R.id.next_button);
@@ -149,7 +149,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
 
             Animation fadeIn = new AlphaAnimation(0, 1);
-            fadeIn.setInterpolator(new DecelerateInterpolator()); //add this
+            fadeIn.setInterpolator(new DecelerateInterpolator()); //projects_add this
             fadeIn.setDuration(500);
             fadeIn.setStartOffset(1000);
             fadeIn.setFillAfter(true);

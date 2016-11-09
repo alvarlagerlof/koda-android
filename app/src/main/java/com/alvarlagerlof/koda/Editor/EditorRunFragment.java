@@ -25,7 +25,7 @@ public class EditorRunFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_editor_run, container, false);
+        View view = inflater.inflate(R.layout.editor_run_fragment, container, false);
         webView = (WebView) view.findViewById(R.id.webview);
 
         return view;
@@ -49,7 +49,7 @@ public class EditorRunFragment extends Fragment {
     }
 
     public void clearWebView() {
-        webView.loadUrl("about:blank");
+        webView.loadUrl("settings_about:blank");
         webView.pauseTimers();
     }
 

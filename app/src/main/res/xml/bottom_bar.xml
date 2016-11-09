@@ -3,7 +3,7 @@
     <tab
         id="@+id/tab_projects"
         icon="@drawable/ic_tab_my_projects"
-        title="Mina projekt"
+        title="Projekt"
         barColorWhenSelected="@color/colorPrimary" />
 
     <tab

@@ -20,7 +20,7 @@ public class FragmentApi extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_api, container, false);
+        View view = inflater.inflate(R.layout.api_fragment, container, false);
         ViewPager viewPager = (ViewPager) view.findViewById(R.id.viewpager);
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tab_layout);
 

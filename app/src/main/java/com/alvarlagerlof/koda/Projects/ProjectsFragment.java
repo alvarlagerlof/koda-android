@@ -1,4 +1,4 @@
-package com.alvarlagerlof.koda.MyProjects;
+package com.alvarlagerlof.koda.Projects;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -17,16 +17,16 @@ import java.util.ArrayList;
 /**
  * Created by alvar on 2016-07-02.
  */
-public class FragmentMyProjects extends Fragment {
+public class ProjectsFragment extends Fragment {
 
-    MyProjectsAdapter adapter;
-    ArrayList<MyProjectsObject> projectsList = new ArrayList<>();
+    ProjectsAdapter adapter;
+    ArrayList<ProjectsObject> projectsList = new ArrayList<>();
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_my_projects, container, false);
+        View view = inflater.inflate(R.layout.fragment_projects, container, false);
 
-        adapter = new MyProjectsAdapter(projectsList, getActivity().getSupportFragmentManager());
+        adapter = new ProjectsAdapter(projectsList, getActivity().getSupportFragmentManager());
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -35,7 +35,7 @@ public class FragmentMyProjects extends Fragment {
 
 
         // Get data
-        MyProjectsGetData dataTask = new MyProjectsGetData(getContext(), projectsList, adapter);
+        ProjectsGetData dataTask = new ProjectsGetData(getContext(), projectsList, adapter);
         dataTask.execute();
 
 
@@ -44,7 +44,7 @@ public class FragmentMyProjects extends Fragment {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new MyProjectsAddDialog(getContext(), projectsList, adapter);
+                new ProjectsAddDialog(getContext(), projectsList, adapter);
             }
         });
 

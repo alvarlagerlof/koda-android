@@ -1,4 +1,4 @@
-package com.alvarlagerlof.koda.MyProjects;
+package com.alvarlagerlof.koda.Projects;
 
 import android.app.Dialog;
 import android.content.ComponentName;
@@ -13,6 +13,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.alvarlagerlof.koda.Comments.CommentsActivity;
 import com.alvarlagerlof.koda.FullscreenPlay;
 import com.alvarlagerlof.koda.QrCodeShare.QrViewer;
 import com.alvarlagerlof.koda.R;
@@ -20,12 +21,12 @@ import com.alvarlagerlof.koda.R;
 /**
  * Created by alvar on 2016-07-03.
  */
-public class MyProjectsBottomSheetFragment extends BottomSheetDialogFragment {
+public class ProjectsBottomSheetFragment extends BottomSheetDialogFragment {
 
     FragmentManager fragmentManager;
 
-    String private_id;
-    String public_id;
+    String privateID;
+    String publicID;
 
     String title;
     String description;
@@ -35,20 +36,21 @@ public class MyProjectsBottomSheetFragment extends BottomSheetDialogFragment {
 
     LinearLayout share;
     LinearLayout qr_share;
+    LinearLayout comments;
     LinearLayout addToHomescreen;
     LinearLayout edit;
     LinearLayout delete;
 
     public final void passData(FragmentManager fragmentManager,
-                               String private_id,
-                               String public_id,
+                               String privateID,
+                               String publicID,
                                String title,
                                String description,
                                Boolean isPublic,
                                int position) {
         this.fragmentManager = fragmentManager;
-        this.private_id = private_id;
-        this.public_id = public_id;
+        this.privateID = privateID;
+        this.publicID = publicID;
         this.title = title;
         this.description = description;
         this.isPublic = isPublic;
@@ -77,7 +79,7 @@ public class MyProjectsBottomSheetFragment extends BottomSheetDialogFragment {
     @Override
     public void setupDialog(final Dialog dialog, int style) {
         super.setupDialog(dialog, style);
-        final View contentView = View.inflate(getContext(), R.layout.sheet_my_projects, null);
+        final View contentView = View.inflate(getContext(), R.layout.projects_sheet, null);
         dialog.setContentView(contentView);
 
         CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) ((View) contentView.getParent()).getLayoutParams();
@@ -89,6 +91,7 @@ public class MyProjectsBottomSheetFragment extends BottomSheetDialogFragment {
 
         share           = (LinearLayout) contentView.findViewById(R.id.share);
         qr_share        = (LinearLayout) contentView.findViewById(R.id.qr_share);
+        comments        = (LinearLayout) contentView.findViewById(R.id.comments);
         addToHomescreen = (LinearLayout) contentView.findViewById(R.id.add_to_homescreen);
         edit            = (LinearLayout) contentView.findViewById(R.id.edit);
         delete          = (LinearLayout) contentView.findViewById(R.id.delete);
@@ -98,7 +101,7 @@ public class MyProjectsBottomSheetFragment extends BottomSheetDialogFragment {
             public void onClick(View v) {
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, title + " på Koda.nu: https://koda.nu/arkivet/" + public_id);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, title + " på Koda.nu: https://koda.nu/arkivet/" + publicID);
                 sendIntent.setType("text/plain");
                 startActivity(sendIntent);
             }
@@ -108,8 +111,18 @@ public class MyProjectsBottomSheetFragment extends BottomSheetDialogFragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), QrViewer.class);
-                intent.putExtra("url", "http://koda.nu/arkivet/" + public_id);
+                intent.putExtra("url", "http://koda.nu/arkivet/" + publicID);
                 startActivity(intent);
+            }
+        });
+
+        comments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), CommentsActivity.class);
+                intent.putExtra("publicID", publicID);
+                intent.putExtra("title", title);
+                getContext().startActivity(intent);
             }
         });
 
@@ -120,7 +133,7 @@ public class MyProjectsBottomSheetFragment extends BottomSheetDialogFragment {
                 shortcutIntent.setComponent(new ComponentName(getContext(), FullscreenPlay.class));
                 shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                shortcutIntent.putExtra("public_id", public_id);
+                shortcutIntent.putExtra("publicID", publicID);
                 shortcutIntent.putExtra("title", title);
 
                 Intent addIntent = new Intent();
@@ -144,8 +157,8 @@ public class MyProjectsBottomSheetFragment extends BottomSheetDialogFragment {
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MyProjectsEditBottomSheetFragment bottomSheetFragment = new MyProjectsEditBottomSheetFragment();
-                bottomSheetFragment.passData(private_id, public_id, title, description, isPublic);
+                ProjectsEditBottomSheetFragment bottomSheetFragment = new ProjectsEditBottomSheetFragment();
+                bottomSheetFragment.passData(privateID, publicID, title, description, isPublic);
 
                 bottomSheetFragment.show(fragmentManager, bottomSheetFragment.getTag());
             }
@@ -163,7 +176,7 @@ public class MyProjectsBottomSheetFragment extends BottomSheetDialogFragment {
                 alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "TA BORT", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        MyProjectsDelete deleteTask = new MyProjectsDelete(getContext(), private_id, position);
+                        ProjectsDelete deleteTask = new ProjectsDelete(getContext(), privateID, position);
                         deleteTask.execute();
                         dismiss();
                     }

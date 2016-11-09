@@ -3,6 +3,7 @@ package com.alvarlagerlof.koda.Comments;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import com.alvarlagerlof.koda.Utils.ConnectionUtils;
 import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
@@ -70,6 +71,8 @@ class CommentsGetData extends AsyncTask<Void, Void, String> {
                 Response response = client.newCall(request).execute();
                 String json = response.body().string();
                 response.body().close();
+
+                Log.d("json", json);
 
                 return json;
 

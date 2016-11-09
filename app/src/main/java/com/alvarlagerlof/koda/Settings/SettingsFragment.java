@@ -47,7 +47,7 @@ public class SettingsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_settings, container, false);
+        View view = inflater.inflate(R.layout.settings_fragment, container, false);
 
         // Init stuff
         prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -97,7 +97,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 LayoutInflater inflater = getActivity().getLayoutInflater();
-                View view = inflater.inflate(R.layout.about, null);
+                View view = inflater.inflate(R.layout.settings_about, null);
 
                 TextView versionTextView = (TextView) view.findViewById(R.id.version);
                 ImageView imageView = (ImageView) view.findViewById(R.id.icon);

@@ -1,4 +1,4 @@
-package com.alvarlagerlof.koda.MyProjects;
+package com.alvarlagerlof.koda.Projects;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -16,14 +16,14 @@ import java.util.ArrayList;
  * Created by alvar on 2016-11-08.
  */
 
-class MyProjectsAddDialog {
+class ProjectsAddDialog {
 
-    MyProjectsAddDialog(final Context context, final ArrayList<MyProjectsObject> list, final RecyclerView.Adapter adapter) {
+    ProjectsAddDialog(final Context context, final ArrayList<ProjectsObject> list, final RecyclerView.Adapter adapter) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Vad ska den heta?");
 
 
-        View view = LayoutInflater.from(context).inflate(R.layout.add, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.projects_add, null);
         final EditText input = (EditText) view.findViewById(R.id.input);
 
         builder.setView(view);
@@ -33,7 +33,7 @@ class MyProjectsAddDialog {
             public void onClick(DialogInterface dialog, int which) {
                 String title = String.valueOf(input.getText());
 
-                MyProjectsAdd createTask = new MyProjectsAdd(context, (title == null || title.equals("")) ? "Namnlös" : title, list, adapter);
+                ProjectsAdd createTask = new ProjectsAdd(context, (title == null || title.equals("")) ? "Namnlös" : title, list, adapter);
                 createTask.execute();
 
             }

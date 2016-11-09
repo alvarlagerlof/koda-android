@@ -58,7 +58,7 @@ public class ArchiveBottomSheetFragment extends BottomSheetDialogFragment {
     @Override
     public void setupDialog(final Dialog dialog, int style) {
         super.setupDialog(dialog, style);
-        final View contentView = View.inflate(getContext(), R.layout.sheet_archive, null);
+        final View contentView = View.inflate(getContext(), R.layout.archive_sheet, null);
         dialog.setContentView(contentView);
 
         CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) ((View) contentView.getParent()).getLayoutParams();

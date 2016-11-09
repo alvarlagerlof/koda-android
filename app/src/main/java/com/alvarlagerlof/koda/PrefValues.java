@@ -14,7 +14,7 @@ public class PrefValues {
     // My projects
     public static final String URL_MY_PROJECTS = BASE_URL + API_VERSION + "labbet";
     public static final String URL_MY_PROJECTS_CREATE_NEW = BASE_URL + API_VERSION + "skapa/";
-    public static final String URL_MY_PROJECTS_EDIT = BASE_URL + API_VERSION + "/";
+    public static final String URL_MY_PROJECTS_EDIT = BASE_URL + "labbet/";
     public static final String URL_MY_PROJECTS_DELETE = BASE_URL + "delete/";
 
 
