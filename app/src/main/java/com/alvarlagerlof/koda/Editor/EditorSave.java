@@ -3,9 +3,9 @@ package com.alvarlagerlof.koda.Editor;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.alvarlagerlof.koda.Utils.ConnectionUtils;
 import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
 import com.alvarlagerlof.koda.Projects.ProjectsRealmObject;
+import com.alvarlagerlof.koda.Utils.ConnectionUtils;
 
 import java.io.IOException;
 import java.net.CookieHandler;
@@ -81,7 +81,6 @@ class EditorSave extends AsyncTask<Void, Void, Void> {
 
         // Save locally
         Realm realm = Realm.getDefaultInstance();
-
         ProjectsRealmObject object = realm.where(ProjectsRealmObject.class)
                 .equalTo("privateId", privateID)
                 .findFirst();

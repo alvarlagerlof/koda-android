@@ -54,6 +54,11 @@ public class ProjectsFragment extends Fragment {
 
     public void removeItemAt(int pos) {
         projectsList.remove(pos);
+
+        if (projectsList.size() == 0) {
+            projectsList.add(new ProjectsObject("", "", "", "", "", false, "", "", "", "", ProjectsAdapter.TYPE_NO_ITEMS));
+        }
+
         adapter.notifyDataSetChanged();
     }
 

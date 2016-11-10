@@ -72,6 +72,7 @@ public class NewAccountActivity extends AppCompatActivity {
         errorView = (LinearLayout) findViewById(R.id.error_view);
         errorText = (TextView) findViewById(R.id.error);
 
+        // TODO: TEST THIS CLASS, DOES NOT LOG IN NOW
 
         Glide.with(this)
                 .load("https://hd.unsplash.com/photo-1429051883746-afd9d56fbdaf")

@@ -46,7 +46,7 @@ class ApiGetData extends AsyncTask<Void, Void, String> {
     @Override
     final protected void onPreExecute() {
 
-        list.add(new ApiObject("Loading", ""));
+        list.add(new ApiObject("Loading", "", ApiAdapter.TYPE_LOADING));
         adapter.notifyDataSetChanged();
 
     }
@@ -86,10 +86,10 @@ class ApiGetData extends AsyncTask<Void, Void, String> {
     @Override
     final protected void onPostExecute(String json) {
 
-        if (json != null) {
+        if (json != null && ConnectionUtils.isConnected(context)) {
 
             try {
-                list.remove(0);
+                list.clear();
 
                 JSONArray jsonArray = new JSONArray(json);
 
@@ -98,7 +98,8 @@ class ApiGetData extends AsyncTask<Void, Void, String> {
                         JSONObject jsonobject = jsonArray.getJSONObject(i);
                         String command = jsonobject.getString("command");
                         String description = jsonobject.getString("description");
-                        list.add(new ApiObject(command, description));
+
+                        list.add(new ApiObject(command, description, ApiAdapter.TYPE_ITEM));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -109,6 +110,11 @@ class ApiGetData extends AsyncTask<Void, Void, String> {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
+        } else {
+            list.clear();
+            list.add(new ApiObject("", "", ApiAdapter.TYPE_OFFLINE));
+            adapter.notifyDataSetChanged();
 
         }
     }

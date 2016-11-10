@@ -6,10 +6,12 @@ package com.alvarlagerlof.koda.Api;
 class ApiObject {
     String command;
     String description;
+    int type;
 
-    ApiObject(String command, String description) {
+    ApiObject(String command, String description, int type) {
         this.command = command;
         this.description = description;
+        this.type = type;
     }
 
 }

@@ -10,8 +10,9 @@ class ArchiveObject {
     String commentCount;
     String charCount;
     Boolean liked;
+    int type;
 
-    ArchiveObject(String publicId, String title, String author, String description, String date, String likeCount, String commentCount, String charCount, Boolean liked) {
+    ArchiveObject(String publicId, String title, String author, String description, String date, String likeCount, String commentCount, String charCount, Boolean liked, int type) {
         this.publicId = publicId;
         this.title = title;
         this.author = author;
@@ -21,6 +22,7 @@ class ArchiveObject {
         this.commentCount = commentCount;
         this.charCount = charCount;
         this.liked = liked;
+        this.type = type;
     }
 
 }

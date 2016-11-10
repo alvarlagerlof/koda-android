@@ -14,6 +14,7 @@ public class ProjectsObject {
     String commentCount;
     String charCount;
     String code;
+    int type;
 
 
     public ProjectsObject(String privateId,
@@ -25,7 +26,9 @@ public class ProjectsObject {
                           String likeCount,
                           String commentCount,
                           String charCount,
-                          String code) {
+                          String code,
+                          int type) {
+
         this.privateId    = privateId;
         this.publicId     = publicId;
         this.title        = title;
@@ -36,6 +39,8 @@ public class ProjectsObject {
         this.commentCount = commentCount;
         this.charCount    = charCount;
         this.code         = code;
+        this.type         = type;
+
     }
 
 }

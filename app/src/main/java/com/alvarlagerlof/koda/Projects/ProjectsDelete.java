@@ -3,15 +3,17 @@ package com.alvarlagerlof.koda.Projects;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.alvarlagerlof.koda.Utils.ConnectionUtils;
 import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
 import com.alvarlagerlof.koda.MainAcitivty;
 import com.alvarlagerlof.koda.PrefValues;
+import com.alvarlagerlof.koda.Utils.ConnectionUtils;
 
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -41,6 +43,16 @@ class ProjectsDelete extends AsyncTask<Void, Void, Void> {
     @Override
     final protected void onPreExecute() {
         MainAcitivty.fragmentMyProjects.removeItemAt(position);
+
+        Realm realm = Realm.getDefaultInstance();
+
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                RealmResults<ProjectsRealmObject> result = realm.where(ProjectsRealmObject.class).equalTo("privateId", privateID).findAll();
+                result.deleteAllFromRealm();
+            }
+        });
 
     }
 

@@ -6,7 +6,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#FFF">
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
@@ -30,8 +31,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/recycler_view"
             android:layout_below="@+id/appbarlayout"
-            android:isScrollContainer="false"
-            android:background="#FFF"/>
+            android:isScrollContainer="false" />
 
     </RelativeLayout>
 

@@ -4,10 +4,10 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 
-import com.alvarlagerlof.koda.Utils.ConnectionUtils;
 import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
-import com.alvarlagerlof.koda.Utils.DateConversionUtils;
 import com.alvarlagerlof.koda.PrefValues;
+import com.alvarlagerlof.koda.Utils.ConnectionUtils;
+import com.alvarlagerlof.koda.Utils.DateConversionUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,7 +46,7 @@ class ProfileGetData extends AsyncTask<Void, Void, String> {
     @Override
     final protected void onPreExecute() {
 
-        list.add(new ProfileObject("", "", "", "Loading", "", "", "", "", false, ""));
+        list.add(new ProfileObject("", "", "", "", "", "", "", "", false, "", ProfileAdapter.TYPE_LOADING));
         adapter.notifyDataSetChanged();
 
     }
@@ -86,7 +86,7 @@ class ProfileGetData extends AsyncTask<Void, Void, String> {
     @Override
     final protected void onPostExecute(String json) {
 
-        if (json != null) {
+        if (json != null && ConnectionUtils.isConnected(context)) {
 
             list.clear();
 
@@ -97,7 +97,7 @@ class ProfileGetData extends AsyncTask<Void, Void, String> {
                 String authorTitle      = jsonObject.getJSONObject("profile").getString("author");
                 String numberOfProjects = jsonObject.getJSONObject("profile").getString("numberOfProjects");
 
-                list.add(new ProfileObject("", "", authorTitle, "", "", "", "", "", false, numberOfProjects));
+                list.add(new ProfileObject("", "", authorTitle, "", "", "", "", "", false, numberOfProjects,  ProfileAdapter.TYPE_HEADER));
 
                 JSONArray projectsJsonArray = jsonObject.getJSONArray("projects");
 
@@ -106,7 +106,6 @@ class ProfileGetData extends AsyncTask<Void, Void, String> {
                     JSONObject projectsJsonObject = projectsJsonArray.getJSONObject(i);
 
                     String title          = projectsJsonObject.getString("title");
-                    String author         = projectsJsonObject.getString("author");
                     String description    = projectsJsonObject.getString("description");
                     String updated        = "Uppdaterad " + DateConversionUtils.convert(projectsJsonObject.getString("updated"));
                     String publicID       = projectsJsonObject.getString("publicID");
@@ -114,7 +113,9 @@ class ProfileGetData extends AsyncTask<Void, Void, String> {
                     String comment_count  = projectsJsonObject.getString("comment_count");
                     String char_count     = projectsJsonObject.getString("char_count");
 
-                    list.add(new ProfileObject(publicID, title, updated, description, updated, like_count, comment_count, char_count, true, ""));
+                    // TODO: LIKED NOT FIXED
+
+                    list.add(new ProfileObject(publicID, title, updated, description, updated, like_count, comment_count, char_count, false, "", ProfileAdapter.TYPE_ITEM));
 
                 }
 
@@ -123,6 +124,12 @@ class ProfileGetData extends AsyncTask<Void, Void, String> {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
+        } else {
+
+            list.clear();
+            list.add(new ProfileObject("", "", "", "", "", "", "", "", false, "", ProfileAdapter.TYPE_OFFLINE));
+            adapter.notifyDataSetChanged();
 
         }
         

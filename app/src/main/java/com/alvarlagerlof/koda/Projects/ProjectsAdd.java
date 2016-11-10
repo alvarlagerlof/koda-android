@@ -4,12 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
-import com.alvarlagerlof.koda.Utils.ConnectionUtils;
 import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
 import com.alvarlagerlof.koda.Editor.EditorActivity;
 import com.alvarlagerlof.koda.PrefValues;
+import com.alvarlagerlof.koda.Utils.ConnectionUtils;
 
 import java.net.CookieHandler;
 import java.net.CookieManager;
@@ -84,12 +83,15 @@ class ProjectsAdd extends AsyncTask<Void, Void, Void> {
                 "",
                 "",
                 "",
-                "");
+                "",
+                ProjectsAdapter.TYPE_ITEM);
 
         list.add(0, object);
 
         for (int i = 0; i < list.size(); i++) {
-            Log.d("title", list.get(i).title);
+            if (list.get(i).type == ProjectsAdapter.TYPE_NO_ITEMS) {
+                list.remove(i);
+            }
         }
 
         adapter.notifyDataSetChanged();

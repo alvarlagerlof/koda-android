@@ -29,8 +29,9 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private FragmentManager fragmentManager;
     private ArrayList<ProjectsObject> dataset;
-    private static final int TYPE_LOADING     = 0;
-    private static final int TYPE_ITEM        = 1;
+    static final int TYPE_LOADING  = 0;
+    static final int TYPE_ITEM     = 1;
+    static final int TYPE_NO_ITEMS = 2;
 
 
 
@@ -61,18 +62,29 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     }
 
+    private static class ViewHolderNoItems extends RecyclerView.ViewHolder {
+        ViewHolderNoItems(View itemView) {
+            super(itemView);
+        }
+
+    }
+
+
 
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View loadingView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_loading, viewGroup, false);
         View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.projects_item, viewGroup, false);
+        View noItemsView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.projects_item_no_items, viewGroup, false);
 
         switch (i) {
             case TYPE_LOADING:
                 return new ViewHolderLoading(loadingView);
             case TYPE_ITEM:
                 return new ViewHolderItem(itemView);
+            case TYPE_NO_ITEMS:
+                return new ViewHolderNoItems(noItemsView);
         }
 
         throw new RuntimeException("there is no type that matches the type " + i + " + make sure your using types correctly");
@@ -85,7 +97,9 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             final Context context = ((ViewHolderItem) holder).title.getContext();
 
             ((ViewHolderItem) holder).title.setText(dataset.get(position).title);
-            ((ViewHolderItem) holder).meta.setText(dataset.get(position).updated);
+            ((ViewHolderItem) holder).meta.setText(dataset.get(position).charCount + " karaktärer, "
+                    + dataset.get(position).likeCount + " likes, "
+                    + dataset.get(position).commentCount + " kommentarer");
 
 
             ((ViewHolderItem) holder).itemView.setOnClickListener(new View.OnClickListener() {
@@ -95,7 +109,6 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     intent.putExtra("privateID", dataset.get(position).privateId);
                     intent.putExtra("publicID", dataset.get(position).publicId);
                     intent.putExtra("title", dataset.get(position).title);
-                    intent.putExtra("code", dataset.get(position).code);
                     context.startActivity(intent);
                 }
             });
@@ -127,7 +140,14 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public int getItemViewType(int position) {
-        return dataset.get(position).privateId.equals("Loading") ? TYPE_LOADING : TYPE_ITEM;
+
+        switch (dataset.get(position).type) {
+            case TYPE_ITEM: return TYPE_ITEM;
+            case TYPE_LOADING: return TYPE_LOADING;
+            case TYPE_NO_ITEMS: return TYPE_NO_ITEMS;
+            default: return TYPE_ITEM;
+        }
+
     }
 
     @Override

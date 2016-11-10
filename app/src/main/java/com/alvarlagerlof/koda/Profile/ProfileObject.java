@@ -1,6 +1,6 @@
 package com.alvarlagerlof.koda.Profile;
 
-public class ProfileObject {
+class ProfileObject {
     String publicId;
     String title;
     String author;
@@ -11,8 +11,9 @@ public class ProfileObject {
     String charCount;
     Boolean liked;
     String numberOfProjects;
+    int type;
 
-    ProfileObject(String publicId, String title, String author, String description, String date, String likeCount, String commentCount, String charCount, Boolean liked, String numberOfProjects) {
+    ProfileObject(String publicId, String title, String author, String description, String date, String likeCount, String commentCount, String charCount, Boolean liked, String numberOfProjects, int type) {
         this.publicId = publicId;
         this.title = title;
         this.author = author;
@@ -23,6 +24,7 @@ public class ProfileObject {
         this.charCount = charCount;
         this.liked = liked;
         this.numberOfProjects = numberOfProjects;
+        this.type = type;
     }
 
 }

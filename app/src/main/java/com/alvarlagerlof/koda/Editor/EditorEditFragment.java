@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.alvarlagerlof.koda.R;
 import com.alvarlagerlof.koda.ShaderEditor;
@@ -61,16 +60,12 @@ public class EditorEditFragment extends Fragment {
                 .density(12)
                 .setOnColorSelectedListener(new OnColorSelectedListener() {
                     @Override
-                    public void onColorSelected(int selectedColor) {
-                        Toast.makeText(getContext(), String.valueOf(Integer.toHexString(selectedColor)), Toast.LENGTH_SHORT).show();
-
-                    }
+                    public void onColorSelected(int selectedColor) {}
                 })
                 .setPositiveButton("ok", new ColorPickerClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int selectedColor, Integer[] allColors) {
-                        Toast.makeText(getContext(), String.valueOf(selectedColor), Toast.LENGTH_SHORT).show();
-                        editor.getText().insert(editor.getSelectionStart(), "#" +String.valueOf(selectedColor));
+                        editor.getText().insert(editor.getSelectionStart(), String.format("#%06X", 0xFFFFFF & selectedColor));
                     }
                 })
                 .setNegativeButton("cancel", new DialogInterface.OnClickListener() {

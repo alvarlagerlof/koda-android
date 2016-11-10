@@ -24,9 +24,10 @@ import java.util.ArrayList;
 class ApiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     // Init objects
-    private final int TYPE_LOADING = 0;
-    private final int TYPE_ITEM    = 1;
     private ArrayList<ApiObject> dataset;
+    static final int TYPE_LOADING = 0;
+    static final int TYPE_ITEM    = 1;
+    static final int TYPE_OFFLINE = 2;
 
 
     // Get the data
@@ -37,8 +38,8 @@ class ApiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     // View holders
     private static class ViewHolderItem extends RecyclerView.ViewHolder {
-        final TextView command;
-        final TextView description;
+        TextView command;
+        TextView description;
 
         ViewHolderItem(View itemView) {
             super(itemView);
@@ -54,18 +55,28 @@ class ApiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
+    private static class ViewHolderOffline extends RecyclerView.ViewHolder {
+        ViewHolderOffline(View itemView) {
+            super(itemView);
+        }
+    }
+
 
     // View for viewholder
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View loadingView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_loading, viewGroup, false);
         View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.api_item, viewGroup, false);
+        View offlineView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_offline, viewGroup, false);
+
 
         switch (i) {
             case TYPE_LOADING:
                 return new ViewHolderLoading(loadingView);
             case TYPE_ITEM:
                 return new ViewHolderItem(itemView);
+            case TYPE_OFFLINE:
+                return new ViewHolderOffline(offlineView);
         }
 
         throw new RuntimeException("there is no type that matches the type " + i + " + make sure your using types correctly");
@@ -93,11 +104,16 @@ class ApiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     @Override
+
     public int getItemViewType(int position) {
-        if (dataset.get(position).command.equals("Loading")) {
-            return TYPE_LOADING;
+
+        switch (dataset.get(position).type) {
+            case TYPE_LOADING: return TYPE_LOADING;
+            case TYPE_ITEM: return TYPE_ITEM;
+            case TYPE_OFFLINE: return TYPE_OFFLINE;
+            default: return TYPE_ITEM;
         }
-        return TYPE_ITEM;
+
     }
 
 }

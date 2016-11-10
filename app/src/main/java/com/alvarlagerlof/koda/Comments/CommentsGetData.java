@@ -47,7 +47,8 @@ class CommentsGetData extends AsyncTask<Void, Void, String> {
     @Override
     final protected void onPreExecute() {
 
-        list.add(new CommentsObject("Loading", "", ""));
+        list.add(new CommentsObject("", "", "", CommentsAdapter.TYPE_HEADER));
+        list.add(new CommentsObject("", "", "", CommentsAdapter.TYPE_LOADING));
         adapter.notifyDataSetChanged();
 
     }
@@ -88,9 +89,11 @@ class CommentsGetData extends AsyncTask<Void, Void, String> {
     @Override
     final protected void onPostExecute(String json) {
 
-        if (json != null) {
+        if (json != null && ConnectionUtils.isConnected(context)) {
 
             list.clear();
+            list.add(new CommentsObject("", "", "", CommentsAdapter.TYPE_HEADER));
+
 
             try {
 
@@ -101,17 +104,11 @@ class CommentsGetData extends AsyncTask<Void, Void, String> {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
 
                         String by      = jsonObject.getString("author");
-                        String date    = jsonObject.getString("date");
+                        String date    = jsonObject.getString("date").equals("") ? context.getString(R.string.anonymous) : jsonObject.getString("date");
                         String comment = jsonObject.getString("comment");
 
+                        list.add(new CommentsObject(by, date, comment, CommentsAdapter.TYPE_ITEM));
 
-                        if (jsonObject.isNull("author")) {
-                            by = context.getString(R.string.anonymous);
-                        } else if (by.equals("")) {
-                            by = context.getString(R.string.anonymous);
-                        }
-
-                        list.add(new CommentsObject(by, date, comment));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -121,6 +118,12 @@ class CommentsGetData extends AsyncTask<Void, Void, String> {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
+        } else {
+
+            list.clear();
+            list.add(new CommentsObject("", "", "", CommentsAdapter.TYPE_OFFLINE));
+            adapter.notifyDataSetChanged();
 
         }
         

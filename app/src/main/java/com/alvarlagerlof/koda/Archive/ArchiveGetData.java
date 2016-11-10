@@ -4,11 +4,11 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 
-import com.alvarlagerlof.koda.Utils.ConnectionUtils;
 import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
-import com.alvarlagerlof.koda.Utils.Base64Utils;
 import com.alvarlagerlof.koda.PrefValues;
 import com.alvarlagerlof.koda.R;
+import com.alvarlagerlof.koda.Utils.Base64Utils;
+import com.alvarlagerlof.koda.Utils.ConnectionUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,8 +46,8 @@ class ArchiveGetData extends AsyncTask<Void, Void, String> {
     @Override
     final protected void onPreExecute() {
 
-        list.add(new ArchiveObject("", "", "", "", "", "", "", "", false));
-        list.add(new ArchiveObject("Loading", "", "", "", "", "", "", "", false));
+        list.add(new ArchiveObject("", "", "", "", "", "", "", "", false, ArchiveAdapter.TYPE_HEADER));
+        list.add(new ArchiveObject("", "", "", "", "", "", "", "", false, ArchiveAdapter.TYPE_LOADING));
         adapter.notifyDataSetChanged();
 
     }
@@ -55,6 +55,7 @@ class ArchiveGetData extends AsyncTask<Void, Void, String> {
     @Override
     final protected String doInBackground(Void... progress) {
         if (ConnectionUtils.isConnected(context)) {
+
             try {
 
                 CookieHandler cookieHandler = new CookieManager(
@@ -87,10 +88,10 @@ class ArchiveGetData extends AsyncTask<Void, Void, String> {
     @Override
     final protected void onPostExecute(String json) {
 
-        if (json != null) {
+        if (json != null && ConnectionUtils.isConnected(context)) {
 
             list.clear();
-            list.add(new ArchiveObject("", "", "", "", "", "", "", "", false));
+            list.add(new ArchiveObject("", "", "", "", "", "", "", "", false, ArchiveAdapter.TYPE_HEADER));
 
             try {
                 JSONArray jsonArray = new JSONArray(json);
@@ -112,7 +113,7 @@ class ArchiveGetData extends AsyncTask<Void, Void, String> {
                         if (author.equals("")) author = context.getString(R.string.anonymous);
                         if (description.equals("")) description = context.getString(R.string.no_description);
 
-                        list.add(new ArchiveObject(publicID, title, author, description, updated, likesCount, commentCount, charCount, liked));
+                        list.add(new ArchiveObject(publicID, title, author, description, updated, likesCount, commentCount, charCount, liked, ArchiveAdapter.TYPE_ITEM));
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -125,6 +126,11 @@ class ArchiveGetData extends AsyncTask<Void, Void, String> {
 
             adapter.notifyDataSetChanged();
 
+        } else {
+
+            list.clear();
+            list.add(new ArchiveObject("", "", "", "", "", "", "", "", false, ArchiveAdapter.TYPE_OFFLINE));
+            adapter.notifyDataSetChanged();
         }
         
     }

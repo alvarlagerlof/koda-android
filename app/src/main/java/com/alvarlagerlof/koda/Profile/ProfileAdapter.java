@@ -16,12 +16,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.alvarlagerlof.koda.Utils.AnimationUtils;
 import com.alvarlagerlof.koda.Comments.CommentsActivity;
 import com.alvarlagerlof.koda.LikeDissLike;
 import com.alvarlagerlof.koda.PlayActivity;
 import com.alvarlagerlof.koda.PrefValues;
 import com.alvarlagerlof.koda.R;
+import com.alvarlagerlof.koda.Utils.AnimationUtils;
 
 import java.util.ArrayList;
 
@@ -36,9 +36,10 @@ class ProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private ArrayList<ProfileObject> dataset;
     private Context context;
 
-    private static final int TYPE_HEADER      = 0;
-    private static final int TYPE_LOADING     = 1;
-    private static final int TYPE_ITEM        = 2;
+    static final int TYPE_HEADER  = 0;
+    static final int TYPE_LOADING = 1;
+    static final int TYPE_ITEM    = 2;
+    static final int TYPE_OFFLINE = 3;
 
 
     ProfileAdapter(ArrayList<ProfileObject> dataset, FragmentManager fragmentManager, Context context) {
@@ -106,6 +107,12 @@ class ProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     }
 
+    private static class ViewHolderOffline extends RecyclerView.ViewHolder  {
+        ViewHolderOffline(View itemView){
+            super(itemView);
+        }
+    }
+
 
 
     @Override
@@ -113,6 +120,7 @@ class ProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         View headerView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.profile_header, viewGroup, false);
         View loadingView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_loading, viewGroup, false);
         View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.archive_item, viewGroup, false);
+        View offlineView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_offline, viewGroup, false);
 
         switch (i) {
             case TYPE_HEADER:
@@ -121,8 +129,9 @@ class ProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 return new ViewHolderLoading(loadingView);
             case TYPE_ITEM:
                 return new ViewHolderItem(itemView);
+            case TYPE_OFFLINE:
+                return new ViewHolderOffline(offlineView);
         }
-
         throw new RuntimeException("there is no type that matches the type " + i + " + make sure your using types correctly");
     }
 
@@ -223,12 +232,14 @@ class ProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        if (!dataset.get(position).numberOfProjects.equals("")) {
-            return TYPE_HEADER;
-        } else if (dataset.get(position).author.equals("Loading")) {
-            return TYPE_LOADING;
+
+        switch (dataset.get(position).type) {
+            case TYPE_HEADER: return TYPE_HEADER;
+            case TYPE_LOADING: return TYPE_LOADING;
+            case TYPE_ITEM: return TYPE_ITEM;
+            case TYPE_OFFLINE: return TYPE_OFFLINE;
+            default: return TYPE_ITEM;
         }
-        return TYPE_ITEM;
     }
 
     @Override

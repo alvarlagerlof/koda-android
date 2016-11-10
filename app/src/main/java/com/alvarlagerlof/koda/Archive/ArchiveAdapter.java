@@ -38,9 +38,10 @@ class ArchiveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private FragmentManager fragmentManager;
     private Context context;
 
-    private static final int TYPE_HEADER      = 0;
-    private static final int TYPE_LOADING     = 1;
-    private static final int TYPE_ITEM        = 2;
+    static final int TYPE_HEADER  = 0;
+    static final int TYPE_LOADING = 1;
+    static final int TYPE_ITEM    = 2;
+    static final int TYPE_OFFLINE = 3;
 
 
 
@@ -106,6 +107,11 @@ class ArchiveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     }
 
+    private static class ViewHolderOffline extends RecyclerView.ViewHolder  {
+        ViewHolderOffline(View itemView){
+            super(itemView);
+        }
+    }
 
 
     // View for viewholder
@@ -114,6 +120,8 @@ class ArchiveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         View headerView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_header, viewGroup, false);
         View loadingView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_loading, viewGroup, false);
         View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.archive_item, viewGroup, false);
+        View offlineView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_offline, viewGroup, false);
+
 
         switch (i) {
             case TYPE_HEADER:
@@ -122,6 +130,8 @@ class ArchiveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 return new ViewHolderLoading(loadingView);
             case TYPE_ITEM:
                 return new ViewHolderItem(itemView);
+            case TYPE_OFFLINE:
+                return new ViewHolderOffline(offlineView);
         }
 
         throw new RuntimeException("there is no type that matches the type " + i + " + make sure your using types correctly");
@@ -220,12 +230,15 @@ class ArchiveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        if (position == 0) {
-            return TYPE_HEADER;
-        } else if (dataset.get(position).publicId.equals("Loading")) {
-            return TYPE_LOADING;
+
+        switch (dataset.get(position).type) {
+            case TYPE_HEADER: return TYPE_HEADER;
+            case TYPE_LOADING: return TYPE_LOADING;
+            case TYPE_ITEM: return TYPE_ITEM;
+            case TYPE_OFFLINE: return TYPE_OFFLINE;
+            default: return TYPE_ITEM;
         }
-        return TYPE_ITEM;
+
     }
 
     @Override

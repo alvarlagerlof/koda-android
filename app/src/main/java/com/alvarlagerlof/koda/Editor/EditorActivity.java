@@ -12,8 +12,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.alvarlagerlof.koda.Projects.ProjectsRealmObject;
 import com.alvarlagerlof.koda.R;
 import com.alvarlagerlof.koda.ViewPagerAdapter;
+
+import io.realm.Realm;
 
 
 public class EditorActivity extends AppCompatActivity {
@@ -21,7 +24,6 @@ public class EditorActivity extends AppCompatActivity {
     Toolbar toolbar;
 
     String private_id;
-    String public_id;
     String title;
     String code;
 
@@ -46,25 +48,29 @@ public class EditorActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras == null) {
             SharedPreferences sharedPreferences = getSharedPreferences("Prefs", Context.MODE_PRIVATE);
-            private_id = sharedPreferences.getString("private_id", "null");
-            public_id = sharedPreferences.getString("public_id", "null");
+            private_id = sharedPreferences.getString("privateID", "null");
             title = sharedPreferences.getString("title", "null");
-            code = sharedPreferences.getString("code", "null");
         } else {
-            private_id = extras.getString("private_id");
-            public_id = extras.getString("public_id");
+            private_id = extras.getString("privateID");
             title = extras.getString("title");
-            code = extras.getString("code");
 
             SharedPreferences sharedPreferences = getSharedPreferences("Prefs", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("private_id", private_id);
-            editor.putString("public_id", public_id);
+            editor.putString("privateID", private_id);
             editor.putString("title", title);
-            editor.putString("code", title);
             editor.apply();
         }
 
+
+        // Get the code
+        Realm realm = Realm.getDefaultInstance();
+        ProjectsRealmObject object = realm.where(ProjectsRealmObject.class)
+                .equalTo("privateId", private_id)
+                .findFirst();
+
+        realm.beginTransaction();
+        code = object.getCode();
+        realm.commitTransaction();
 
 
         // Set up the adapter

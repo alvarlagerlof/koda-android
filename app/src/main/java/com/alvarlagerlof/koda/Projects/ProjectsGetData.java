@@ -6,12 +6,12 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.alvarlagerlof.koda.Utils.ConnectionUtils;
 import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
-import com.alvarlagerlof.koda.Utils.Base64Utils;
-import com.alvarlagerlof.koda.Utils.DateConversionUtils;
 import com.alvarlagerlof.koda.PrefValues;
 import com.alvarlagerlof.koda.R;
+import com.alvarlagerlof.koda.Utils.Base64Utils;
+import com.alvarlagerlof.koda.Utils.ConnectionUtils;
+import com.alvarlagerlof.koda.Utils.DateConversionUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,7 +53,7 @@ class ProjectsGetData extends AsyncTask<Void, Void, String> {
     @Override
     final protected void onPreExecute() {
 
-        list.add(new ProjectsObject("Loading", "", "",  "", "", false, "", "", "", ""));
+        list.add(new ProjectsObject("", "", "",  "", "", false, "", "", "", "", ProjectsAdapter.TYPE_LOADING));
         adapter.notifyDataSetChanged();
 
     }
@@ -133,7 +133,7 @@ class ProjectsGetData extends AsyncTask<Void, Void, String> {
                         final String publicID        = gameJsonObject.getString("publicID");
 
                         String title                 = Base64Utils.decode(gameJsonObject.getString("title"));
-                        String updated                = gameJsonObject.getString("updated");
+                        String updated               = DateConversionUtils.convert(gameJsonObject.getString("updated"));
                         final String description     = Base64Utils.decode(gameJsonObject.getString("description"));
                         final boolean isPublic       = gameJsonObject.getString("public").equals("CHECKED");
 
@@ -147,11 +147,7 @@ class ProjectsGetData extends AsyncTask<Void, Void, String> {
                             title = context.getString(R.string.unnamed);
                         }
 
-                        updated = DateConversionUtils.convert(updated) + " | " + likeCount + " likes";
-
-
-
-                        list.add(new ProjectsObject(privateID, publicID, title, updated, description, isPublic, likeCount, commentCount, charCount, code));
+                        list.add(new ProjectsObject(privateID, publicID, title, updated, description, isPublic, likeCount, commentCount, charCount, code, ProjectsAdapter.TYPE_ITEM));
 
                         final String finalTitle = title;
                         final String finalUpdated = updated;
@@ -176,6 +172,10 @@ class ProjectsGetData extends AsyncTask<Void, Void, String> {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                }
+
+                if (games.length() == 0) {
+                    list.add(new ProjectsObject("", "", "", "", "", false, "", "", "", "", ProjectsAdapter.TYPE_NO_ITEMS));
                 }
             }
 
@@ -203,8 +203,12 @@ class ProjectsGetData extends AsyncTask<Void, Void, String> {
                 String charCount    = realmObjects.get(i).getCharCount();
                 String code         = realmObjects.get(i).getCode();
 
-                list.add(new ProjectsObject(privateID, publicID, title, updated, description, isPublic, likeCount, commentCount, charCount, code));
+                list.add(new ProjectsObject(privateID, publicID, title, updated, description, isPublic, likeCount, commentCount, charCount, code, ProjectsAdapter.TYPE_ITEM));
 
+            }
+
+            if (realmObjects.size() == 0) {
+                list.add(new ProjectsObject("", "", "", "", "", false, "", "", "", "", ProjectsAdapter.TYPE_NO_ITEMS));
             }
 
             adapter.notifyDataSetChanged();

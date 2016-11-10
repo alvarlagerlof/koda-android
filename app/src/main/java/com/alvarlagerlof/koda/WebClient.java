@@ -11,8 +11,6 @@ import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.alvarlagerlof.koda.R;
-
 /**
  * Created by alvar on 2016-11-08.
  */
