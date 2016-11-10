@@ -106,7 +106,7 @@ class ArchiveGetData extends AsyncTask<Void, Void, String> {
                         String likesCount   = jsonObject.getString("likes");
                         String commentCount = String.valueOf(new Random().nextInt(100) + 1);
                         String charCount    = String.valueOf(new Random().nextInt(400) + 1);
-                        Boolean liked       = jsonObject.getBoolean("liked");
+                        Boolean liked       = false;
 
                         if (title.equals("")) title = context.getString(R.string.unnamed);
                         if (author.equals("")) author = context.getString(R.string.anonymous);
