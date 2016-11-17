@@ -19,8 +19,8 @@ public class PrefValues {
 
 
     // API
-    public static final String URL_API_2D = BASE_URL + "libs/api_2d_sv.json";
-    public static final String URL_API_3D = BASE_URL + "libs/api_3d_sv.json";
+    public static final String URL_API_2D = BASE_URL + API_VERSION + "api_2d";
+    public static final String URL_API_3D = BASE_URL + API_VERSION + "api_3d";
 
 
     // Archive
@@ -36,8 +36,8 @@ public class PrefValues {
 
 
     // Comments
-    public static final String URL_COMMENTS = "https://ravla.org/comments.php";            // TODO: NOT DONE YET
-    public static final String URL_COMMENTS_ADD = BASE_URL + API_VERSION + "kommentera/";  // TODO: ADD THIS IN THE CODE
+    public static final String URL_COMMENTS = BASE_URL + API_VERSION + "kommentera/";
+    public static final String URL_COMMENTS_ADD = BASE_URL + API_VERSION + "kommentera/";
 
 
     // Profile
@@ -46,11 +46,15 @@ public class PrefValues {
 
     // Other
     public static final String URL_LIKE = BASE_URL + API_VERSION + "plus/";
-    public static final String URL_DISSLIKE = BASE_URL + API_VERSION + "plus/";
+    public static final String URL_DISSLIKE = BASE_URL + API_VERSION + "minus/";
 
     // Login
     public static final String URL_LOGIN = BASE_URL + "login";
     public static final String URL_LOGIN_FORGOT = BASE_URL + "login";
     public static final String URL_LOGIN_CREATE = BASE_URL + "login";
+
+    public static final String URL_LOGIN_IMAGE = "https://hd.unsplash.com/photo-1461749280684-dccba630e2f6";
+    public static final String URL_LOGIN_FORGOT_IMAGE = "https://hd.unsplash.com/photo-1461632830798-3adb3034e4c8";
+    public static final String URL_LOGIN_CREATE_IMAGE = "https://hd.unsplash.com/photo-1429051883746-afd9d56fbdaf";
 
 }

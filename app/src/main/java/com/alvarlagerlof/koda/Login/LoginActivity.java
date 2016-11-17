@@ -58,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
         errorText = (TextView) findViewById(R.id.error);
 
         Glide.with(LoginActivity.this)
-                .load("https://hd.unsplash.com/photo-1461749280684-dccba630e2f6")
+                .load(PrefValues.URL_LOGIN_IMAGE)
                 .into((ImageView) findViewById(R.id.background));
 
     }
@@ -67,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
     public void login(View view) {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString("email", email.getText().toString()); //TODO: SECURE THIS
+        editor.putString("email", email.getText().toString());
         editor.apply();
 
         new LoginAsync().execute();

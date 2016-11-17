@@ -26,6 +26,7 @@ class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     static final int TYPE_LOADING     = 1;
     static final int TYPE_ITEM        = 2;
     static final int TYPE_OFFLINE     = 3;
+    static final int TYPE_NO_COMMENTS = 4;
 
 
     CommentsAdapter(ArrayList<CommentsObject> dataset) {
@@ -49,13 +50,13 @@ class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     private static class ViewHolderItem extends RecyclerView.ViewHolder {
-        TextView by;
+        TextView author;
         TextView date;
         TextView comment;
 
         ViewHolderItem(View itemView) {
             super(itemView);
-            by      = (TextView) itemView.findViewById(R.id.by);
+            author      = (TextView) itemView.findViewById(R.id.by);
             date = (TextView) itemView.findViewById(R.id.meta);
             comment = (TextView) itemView.findViewById(R.id.comment);
         }
@@ -68,6 +69,12 @@ class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
+    private static class ViewHolderNoComemnts extends RecyclerView.ViewHolder  {
+        ViewHolderNoComemnts(View itemView){
+            super(itemView);
+        }
+    }
+
 
 
     @Override
@@ -76,6 +83,7 @@ class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         View loadingView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_loading, viewGroup, false);
         View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.comments_item, viewGroup, false);
         View offlineView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_offline, viewGroup, false);
+        View noCommentsView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.comments_no_comments_item, viewGroup, false);
 
 
         switch (i) {
@@ -87,6 +95,8 @@ class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 return new ViewHolderItem(itemView);
             case TYPE_OFFLINE:
                 return new ViewHolderOffline(offlineView);
+            case TYPE_NO_COMMENTS:
+                return new ViewHolderNoComemnts(noCommentsView);
         }
 
         throw new RuntimeException("there is no type that matches the type " + i + " + make sure your using types correctly");
@@ -101,7 +111,7 @@ class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         } else if (holder instanceof ViewHolderItem) {
 
-            ((ViewHolderItem) holder).by.setText(dataset.get(position).by);
+            ((ViewHolderItem) holder).author.setText(dataset.get(position).author);
             ((ViewHolderItem) holder).date.setText(dataset.get(position).date);
             ((ViewHolderItem) holder).comment.setText(dataset.get(position).comment);
 
@@ -118,6 +128,7 @@ class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             case TYPE_LOADING: return TYPE_LOADING;
             case TYPE_ITEM: return TYPE_ITEM;
             case TYPE_OFFLINE: return TYPE_OFFLINE;
+            case TYPE_NO_COMMENTS: return TYPE_NO_COMMENTS;
             default: return TYPE_ITEM;
         }
     }

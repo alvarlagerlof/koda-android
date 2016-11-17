@@ -53,7 +53,7 @@ class ProjectsGetData extends AsyncTask<Void, Void, String> {
     @Override
     final protected void onPreExecute() {
 
-        list.add(new ProjectsObject("", "", "",  "", "", false, "", "", "", "", ProjectsAdapter.TYPE_LOADING));
+        list.add(new ProjectsObject("", "", "",  "", "", false, "", "", ProjectsAdapter.TYPE_LOADING));
         adapter.notifyDataSetChanged();
 
     }
@@ -137,8 +137,6 @@ class ProjectsGetData extends AsyncTask<Void, Void, String> {
                         final String description     = Base64Utils.decode(gameJsonObject.getString("description"));
                         final boolean isPublic       = gameJsonObject.getString("public").equals("CHECKED");
 
-                        final String likeCount       = gameJsonObject.getString("likes");
-                        final String commentCount    = "0"; //jsonObject.getString("comment_count");
                         final String charCount       = gameJsonObject.getString("charcount");
                         final String code            = Base64Utils.decode(gameJsonObject.getString("code"));
 
@@ -147,7 +145,7 @@ class ProjectsGetData extends AsyncTask<Void, Void, String> {
                             title = context.getString(R.string.unnamed);
                         }
 
-                        list.add(new ProjectsObject(privateID, publicID, title, updated, description, isPublic, likeCount, commentCount, charCount, code, ProjectsAdapter.TYPE_ITEM));
+                        list.add(new ProjectsObject(privateID, publicID, title, updated, description, isPublic, charCount, code, ProjectsAdapter.TYPE_ITEM));
 
                         final String finalTitle = title;
                         final String finalUpdated = updated;
@@ -161,8 +159,6 @@ class ProjectsGetData extends AsyncTask<Void, Void, String> {
                                 object.setUpdated(finalUpdated);
                                 object.setDescription(description);
                                 object.setIsPublic(isPublic);
-                                object.setLikeCount(likeCount);
-                                object.setCommentCount(commentCount);
                                 object.setCharCount(charCount);
                                 object.setCode(code);
                             }
@@ -175,7 +171,7 @@ class ProjectsGetData extends AsyncTask<Void, Void, String> {
                 }
 
                 if (games.length() == 0) {
-                    list.add(new ProjectsObject("", "", "", "", "", false, "", "", "", "", ProjectsAdapter.TYPE_NO_ITEMS));
+                    list.add(new ProjectsObject("", "", "", "", "", false, "", "", ProjectsAdapter.TYPE_NO_ITEMS));
                 }
             }
 
@@ -198,17 +194,15 @@ class ProjectsGetData extends AsyncTask<Void, Void, String> {
                 String description  = realmObjects.get(i).getDescription();
                 boolean isPublic    = realmObjects.get(i).getIsPublic();
 
-                String likeCount    = realmObjects.get(i).getLikeCount();
-                String commentCount = realmObjects.get(i).getCommentCount();
                 String charCount    = realmObjects.get(i).getCharCount();
                 String code         = realmObjects.get(i).getCode();
 
-                list.add(new ProjectsObject(privateID, publicID, title, updated, description, isPublic, likeCount, commentCount, charCount, code, ProjectsAdapter.TYPE_ITEM));
+                list.add(new ProjectsObject(privateID, publicID, title, updated, description, isPublic, charCount, code, ProjectsAdapter.TYPE_ITEM));
 
             }
 
             if (realmObjects.size() == 0) {
-                list.add(new ProjectsObject("", "", "", "", "", false, "", "", "", "", ProjectsAdapter.TYPE_NO_ITEMS));
+                list.add(new ProjectsObject("", "", "", "", "", false, "", "", ProjectsAdapter.TYPE_NO_ITEMS));
             }
 
             adapter.notifyDataSetChanged();

@@ -97,9 +97,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             final Context context = ((ViewHolderItem) holder).title.getContext();
 
             ((ViewHolderItem) holder).title.setText(dataset.get(position).title);
-            ((ViewHolderItem) holder).meta.setText(dataset.get(position).charCount + " karaktärer, "
-                    + dataset.get(position).likeCount + " likes, "
-                    + dataset.get(position).commentCount + " kommentarer");
+            ((ViewHolderItem) holder).meta.setText(dataset.get(position).updated);
 
 
             ((ViewHolderItem) holder).itemView.setOnClickListener(new View.OnClickListener() {

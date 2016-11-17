@@ -37,7 +37,7 @@
         <com.roughike.bottombar.BottomBar
             android:id="@+id/bottomBar"
             android:layout_width="match_parent"
-            android:layout_height="62dp"
+            android:layout_height="65dp"
             android:layout_alignParentBottom="true"
             app:bb_tabXmlResource="@xml/bottom_bar"
             app:bb_behavior="underNavbar"

@@ -5,13 +5,13 @@ package com.alvarlagerlof.koda.Comments;
  */
 
 class CommentsObject {
-    String by;
+    String author;
     String date;
     String comment;
     int type;
 
-    CommentsObject(String by, String date, String comment, int type) {
-        this.by = by;
+    CommentsObject(String author, String date, String comment, int type) {
+        this.author = author;
         this.date = date;
         this.comment = comment;
         this.type = type;

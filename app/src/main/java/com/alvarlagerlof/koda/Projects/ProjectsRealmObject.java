@@ -13,8 +13,6 @@ public class ProjectsRealmObject extends RealmObject {
     private String author;
     private String description;
     private Boolean isPublic;
-    private String likeCount;
-    private String commentCount;
     private String charCount;
     private String code;
 
@@ -89,25 +87,6 @@ public class ProjectsRealmObject extends RealmObject {
         this.isPublic = isPublic;
     }
 
-
-    // Like count
-    public String getLikeCount() {
-        return likeCount;
-    }
-
-    public void setLikeCount(String likeCount) {
-        this.likeCount = likeCount;
-    }
-
-
-    // Comment count
-    public String getCommentCount() {
-        return commentCount;
-    }
-
-    public void setCommentCount(String commentCount) {
-        this.commentCount = commentCount;
-    }
 
 
     // Char count

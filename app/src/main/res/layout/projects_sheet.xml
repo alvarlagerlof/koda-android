@@ -85,7 +85,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Kommentarer"
+            android:text="Visa kommentarer"
             android:layout_gravity="center_vertical"
             style="@style/textMedium"/>
 

@@ -44,7 +44,7 @@ public class CommentsActivity extends AppCompatActivity {
 
 
         // Get data
-        CommentsGetData dataTask = new CommentsGetData(this, list, adapter);
+        CommentsGetData dataTask = new CommentsGetData(this, getIntent().getStringExtra("publicID"), list, adapter);
         dataTask.execute();
 
     }

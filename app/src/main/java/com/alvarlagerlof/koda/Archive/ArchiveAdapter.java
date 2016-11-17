@@ -208,7 +208,7 @@ class ArchiveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(((ViewHolderItem) holder).title.getContext(), CommentsActivity.class);
-                    intent.putExtra("public_id", dataset.get(position).publicId);
+                    intent.putExtra("publicID", dataset.get(position).publicId);
                     intent.putExtra("title", dataset.get(position).title);
                     ((ViewHolderItem) holder).title.getContext().startActivity(intent);
                 }

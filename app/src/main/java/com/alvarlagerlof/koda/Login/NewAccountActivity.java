@@ -75,7 +75,7 @@ public class NewAccountActivity extends AppCompatActivity {
         // TODO: TEST THIS CLASS, DOES NOT LOG IN NOW
 
         Glide.with(this)
-                .load("https://hd.unsplash.com/photo-1429051883746-afd9d56fbdaf")
+                .load(PrefValues.URL_LOGIN_CREATE_IMAGE)
                 .into((ImageView) findViewById(R.id.background));
 
     }

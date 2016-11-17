@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.alvarlagerlof.koda.PrefValues;
 import com.alvarlagerlof.koda.R;
 import com.bumptech.glide.Glide;
 
@@ -61,7 +62,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
 
         Glide.with(this)
-                .load("https://hd.unsplash.com/photo-1461632830798-3adb3034e4c8")
+                .load(PrefValues.URL_LOGIN_FORGOT_IMAGE)
                 .into((ImageView) findViewById(R.id.background));
 
     }

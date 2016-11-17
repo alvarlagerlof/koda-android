@@ -135,9 +135,7 @@ public class MainAcitivty extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (result != null) {
-            if (result.getContents() == null) {
-                Toast.makeText(this, getResources().getText(R.string.scan_failed), Toast.LENGTH_LONG).show();
-            } else {
+            if (result.getContents() != null) {
                 String url = String.valueOf(result.getContents());
 
                 Intent intent = new Intent(MainAcitivty.this, PlayActivity.class);
@@ -167,7 +165,7 @@ public class MainAcitivty extends AppCompatActivity {
                 IntentIntegrator integrator = new IntentIntegrator(MainAcitivty.this);
                 integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
                 integrator.setCameraId(0);
-                integrator.setOrientationLocked(false);
+                integrator.setOrientationLocked(true);
                 integrator.setBeepEnabled(false);
                 integrator.initiateScan();
                 return true;

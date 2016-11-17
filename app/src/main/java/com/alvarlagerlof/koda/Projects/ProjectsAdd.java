@@ -63,8 +63,6 @@ class ProjectsAdd extends AsyncTask<Void, Void, Void> {
                 object.setUpdated(String.valueOf(System.currentTimeMillis() / 1000L));
                 object.setDescription("");
                 object.setIsPublic(false);
-                object.setLikeCount("0");
-                object.setCommentCount("0");
                 object.setCharCount("");
                 object.setCode("<script src=\"http://koda.nu/simple.js\">\n" +
                         "\n" +
@@ -80,8 +78,6 @@ class ProjectsAdd extends AsyncTask<Void, Void, Void> {
                 String.valueOf(System.currentTimeMillis() / 1000L),
                 "",
                 false,
-                "",
-                "",
                 "",
                 "",
                 ProjectsAdapter.TYPE_ITEM);
@@ -135,6 +131,10 @@ class ProjectsAdd extends AsyncTask<Void, Void, Void> {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+
+            // TODO: WAIT FOR SERVER RESPONSE BEFORE OPENING EDITOR
+
         }
 
         return null;
