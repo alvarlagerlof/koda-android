@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Skapa konto"
-            android:textSize="50dp"
+            android:textSize="40sp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/app_bar_top_padding"
             android:layout_marginBottom="64dp"
@@ -62,7 +62,7 @@
                 style="@style/Widget.AppCompat.Button"
                 android:backgroundTint="@color/white"
                 android:textColor="#000"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:layout_gravity="center_horizontal"
                 android:onClick="createAccount"/>
 
@@ -109,7 +109,7 @@
             style="@style/Widget.AppCompat.Button"
             android:backgroundTint="@color/white"
             android:textColor="#000"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="16dp"
             android:layout_gravity="center_horizontal"
             android:onClick="openLab"/>
 

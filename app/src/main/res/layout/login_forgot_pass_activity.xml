@@ -21,8 +21,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Glömt lösenord"
-            android:textSize="50dp"
+            android:text="Glömt lösenordet"
+            android:textSize="40sp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/app_bar_top_padding"
             android:layout_marginBottom="64dp"
@@ -57,7 +57,7 @@
 
                 <Button
                     android:layout_width="match_parent"
-                    android:padding="16dp"
+                    android:padding="8dp"
                     android:layout_height="wrap_content"
                     android:text="Nästa"
                     style="@style/Widget.AppCompat.Button"

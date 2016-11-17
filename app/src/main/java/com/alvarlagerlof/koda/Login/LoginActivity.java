@@ -1,18 +1,16 @@
 package com.alvarlagerlof.koda.Login;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TextInputEditText;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
 import com.alvarlagerlof.koda.MainAcitivty;
@@ -43,8 +41,6 @@ public class LoginActivity extends AppCompatActivity {
     TextInputEditText email;
     TextInputEditText password;
 
-    TextView errorText;
-
 
 
     @Override
@@ -55,7 +51,6 @@ public class LoginActivity extends AppCompatActivity {
         email = (TextInputEditText) findViewById(R.id.email);
         password = (TextInputEditText) findViewById(R.id.password);
 
-        errorText = (TextView) findViewById(R.id.error);
 
         Glide.with(LoginActivity.this)
                 .load(PrefValues.URL_LOGIN_IMAGE)
@@ -152,14 +147,17 @@ public class LoginActivity extends AppCompatActivity {
                         startActivity(new Intent(LoginActivity.this, MainAcitivty.class));
 
                     } else {
-                        errorText.setVisibility(View.VISIBLE);
 
-                        Animation fadeIn = new AlphaAnimation(0, 1);
-                        fadeIn.setInterpolator(new DecelerateInterpolator()); //projects_add this
-                        fadeIn.setDuration(300);
-                        fadeIn.setFillAfter(true);
+                        new AlertDialog.Builder(LoginActivity.this)
+                                .setTitle("Ops!")
+                                .setMessage("Felaktigt skriven email eller lösenord")
+                                .setPositiveButton("Försök igen", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.cancel();
+                                    }
+                                })
+                                .show();
 
-                        errorText.setAnimation(fadeIn);
                     }
 
                 } catch (JSONException e) {
