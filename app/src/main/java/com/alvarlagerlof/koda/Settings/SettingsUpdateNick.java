@@ -61,9 +61,6 @@ class SettingsUpdateNick extends AsyncTask<Void, Void, Void> {
                     .post(data)
                     .build();
 
-
-            // TODO: DOES NOT SAVE THE NICKNAME ON THE SERVER
-
             try {
                 Response response = client.newCall(request).execute();
                 //Log.d("SettingsUpdateNick", response.body().string());

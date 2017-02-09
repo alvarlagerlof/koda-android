@@ -2,9 +2,6 @@
 
     <string name="app_name">Koda.nu ALPHA</string>
     
-    <string name="open_drawer">Öppna menyn</string>
-    <string name="close_drawer">Stäng menyn</string>
-    
     <string name="anonymous">Anonym</string>
     <string name="unnamed">Namnlös</string>
     <string name="no_description">Ingen beskrivning</string>
@@ -17,7 +14,7 @@
     <string name="play_no_name">Spela</string>
 
     <string name="menu_scan">Skanna kod</string>
-    <string name="menu_profile">Min profil</string>
+    <string name="menu_search">Sök</string>
 
 
     <!-- My projects Edit info -->

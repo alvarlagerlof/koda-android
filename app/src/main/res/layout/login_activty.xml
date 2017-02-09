@@ -16,7 +16,7 @@
         android:orientation="vertical"
         android:background="@color/darkbackground"
         android:paddingRight="16dp"
-        android:paddingLeft="26dp"
+        android:paddingLeft="16dp"
         android:paddingTop="48dp">
 
         <LinearLayout
@@ -31,7 +31,7 @@
                 android:textSize="40sp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/app_bar_top_padding"
-                android:layout_marginBottom="54dp"
+                android:layout_marginBottom="38dp"
                 android:textColor="@color/white"/>
 
             <android.support.design.widget.TextInputLayout
@@ -47,7 +47,8 @@
                     android:textColor="@color/white"
                     android:backgroundTint="@color/white"
                     android:inputType="textEmailAddress"
-                    android:id="@+id/email"/>
+                    android:id="@+id/email"
+                    android:text="alvar.lagerlof@gmail.com"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -63,7 +64,8 @@
                     android:inputType="textPassword"
                     android:textColor="@color/white"
                     android:backgroundTint="@color/white"
-                    android:id="@+id/password"/>
+                    android:id="@+id/password"
+                    android:text="eEPANr"/>
 
             </android.support.design.widget.TextInputLayout>
 

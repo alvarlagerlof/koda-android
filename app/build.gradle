@@ -71,6 +71,10 @@ dependencies {
     compile 'com.github.QuadFlask:colorpicker:0.0.12'
 
 
+    compile 'com.arasthel:asyncjob-library:1.0.3'
+
+
+
 
 }
 

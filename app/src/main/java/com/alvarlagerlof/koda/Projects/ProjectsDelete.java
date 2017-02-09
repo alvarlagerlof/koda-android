@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
-import com.alvarlagerlof.koda.MainAcitivty;
 import com.alvarlagerlof.koda.PrefValues;
 import com.alvarlagerlof.koda.Utils.ConnectionUtils;
 
@@ -27,12 +26,10 @@ class ProjectsDelete extends AsyncTask<Void, Void, Void> {
 
     private Context context;
     private String privateID;
-    private int position;
 
-    ProjectsDelete(Context context, String privateID, int position) {
+    ProjectsDelete(Context context, String privateID) {
         this.context = context;
         this.privateID = privateID;
-        this.position = position;
     }
 
 
@@ -42,11 +39,8 @@ class ProjectsDelete extends AsyncTask<Void, Void, Void> {
     // Code here
     @Override
     final protected void onPreExecute() {
-        MainAcitivty.fragmentMyProjects.removeItemAt(position);
 
-        Realm realm = Realm.getDefaultInstance();
-
-        realm.executeTransaction(new Realm.Transaction() {
+        Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 RealmResults<ProjectsRealmObject> result = realm.where(ProjectsRealmObject.class).equalTo("privateId", privateID).findAll();
@@ -84,7 +78,4 @@ class ProjectsDelete extends AsyncTask<Void, Void, Void> {
     }
 
 
-    @Override
-    final protected void onPostExecute(Void aVoid) {
-    }
 }

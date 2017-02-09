@@ -10,7 +10,6 @@ public class ProjectsRealmObject extends RealmObject {
     private String publicId;
     private String title;
     private String updated;
-    private String author;
     private String description;
     private Boolean isPublic;
     private String charCount;
@@ -55,16 +54,6 @@ public class ProjectsRealmObject extends RealmObject {
 
     public void setUpdated(String updated) {
         this.updated = updated;
-    }
-
-
-    // Creator
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
     }
 
 

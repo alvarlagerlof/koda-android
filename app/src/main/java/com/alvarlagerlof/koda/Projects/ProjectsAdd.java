@@ -3,7 +3,6 @@ package com.alvarlagerlof.koda.Projects;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.widget.RecyclerView;
 
 import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
 import com.alvarlagerlof.koda.Editor.EditorActivity;
@@ -13,7 +12,6 @@ import com.alvarlagerlof.koda.Utils.ConnectionUtils;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
-import java.util.ArrayList;
 
 import io.realm.Realm;
 import okhttp3.FormBody;
@@ -31,14 +29,10 @@ class ProjectsAdd extends AsyncTask<Void, Void, Void> {
 
     private Context context;
     private String title;
-    private ArrayList<ProjectsObject> list;
-    private RecyclerView.Adapter adapter;
 
-    ProjectsAdd(Context context, String title, ArrayList<ProjectsObject> list, RecyclerView.Adapter adapter) {
+    ProjectsAdd(Context context, String title) {
         this.context = context;
         this.title = title;
-        this.list = list;
-        this.adapter = adapter;
     }
 
 
@@ -71,26 +65,6 @@ class ProjectsAdd extends AsyncTask<Void, Void, Void> {
                         "</script>");
             }
         });
-
-        ProjectsObject object = new ProjectsObject(offlineId,
-                "",
-                title,
-                String.valueOf(System.currentTimeMillis() / 1000L),
-                "",
-                false,
-                "",
-                "",
-                ProjectsAdapter.TYPE_ITEM);
-
-        list.add(0, object);
-
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).type == ProjectsAdapter.TYPE_NO_ITEMS) {
-                list.remove(i);
-            }
-        }
-
-        adapter.notifyDataSetChanged();
 
         Intent intent = new Intent(context, EditorActivity.class);
         intent.putExtra("privateID", offlineId);

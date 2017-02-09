@@ -23,6 +23,10 @@ public class PrefValues {
     public static final String URL_API_3D = BASE_URL + API_VERSION + "api_3d";
 
 
+    // Guides
+    public static  final String URL_GUIDES = "https://ravla.org/guider.json";
+
+
     // Archive
     public static final String URL_ARCHIVE = BASE_URL + API_VERSION + "arkivet";
 
@@ -37,7 +41,7 @@ public class PrefValues {
 
     // Comments
     public static final String URL_COMMENTS = BASE_URL + API_VERSION + "kommentera/";
-    public static final String URL_COMMENTS_ADD = BASE_URL + API_VERSION + "kommentera/";
+    public static final String URL_COMMENTS_SEND = BASE_URL + API_VERSION + "kommentera/";
 
 
     // Profile
@@ -45,8 +49,8 @@ public class PrefValues {
 
 
     // Other
-    public static final String URL_LIKE = BASE_URL + API_VERSION + "plus/";
-    public static final String URL_DISSLIKE = BASE_URL + API_VERSION + "minus/";
+    public static final String URL_LIKE = BASE_URL + "plus/";
+    public static final String URL_DISSLIKE = BASE_URL + "minus/";
 
     // Login
     public static final String URL_LOGIN = BASE_URL + "login";

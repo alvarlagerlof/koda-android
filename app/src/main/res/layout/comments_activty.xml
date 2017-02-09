@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:fitsSystemWindows="true">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
+
+        <!--- Appbar -->
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/appbarlayout"
-            android:paddingTop="@dimen/app_bar_top_padding">
+            android:id="@+id/appbarlayout">
 
             <android.support.v7.widget.Toolbar
                 android:layout_width="match_parent"
@@ -24,32 +28,25 @@
         </android.support.design.widget.AppBarLayout>
 
 
+        <!-- Comments -->
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/recycler_view"
-            android:layout_below="@+id/appbarlayout"
-            android:isScrollContainer="false"
-            android:stackFromBottom="true"
-            android:transcriptMode="normal"/>
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:id="@+id/recycler_view" />
 
+
+        <!-- Text field -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#2b2b2b"
             android:orientation="vertical"
-            android:id="@+id/chat_box"
-            android:layout_alignParentBottom="true">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"/>
+            android:id="@+id/chat_box">
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp">
+                android:layout_height="wrap_content">
 
                 <EditText
                     android:layout_width="wrap_content"
@@ -59,20 +56,24 @@
                     android:textColor="@color/white"
                     android:textColorHint="#d4d4d4"
                     android:inputType="textCapSentences|textMultiLine"
-                    android:layout_marginRight="40dp"/>
+                    android:layout_marginRight="40dp"
+                    android:id="@+id/comment_edittext"
+                    android:padding="16dp"/>
 
-                <ImageView
+                <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_send"
                     android:background="@drawable/click"
-                    android:layout_gravity="right|center_vertical" />
+                    android:layout_gravity="right|center_vertical"
+                    android:onClick="addComment"
+                    android:padding="16dp"/>
 
             </FrameLayout>
 
         </LinearLayout>
 
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

@@ -1,15 +1,18 @@
 package com.alvarlagerlof.koda.Login;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -19,6 +22,10 @@ import android.widget.TextView;
 import com.alvarlagerlof.koda.PrefValues;
 import com.alvarlagerlof.koda.R;
 import com.bumptech.glide.Glide;
+import com.google.firebase.crash.FirebaseCrash;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -38,11 +45,14 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     ProgressBar progressBar;
 
 
-
     LinearLayout emailView;
     LinearLayout resultView;
+    LinearLayout errorView;
 
     TextView resultTextView;
+    TextView errorText;
+
+    Toolbar toolbar;
 
 
     @Override
@@ -57,32 +67,45 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
         emailView = (LinearLayout) findViewById(R.id.email_view);
         resultView = (LinearLayout) findViewById(R.id.result_view);
+        errorView = (LinearLayout) findViewById(R.id.error_view);
+
 
         resultTextView = (TextView) findViewById(R.id.result_text);
+        errorText = (TextView) findViewById(R.id.error);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_close);
+
 
 
         Glide.with(this)
                 .load(PrefValues.URL_LOGIN_FORGOT_IMAGE)
                 .into((ImageView) findViewById(R.id.background));
 
+        findViewById(R.id.background).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                InputMethodManager inputMethodManager = (InputMethodManager) ForgotPasswordActivity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(ForgotPasswordActivity.this.getCurrentFocus().getWindowToken(), 0);
+            }
+        });
+
+
     }
 
 
+
+    public void next(View view) {
+        progressBar.setVisibility(View.VISIBLE);
+        new PasswordAsync().execute();
+
+    }
 
     public void finish(View view) {
         finish();
     }
-
-    public void next(View view) {
-        // TODO: CHECK IF EMAIL IS VALID
-
-        nextButton.setVisibility(View.GONE);
-        progressBar.setVisibility(View.VISIBLE);
-
-        new PasswordAsync().execute();
-    }
-
-
 
 
     class PasswordAsync extends AsyncTask<Void, Integer, String> {
@@ -96,73 +119,172 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         }
 
 
-        protected String doInBackground(Void...arg0) {
+        protected String doInBackground(Void... arg0) {
 
             OkHttpClient client = new OkHttpClient.Builder().build();
 
             RequestBody formBody = new FormBody.Builder()
                     .add("email", emailString)
                     .add("verification_reset", "7")
+                    .add("headless", "thisIsSet")
                     .build();
 
 
             Request request = new Request.Builder()
-                    .url("https://koda.nu/login")
+                    .url(PrefValues.URL_LOGIN_FORGOT)
                     .post(formBody)
                     .build();
 
+            String result = null;
+
             try {
                 Response response = client.newCall(request).execute();
-                Log.d("response", response.toString());
+                result = response.body().string();
+                response.body().close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
 
-            return "";
+            return result;
         }
 
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
-            resultTextView.setText("Ett återställningsmail har skickats till\n" + emailString);
+            if (s != null) {
+                try {
 
-            Animation fadeOut = new AlphaAnimation(1, 0);
-            fadeOut.setInterpolator(new AccelerateInterpolator()); //and this
-            fadeOut.setDuration(500);
-            fadeOut.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
+                    JSONObject jsonObject = new JSONObject(s);
 
+                    if (jsonObject.getString("success").equals("true")) {
+
+                        resultTextView.setText(jsonObject.getString("message"));
+
+                        Animation fadeOut = new AlphaAnimation(1, 0);
+                        fadeOut.setInterpolator(new AccelerateInterpolator()); //and this
+                        fadeOut.setDuration(500);
+                        fadeOut.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                                emailView.setVisibility(View.INVISIBLE);
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {
+
+                            }
+                        });
+
+
+                        Animation fadeIn = new AlphaAnimation(0, 1);
+                        fadeIn.setInterpolator(new DecelerateInterpolator()); //projects_add this
+                        fadeIn.setDuration(500);
+                        fadeIn.setStartOffset(1000);
+                        fadeIn.setFillAfter(true);
+
+
+                        resultTextView.setVisibility(View.VISIBLE);
+
+                        emailView.startAnimation(fadeOut);
+                        resultView.startAnimation(fadeIn);
+
+
+                    } else {
+                        errorText.setText(jsonObject.getString("message"));
+
+                        Animation fadeOut = new AlphaAnimation(1, 0);
+                        fadeOut.setInterpolator(new AccelerateInterpolator());
+                        fadeOut.setDuration(500);
+                        fadeOut.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                                emailView.setVisibility(View.GONE);
+                                resultView.setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {
+                            }
+                        });
+
+
+                        emailView.startAnimation(fadeOut);
+
+
+                        Animation fadeIn = new AlphaAnimation(0, 1);
+                        fadeIn.setInterpolator(new DecelerateInterpolator()); //projects_add this
+                        fadeIn.setDuration(500);
+                        fadeIn.setStartOffset(500);
+                        fadeIn.setFillAfter(true);
+
+                        errorView.setVisibility(View.VISIBLE);
+                        errorView.startAnimation(fadeIn);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    FirebaseCrash.report(e);
                 }
 
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    emailView.setVisibility(View.INVISIBLE);
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-
-                }
-            });
-
-
-            Animation fadeIn = new AlphaAnimation(0, 1);
-            fadeIn.setInterpolator(new DecelerateInterpolator()); //projects_add this
-            fadeIn.setDuration(500);
-            fadeIn.setStartOffset(1000);
-            fadeIn.setFillAfter(true);
-
-
-            resultTextView.setVisibility(View.VISIBLE);
-
-            emailView.startAnimation(fadeOut);
-            resultView.startAnimation(fadeIn);
-
+            }
         }
     }
 
+
+    public void reset(View view) {
+
+        final Animation fadeIn = new AlphaAnimation(0, 1);
+        fadeIn.setInterpolator(new DecelerateInterpolator()); //projects_add this
+        fadeIn.setDuration(500);
+        fadeIn.setStartOffset(500);
+        fadeIn.setFillAfter(true);
+
+        Animation fadeOut = new AlphaAnimation(1, 0);
+        fadeOut.setInterpolator(new AccelerateInterpolator());
+        fadeOut.setDuration(500);
+        fadeOut.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {}
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                emailView.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.INVISIBLE);
+                emailView.startAnimation(fadeIn);
+                errorView.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {}
+        });
+
+
+        errorView.startAnimation(fadeOut);
+
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
 }

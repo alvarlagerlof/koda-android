@@ -4,12 +4,12 @@
     xmlns:card_view="http://schemas.android.com/tools"
     android:layout_width="150dp"
     android:layout_height="150dp"
+    android:layout_marginLeft="16dp"
     card_view:cardCornerRadius="4dp"
     card_view:cardElevation="8dp"
     card_view:cardBackgroundColor="#2b2b2b"
     android:background="#2b2b2b"
-    android:foreground="@drawable/click"
-    android:layout_marginRight="16dp">
+    android:foreground="@drawable/click">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,7 +25,6 @@
 
         <TextView
             android:id="@+id/title"
-            android:text="Titel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="16dp"

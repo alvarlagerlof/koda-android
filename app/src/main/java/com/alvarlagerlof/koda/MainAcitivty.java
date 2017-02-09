@@ -2,29 +2,28 @@ package com.alvarlagerlof.koda;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.IdRes;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.alvarlagerlof.koda.Api.FragmentApi;
-import com.alvarlagerlof.koda.Archive.ArchiveFragment;
-import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
-import com.alvarlagerlof.koda.Guides.FragmentGuides;
-import com.alvarlagerlof.koda.Login.LoginActivity;
+import com.alvarlagerlof.koda.Login.KeepLoggedIn;
 import com.alvarlagerlof.koda.Projects.ProjectsFragment;
 import com.alvarlagerlof.koda.Settings.SettingsFragment;
+import com.alvarlagerlof.koda.Utils.DateConversionUtils;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
+
+import java.util.concurrent.TimeUnit;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -34,12 +33,14 @@ import io.realm.RealmConfiguration;
  */
 public class MainAcitivty extends AppCompatActivity {
 
-    Toolbar toolbar;
-    AppBarLayout appBarLayout;
+
 
     LinearLayout fragment_container;
 
     public static ProjectsFragment fragmentMyProjects;
+
+    Toolbar toolbar;
+    AppBarLayout appBarLayout;
 
 
     @Override
@@ -47,11 +48,15 @@ public class MainAcitivty extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
+
+        // Toolbar
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        appBarLayout = (AppBarLayout) findViewById(R.id.appbarlayout);
+        setSupportActionBar(toolbar);
+
+
         // Login
-        if (new PersistentCookieStore(this).getCookies().size() < 1 || PreferenceManager.getDefaultSharedPreferences(this).getString("email", null) == null) {
-            Toast.makeText(this, String.valueOf(new PersistentCookieStore(this).getCookies().size() < 1), Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this, LoginActivity.class));
-        }
+        new KeepLoggedIn(this).execute();
 
 
         // Realm
@@ -63,12 +68,8 @@ public class MainAcitivty extends AppCompatActivity {
         Realm.setDefaultConfiguration(realmConfiguration);
 
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        appBarLayout = (AppBarLayout) findViewById(R.id.appbarlayout);
         fragment_container = (LinearLayout) findViewById(R.id.fragment_container);
 
-        setSupportActionBar(toolbar);
-        toolbar.setTitle("Projekt");
 
 
         BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
@@ -83,6 +84,8 @@ public class MainAcitivty extends AppCompatActivity {
                         ftMyCreations.addToBackStack(null);
                         ftMyCreations.commit();
                         toolbar.setTitle("Projekt");
+                        appBarLayout.setElevation(16f);
+
                         break;
                     case R.id.tab_api:
                         FragmentApi fragmentApi = new FragmentApi();
@@ -91,14 +94,17 @@ public class MainAcitivty extends AppCompatActivity {
                         ftApi.addToBackStack(null);
                         ftApi.commit();
                         toolbar.setTitle("API");
+                        appBarLayout.setElevation(0f);
                         break;
-                    case R.id.tab_guides:
-                        FragmentGuides fragmentGuides = new FragmentGuides();
+                    /*case R.id.tab_guides:
+                        GuidesFragment guidesFragment = new GuidesFragment();
                         FragmentTransaction ftGuides = getSupportFragmentManager().beginTransaction();
-                        ftGuides.replace(R.id.fragment_container, fragmentGuides);
+                        ftGuides.replace(R.id.fragment_container, guidesFragment);
                         ftGuides.addToBackStack(null);
                         ftGuides.commit();
                         toolbar.setTitle("Guider");
+                        appBarLayout.setElevation(16f);
+
                         break;
                     case R.id.tab_archive:
                         ArchiveFragment fragmentArchive = new ArchiveFragment();
@@ -107,7 +113,8 @@ public class MainAcitivty extends AppCompatActivity {
                         ftArchive.addToBackStack(null);
                         ftArchive.commit();
                         toolbar.setTitle("Arkivet");
-                        break;
+                        appBarLayout.setElevation(0f);
+                        break;*/
                     case R.id.tab_settings:
                         SettingsFragment settingsFragment = new SettingsFragment();
                         FragmentTransaction ftSettings = getSupportFragmentManager().beginTransaction();
@@ -115,6 +122,7 @@ public class MainAcitivty extends AppCompatActivity {
                         ftSettings.addToBackStack(null);
                         ftSettings.commit();
                         toolbar.setTitle("Inställningar");
+                        appBarLayout.setElevation(16f);
                         break;
 
                 }
@@ -131,6 +139,7 @@ public class MainAcitivty extends AppCompatActivity {
 
 
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
@@ -142,6 +151,7 @@ public class MainAcitivty extends AppCompatActivity {
                 intent.putExtra("title", "");
                 intent.putExtra("public_id", url.substring(url.lastIndexOf("/") + 1).trim());
                 startActivity(intent);
+
             }
         } else {
             // This is important, otherwise the result will not be passed to the fragment

@@ -113,8 +113,6 @@ class ProfileGetData extends AsyncTask<Void, Void, String> {
                     String comment_count  = projectsJsonObject.getString("comment_count");
                     String char_count     = projectsJsonObject.getString("char_count");
 
-                    // TODO: LIKED NOT FIXED
-
                     list.add(new ProfileObject(publicID, title, updated, description, updated, like_count, comment_count, char_count, false, "", ProfileAdapter.TYPE_ITEM));
 
                 }

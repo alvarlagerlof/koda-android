@@ -18,6 +18,8 @@ import com.alvarlagerlof.koda.FullscreenPlay;
 import com.alvarlagerlof.koda.QrCodeShare.QrViewer;
 import com.alvarlagerlof.koda.R;
 
+import io.realm.Realm;
+
 /**
  * Created by alvar on 2016-07-03.
  */
@@ -29,10 +31,6 @@ public class ProjectsBottomSheetFragment extends BottomSheetDialogFragment {
     String publicID;
 
     String title;
-    String description;
-
-    Boolean isPublic;
-    int position;
 
     LinearLayout share;
     LinearLayout qr_share;
@@ -43,18 +41,10 @@ public class ProjectsBottomSheetFragment extends BottomSheetDialogFragment {
 
     public final void passData(FragmentManager fragmentManager,
                                String privateID,
-                               String publicID,
-                               String title,
-                               String description,
-                               Boolean isPublic,
-                               int position) {
+                               String publicID) {
         this.fragmentManager = fragmentManager;
         this.privateID = privateID;
         this.publicID = publicID;
-        this.title = title;
-        this.description = description;
-        this.isPublic = isPublic;
-        this.position = position;
     }
 
     private BottomSheetBehavior.BottomSheetCallback mBottomSheetBehaviorCallback = new BottomSheetBehavior.BottomSheetCallback() {
@@ -88,6 +78,16 @@ public class ProjectsBottomSheetFragment extends BottomSheetDialogFragment {
         if (behavior != null && behavior instanceof BottomSheetBehavior) {
             ((BottomSheetBehavior) behavior).setBottomSheetCallback(mBottomSheetBehaviorCallback);
         }
+
+        // Get values
+        Realm realm = Realm.getDefaultInstance();
+        ProjectsRealmObject object = realm.where(ProjectsRealmObject.class)
+                .equalTo("privateId", privateID)
+                .findFirst();
+
+        realm.beginTransaction();
+        title = object.getTitle();
+        realm.commitTransaction();
 
         share           = (LinearLayout) contentView.findViewById(R.id.share);
         qr_share        = (LinearLayout) contentView.findViewById(R.id.qr_share);
@@ -158,7 +158,7 @@ public class ProjectsBottomSheetFragment extends BottomSheetDialogFragment {
             @Override
             public void onClick(View v) {
                 ProjectsEditBottomSheetFragment bottomSheetFragment = new ProjectsEditBottomSheetFragment();
-                bottomSheetFragment.passData(privateID, publicID, title, description, isPublic);
+                bottomSheetFragment.passData(privateID, publicID);
 
                 bottomSheetFragment.show(fragmentManager, bottomSheetFragment.getTag());
             }
@@ -176,7 +176,7 @@ public class ProjectsBottomSheetFragment extends BottomSheetDialogFragment {
                 alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "TA BORT", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        ProjectsDelete deleteTask = new ProjectsDelete(getContext(), privateID, position);
+                        ProjectsDelete deleteTask = new ProjectsDelete(getContext(), privateID);
                         deleteTask.execute();
                         dismiss();
                     }

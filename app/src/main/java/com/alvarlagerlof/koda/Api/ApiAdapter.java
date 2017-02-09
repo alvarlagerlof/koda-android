@@ -107,12 +107,7 @@ class ApiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public int getItemViewType(int position) {
 
-        switch (dataset.get(position).type) {
-            case TYPE_LOADING: return TYPE_LOADING;
-            case TYPE_ITEM: return TYPE_ITEM;
-            case TYPE_OFFLINE: return TYPE_OFFLINE;
-            default: return TYPE_ITEM;
-        }
+        return dataset.get(position).type;
 
     }
 

@@ -10,6 +10,7 @@ import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
 
+import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -32,6 +33,7 @@ public class LikeDissLike extends AsyncTask<Void, Void, String> {
 
     @Override
     protected String doInBackground(Void... params) {
+
         CookieHandler cookieHandler = new CookieManager(
                 new PersistentCookieStore(context), CookiePolicy.ACCEPT_ALL);
 
@@ -39,8 +41,13 @@ public class LikeDissLike extends AsyncTask<Void, Void, String> {
                 .cookieJar(new JavaNetCookieJar(cookieHandler))
                 .build();
 
+        FormBody formBody = new FormBody.Builder()
+                .add("headless", "thisIsHeadless")
+                .build();
+
         Request request = new Request.Builder()
                 .url(url)
+                .post(formBody)
                 .build();
 
         try {

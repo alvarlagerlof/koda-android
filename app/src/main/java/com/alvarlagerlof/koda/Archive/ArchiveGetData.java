@@ -46,7 +46,6 @@ class ArchiveGetData extends AsyncTask<Void, Void, String> {
     @Override
     final protected void onPreExecute() {
 
-        list.add(new ArchiveObject("", "", "", "", "", "", "", "", false, ArchiveAdapter.TYPE_HEADER));
         list.add(new ArchiveObject("", "", "", "", "", "", "", "", false, ArchiveAdapter.TYPE_LOADING));
         adapter.notifyDataSetChanged();
 
@@ -91,7 +90,6 @@ class ArchiveGetData extends AsyncTask<Void, Void, String> {
         if (json != null && ConnectionUtils.isConnected(context)) {
 
             list.clear();
-            list.add(new ArchiveObject("", "", "", "", "", "", "", "", false, ArchiveAdapter.TYPE_HEADER));
 
             try {
                 JSONArray jsonArray = new JSONArray(json);
@@ -107,7 +105,7 @@ class ArchiveGetData extends AsyncTask<Void, Void, String> {
                         String likesCount   = jsonObject.getString("likes");
                         String commentCount = String.valueOf(new Random().nextInt(100) + 1);
                         String charCount    = String.valueOf(new Random().nextInt(400) + 1);
-                        Boolean liked       = false;
+                        Boolean liked       = jsonObject.getString("liked").equals("true");
 
                         if (title.equals("")) title = context.getString(R.string.unnamed);
                         if (author.equals("")) author = context.getString(R.string.anonymous);

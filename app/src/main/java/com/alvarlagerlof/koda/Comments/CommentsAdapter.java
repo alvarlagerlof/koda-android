@@ -107,7 +107,7 @@ class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof ViewHolderHeader) {
 
-            ((ViewHolderHeader) holder).text1.setText("Alla kommentarer är publika, men man kan inte kommentera utan att vara inloggad. Om du ser en dum kommentar kontakta mig direkt på mikael@roboro.se. Dumma kommentarer tolereras inte utan leder till avstängning på livstid.");
+            ((ViewHolderHeader) holder).text1.setText("Alla kommentarer är publika, om du ser en dum kommentar kontakta mig direkt på mikael@roboro.se. Dumma kommentarer tolereras inte utan leder till avstängning på livstid.");
 
         } else if (holder instanceof ViewHolderItem) {
 
@@ -123,14 +123,8 @@ class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public int getItemViewType(int position) {
 
-        switch (dataset.get(position).type) {
-            case TYPE_HEADER: return TYPE_HEADER;
-            case TYPE_LOADING: return TYPE_LOADING;
-            case TYPE_ITEM: return TYPE_ITEM;
-            case TYPE_OFFLINE: return TYPE_OFFLINE;
-            case TYPE_NO_COMMENTS: return TYPE_NO_COMMENTS;
-            default: return TYPE_ITEM;
-        }
+        return dataset.get(position).type;
+
     }
 
     @Override

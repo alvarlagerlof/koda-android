@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
         android:layout_width="match_parent"
@@ -13,148 +14,151 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingRight="16dp"
-        android:paddingLeft="16dp"
-        android:paddingTop="64dp"
         android:background="@color/darkbackground">
 
 
-        <TextView
-            android:layout_width="wrap_content"
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Skapa konto"
-            android:textSize="40sp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/app_bar_top_padding"
-            android:layout_marginBottom="64dp"
-            android:textColor="@color/white"/>
+            android:paddingTop="@dimen/app_bar_top_padding"
+            android:background="@null"
+            app:elevation="0dp">
+
+            <android.support.v7.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/toolbar"
+                app:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+                app:titleTextColor="#FFF"
+                app:title="Skapa konto" />
+
+        </android.support.design.widget.AppBarLayout>
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:id="@+id/email_view">
+            android:paddingRight="16dp"
+            android:paddingLeft="16dp"
+            android:paddingTop="32dp"
+            android:paddingBottom="16dp">
 
-
-            <android.support.design.widget.TextInputLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:theme="@style/LoginLabel"
-                android:layout_marginBottom="16dp">
+                android:orientation="vertical"
+                android:id="@+id/email_view">
 
-                <android.support.design.widget.TextInputEditText
+
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="E-post"
-                    android:textColor="@color/white"
+                    android:theme="@style/LoginLabel"
+                    android:layout_marginBottom="16dp">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="E-post"
+                        android:textColor="@color/white"
+                        android:backgroundTint="@color/white"
+                        android:inputType="textEmailAddress"
+                        android:id="@+id/email"/>
+
+                </android.support.design.widget.TextInputLayout>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:text="Skapa konto"
+                    style="@style/Widget.AppCompat.Button"
                     android:backgroundTint="@color/white"
-                    android:inputType="textEmailAddress"
-                    android:id="@+id/email"/>
+                    android:textColor="#000"
+                    android:layout_gravity="center_horizontal"
+                    android:onClick="createAccount"/>
 
-            </android.support.design.widget.TextInputLayout>
+                <ProgressBar
+                    android:id="@+id/progress_bar"
+                    style="?android:attr/progressBarStyleLarge"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_gravity="center_horizontal"
+                    android:visibility="gone"/>
 
-            <Button
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:text="Skapa konto"
-                style="@style/Widget.AppCompat.Button"
-                android:backgroundTint="@color/white"
-                android:textColor="#000"
-                android:layout_marginTop="8dp"
-                android:layout_gravity="center_horizontal"
-                android:onClick="createAccount"/>
+                android:orientation="vertical"
+                android:id="@+id/result_view"
+                android:visibility="invisible">
 
-            <ProgressBar
-                android:id="@+id/progress_bar"
-                style="?android:attr/progressBarStyleLarge"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:layout_marginTop="16dp"
-                android:layout_gravity="center_horizontal"
-                android:visibility="gone"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Användarnamn: "
+                    style="@style/textMedium"
+                    android:textColor="@color/white"
+                    android:id="@+id/username_text"
+                    android:layout_marginBottom="8dp"/>
 
-        </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Lösenord: "
+                    style="@style/textMedium"
+                    android:textColor="@color/white"
+                    android:id="@+id/password_text"/>
 
-        <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/result_view"
-        android:visibility="invisible">
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:text="Vidare till labbet"
+                    style="@style/Widget.AppCompat.Button"
+                    android:backgroundTint="@color/white"
+                    android:textColor="#000"
+                    android:layout_marginTop="16dp"
+                    android:layout_gravity="center_horizontal"
+                    android:onClick="openLab"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Användarnamn: "
-            style="@style/textMedium"
-            android:textColor="@color/white"
-            android:id="@+id/username_text"
-            android:layout_marginBottom="8dp"/>
+            </LinearLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Lösenord: "
-            style="@style/textMedium"
-            android:textColor="@color/white"
-            android:id="@+id/password_text"/>
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="Vidare till labbet"
-            style="@style/Widget.AppCompat.Button"
-            android:backgroundTint="@color/white"
-            android:textColor="#000"
-            android:layout_marginTop="16dp"
-            android:layout_gravity="center_horizontal"
-            android:onClick="openLab"/>
-
-    </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:id="@+id/error_view"
-            android:visibility="invisible">
-
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/textMedium"
-                android:textColor="@color/white"
-                android:id="@+id/error"
-                android:gravity="center_horizontal"/>
+                android:orientation="vertical"
+                android:id="@+id/error_view"
+                android:visibility="invisible">
 
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:text="Försök igen"
-                style="@style/Widget.AppCompat.Button"
-                android:backgroundTint="@color/white"
-                android:textColor="#000"
-                android:layout_marginTop="32dp"
-                android:layout_gravity="center_horizontal"
-                android:onClick="reset"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/textMedium"
+                    android:textColor="@color/white"
+                    android:id="@+id/error"
+                    android:gravity="center_horizontal"/>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:text="Försök igen"
+                    style="@style/Widget.AppCompat.Button"
+                    android:backgroundTint="@color/white"
+                    android:textColor="#000"
+                    android:layout_marginTop="32dp"
+                    android:layout_gravity="center_horizontal"
+                    android:onClick="reset"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
     </LinearLayout>
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_close"
-        android:background="@drawable/click"
-        android:clickable="true"
-        android:layout_gravity="top|left"
-        android:layout_marginTop="@dimen/app_bar_top_padding"
-        android:padding="16dp"
-        android:onClick="finish"/>
 
 </android.support.design.widget.CoordinatorLayout>

@@ -1,9 +1,7 @@
 package com.alvarlagerlof.koda.Projects;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
@@ -53,6 +51,8 @@ class ProjectsGetData extends AsyncTask<Void, Void, String> {
     @Override
     final protected void onPreExecute() {
 
+        list.clear();
+
         list.add(new ProjectsObject("", "", "",  "", "", false, "", "", ProjectsAdapter.TYPE_LOADING));
         adapter.notifyDataSetChanged();
 
@@ -95,35 +95,13 @@ class ProjectsGetData extends AsyncTask<Void, Void, String> {
 
         if (json != null) {
 
-            list.clear();
-
             JSONObject jsonObject = null;
             JSONArray games = null;
             String nick = null;
 
-            try {
-                jsonObject = new JSONObject(json);
 
-                games = jsonObject.getJSONArray("games");
-                nick = Base64Utils.decode(jsonObject.getJSONObject("user").getString("nick"));
-
-                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putString("nick", nick);
-                editor.commit();
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
 
             if (games != null) {
-
-                Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
-                    @Override
-                    public void execute(Realm realm) {
-                        realm.delete(ProjectsRealmObject.class);
-                    }
-                });
 
                 for (int i = 0; i < games.length(); i++) {
                     try {

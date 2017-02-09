@@ -24,7 +24,7 @@ import java.util.ArrayList;
  */
 
 
-public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
     private FragmentManager fragmentManager;
@@ -118,11 +118,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     ProjectsBottomSheetFragment bottomSheetFragment = new ProjectsBottomSheetFragment();
                     bottomSheetFragment.passData(fragmentManager,
                             dataset.get(position).privateId,
-                            dataset.get(position).publicId,
-                            dataset.get(position).title,
-                            dataset.get(position).description,
-                            dataset.get(position).isPublic,
-                            position);
+                            dataset.get(position).publicId);
 
                     bottomSheetFragment.show(fragmentManager, bottomSheetFragment.getTag());
 
@@ -139,12 +135,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public int getItemViewType(int position) {
 
-        switch (dataset.get(position).type) {
-            case TYPE_ITEM: return TYPE_ITEM;
-            case TYPE_LOADING: return TYPE_LOADING;
-            case TYPE_NO_ITEMS: return TYPE_NO_ITEMS;
-            default: return TYPE_ITEM;
-        }
+        return dataset.get(position).type;
 
     }
 

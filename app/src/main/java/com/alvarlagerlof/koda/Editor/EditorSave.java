@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
+import java.util.concurrent.TimeUnit;
 
 import io.realm.Realm;
 import okhttp3.FormBody;
@@ -86,6 +87,7 @@ class EditorSave extends AsyncTask<Void, Void, Void> {
                 .findFirst();
 
         realm.beginTransaction();
+        object.setUpdated(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()) + "");
         object.setCode(code);
         realm.commitTransaction();
 

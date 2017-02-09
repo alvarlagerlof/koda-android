@@ -16,13 +16,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.alvarlagerlof.koda.Utils.AnimationUtils;
 import com.alvarlagerlof.koda.Comments.CommentsActivity;
 import com.alvarlagerlof.koda.LikeDissLike;
-import com.alvarlagerlof.koda.Utils.DateConversionUtils;
 import com.alvarlagerlof.koda.PlayActivity;
 import com.alvarlagerlof.koda.PrefValues;
 import com.alvarlagerlof.koda.R;
+import com.alvarlagerlof.koda.Utils.AnimationUtils;
+import com.alvarlagerlof.koda.Utils.DateConversionUtils;
 
 import java.util.ArrayList;
 
@@ -38,10 +38,10 @@ class ArchiveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private FragmentManager fragmentManager;
     private Context context;
 
-    static final int TYPE_HEADER  = 0;
-    static final int TYPE_LOADING = 1;
-    static final int TYPE_ITEM    = 2;
-    static final int TYPE_OFFLINE = 3;
+    static final int TYPE_LOADING    = 0;
+    static final int TYPE_ITEM       = 1;
+    static final int TYPE_OFFLINE    = 2;
+    static final int TYPE_NO_RESULTS = 3;
 
 
 
@@ -53,16 +53,8 @@ class ArchiveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
 
-    // View holders
-    private static class ViewHolderHeader extends RecyclerView.ViewHolder  {
-        TextView text1;
 
-        ViewHolderHeader(View itemView){
-            super(itemView);
-            text1 = (TextView) itemView.findViewById(R.id.text1);
-        }
-    }
-
+    // Viewholders
     private static class ViewHolderLoading extends RecyclerView.ViewHolder  {
         ViewHolderLoading(View itemView){
             super(itemView);
@@ -113,25 +105,32 @@ class ArchiveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
+    private static class ViewHolderNoResults extends RecyclerView.ViewHolder  {
+        ViewHolderNoResults(View itemView){
+            super(itemView);
+        }
+    }
+
+
 
     // View for viewholder
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View headerView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_header, viewGroup, false);
         View loadingView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_loading, viewGroup, false);
         View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.archive_item, viewGroup, false);
         View offlineView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_offline, viewGroup, false);
+        View noResultsView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.archive_item_no_results, viewGroup, false);
 
 
         switch (i) {
-            case TYPE_HEADER:
-                return new ViewHolderHeader(headerView);
             case TYPE_LOADING:
                 return new ViewHolderLoading(loadingView);
             case TYPE_ITEM:
                 return new ViewHolderItem(itemView);
             case TYPE_OFFLINE:
                 return new ViewHolderOffline(offlineView);
+            case TYPE_NO_RESULTS:
+                return new ViewHolderNoResults(noResultsView);
         }
 
         throw new RuntimeException("there is no type that matches the type " + i + " + make sure your using types correctly");
@@ -141,9 +140,8 @@ class ArchiveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     // Bind views
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-        if (holder instanceof ViewHolderHeader) {
-            ((ViewHolderHeader) holder).text1.setText("Alla som programmerar i labbet kan välja att visa upp sin skapelse här");
-        } else if (holder instanceof ViewHolderItem) {
+
+        if (holder instanceof ViewHolderItem) {
             ((ViewHolderItem) holder).title.setText(dataset.get(position).title);
             ((ViewHolderItem) holder).author.setText(dataset.get(position).author);
             ((ViewHolderItem) holder).description.setText(dataset.get(position).description);
@@ -186,18 +184,18 @@ class ArchiveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 public void onClick(View v) {
 
                     if (dataset.get(position).liked) {
-
-                        ((ViewHolderItem) holder).likesNum.setText(String.valueOf(Integer.parseInt(String.valueOf(Integer.parseInt(String.valueOf(((ViewHolderItem) holder).likesNum.getText())) - 1))));
+                        int currentLikes = Integer.parseInt(String.valueOf(((ViewHolderItem) holder).likesNum.getText()));
+                        ((ViewHolderItem) holder).likesNum.setText(String.valueOf(currentLikes - 1));
                         ((ViewHolderItem) holder).heartImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_heart_outline));
                         dataset.get(position).liked = false;
-                        new LikeDissLike(context, PrefValues.URL_DISSLIKE, dataset.get(position).publicId);
+                        new LikeDissLike(context, PrefValues.URL_DISSLIKE, dataset.get(position).publicId).execute();
 
                     } else {
-
-                        ((ViewHolderItem) holder).likesNum.setText(String.valueOf(Integer.parseInt(String.valueOf(((ViewHolderItem) holder).likesNum.getText()) + 1)));
+                        int currentLikes = Integer.parseInt(String.valueOf(((ViewHolderItem) holder).likesNum.getText()));
+                        ((ViewHolderItem) holder).likesNum.setText(String.valueOf(currentLikes + 1));
                         ((ViewHolderItem) holder).heartImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_heart));
                         dataset.get(position).liked = true;
-                        new LikeDissLike(context, PrefValues.URL_LIKE, dataset.get(position).publicId);
+                        new LikeDissLike(context, PrefValues.URL_LIKE, dataset.get(position).publicId).execute();
 
                     }
 
@@ -223,22 +221,15 @@ class ArchiveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     bottomSheetFragment.show(fragmentManager, bottomSheetFragment.getTag());
                 }
             });
-
         }
+
     }
+
 
 
     @Override
     public int getItemViewType(int position) {
-
-        switch (dataset.get(position).type) {
-            case TYPE_HEADER: return TYPE_HEADER;
-            case TYPE_LOADING: return TYPE_LOADING;
-            case TYPE_ITEM: return TYPE_ITEM;
-            case TYPE_OFFLINE: return TYPE_OFFLINE;
-            default: return TYPE_ITEM;
-        }
-
+        return dataset.get(position).type;
     }
 
     @Override

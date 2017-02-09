@@ -23,10 +23,13 @@ public class ApiTabFragment extends Fragment {
     ArrayList<ApiObject> list = new ArrayList<>();
 
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.api_tab, container, false);
 
+
+        // Recyclerview
         adapter = new ApiAdapter(list);
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);

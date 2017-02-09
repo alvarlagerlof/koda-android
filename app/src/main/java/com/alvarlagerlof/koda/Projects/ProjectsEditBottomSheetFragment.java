@@ -18,15 +18,16 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import com.alvarlagerlof.koda.Utils.AnimationUtils;
 import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
 import com.alvarlagerlof.koda.PrefValues;
 import com.alvarlagerlof.koda.R;
+import com.alvarlagerlof.koda.Utils.AnimationUtils;
 
 import java.io.IOException;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
+import java.util.concurrent.TimeUnit;
 
 import io.realm.Realm;
 import okhttp3.FormBody;
@@ -41,8 +42,8 @@ import okhttp3.internal.JavaNetCookieJar;
  */
 public class ProjectsEditBottomSheetFragment extends BottomSheetDialogFragment {
 
-    String private_id;
-    String public_id;
+    String privateID;
+    String publicID;
 
     String title;
     String description;
@@ -62,16 +63,10 @@ public class ProjectsEditBottomSheetFragment extends BottomSheetDialogFragment {
     Button save;
 
 
-    public final void passData(String private_id,
-                               String public_id,
-                               String title,
-                               String description,
-                               Boolean isPublic) {
-        this.private_id = private_id;
-        this.public_id = public_id;
-        this.title = title;
-        this.description = description;
-        this.isPublic = isPublic;
+    public final void passData(String privateID,
+                               String publicID) {
+        this.privateID = privateID;
+        this.publicID = publicID;
     }
 
     private BottomSheetBehavior.BottomSheetCallback mBottomSheetBehaviorCallback = new BottomSheetBehavior.BottomSheetCallback() {
@@ -122,10 +117,20 @@ public class ProjectsEditBottomSheetFragment extends BottomSheetDialogFragment {
         save = (Button) contentView.findViewById(R.id.save);
 
 
-        // Set values
-        titleInput.setText(title);
-        descriptionInput.setText(description);
-        publicCheckbox.setChecked(isPublic);
+        // Get and set values
+        Realm realm = Realm.getDefaultInstance();
+        ProjectsRealmObject object = realm.where(ProjectsRealmObject.class)
+                .equalTo("privateId", privateID)
+                .findFirst();
+
+        realm.beginTransaction();
+        titleInput.setText(object.getTitle());
+        descriptionInput.setText(object.getDescription());
+        publicCheckbox.setChecked( object.getIsPublic());
+        realm.commitTransaction();
+
+
+
 
         // Keyboard
         titleInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -228,12 +233,12 @@ public class ProjectsEditBottomSheetFragment extends BottomSheetDialogFragment {
                     .add("title", titleString)
                     .add("description", descriptionString)
                     .add("author", "")
-                    .add("publicOrNot", String.valueOf(checked))
+                    .add("publicOrNot", checked ? "CHECKED" : "")
                     .build();
 
 
             Request request = new Request.Builder()
-                    .url(PrefValues.URL_MY_PROJECTS_EDIT + private_id)
+                    .url(PrefValues.URL_MY_PROJECTS_EDIT + privateID)
                     .post(formBody)
                     .build();
 
@@ -255,16 +260,16 @@ public class ProjectsEditBottomSheetFragment extends BottomSheetDialogFragment {
             // Save to realm
             Realm realm = Realm.getDefaultInstance();
             ProjectsRealmObject object = realm.where(ProjectsRealmObject.class)
-                    .equalTo("privateId", private_id)
+                    .equalTo("privateId", privateID)
                     .findFirst();
 
             realm.beginTransaction();
             object.setTitle(titleString);
             object.setDescription(descriptionString);
             object.setIsPublic(publicCheckbox.isChecked());
+            object.setUpdated(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()) + "");
             realm.commitTransaction();
 
-            //AnimationUtils.fadeOut(processing);
             AnimationUtils.fadeIn(saved);
 
             Handler handler = new Handler();
@@ -277,6 +282,7 @@ public class ProjectsEditBottomSheetFragment extends BottomSheetDialogFragment {
                     dismiss();
                 }
             }, 1000);
+
 
         }
     }

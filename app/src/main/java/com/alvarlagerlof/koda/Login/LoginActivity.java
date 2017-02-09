@@ -1,5 +1,6 @@
 package com.alvarlagerlof.koda.Login;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,12 +11,14 @@ import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 
 import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
 import com.alvarlagerlof.koda.MainAcitivty;
 import com.alvarlagerlof.koda.PrefValues;
 import com.alvarlagerlof.koda.R;
+import com.alvarlagerlof.koda.Utils.ConnectionUtils;
 import com.bumptech.glide.Glide;
 
 import org.json.JSONException;
@@ -32,6 +35,9 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.internal.JavaNetCookieJar;
+
+import static com.alvarlagerlof.koda.PrefValues.PREF_EMAIL;
+import static com.alvarlagerlof.koda.PrefValues.PREF_PASSWORD;
 
 /**
  * Created by alvar on 2016-07-02.
@@ -56,26 +62,77 @@ public class LoginActivity extends AppCompatActivity {
                 .load(PrefValues.URL_LOGIN_IMAGE)
                 .into((ImageView) findViewById(R.id.background));
 
+
+
+        findViewById(R.id.background).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                InputMethodManager inputMethodManager = (InputMethodManager) LoginActivity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(LoginActivity.this.getCurrentFocus().getWindowToken(), 0);
+            }
+        });
+
     }
 
 
     public void login(View view) {
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString("email", email.getText().toString());
-        editor.apply();
+        if (ConnectionUtils.isConnected(this)) {
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString(PREF_EMAIL, email.getText().toString());
+            editor.putString(PREF_PASSWORD, password.getText().toString());
+            editor.apply();
+            new LoginAsync().execute();
 
-        new LoginAsync().execute();
+        } else {
+            new AlertDialog.Builder(LoginActivity.this)
+                    .setTitle("Ingen ansluting")
+                    .setMessage("Gå in i inställingar och se till att du har Wifi eller mobildata på")
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    })
+                    .show();
+        }
+
+
     }
 
     public void createAccount(View view) {
-        Intent intent = new Intent(this, NewAccountActivity.class);
-        startActivity(intent);
+        if (ConnectionUtils.isConnected(this)) {
+            Intent intent = new Intent(this, NewAccountActivity.class);
+            startActivity(intent);
+
+        } else {
+            new AlertDialog.Builder(LoginActivity.this)
+                    .setTitle("Ingen ansluting")
+                    .setMessage("Gå in i inställingar och se till att du har Wifi eller mobildata på")
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    })
+                    .show();
+        }
     }
 
     public void forgotPassword(View view) {
-        Intent intent = new Intent(this, ForgotPasswordActivity.class);
-        startActivity(intent);
+        if (ConnectionUtils.isConnected(this)) {
+            Intent intent = new Intent(this, ForgotPasswordActivity.class);
+            startActivity(intent);
+
+        } else {
+            new AlertDialog.Builder(LoginActivity.this)
+                    .setTitle("Ingen ansluting")
+                    .setMessage("Gå in i inställingar och se till att du har Wifi eller mobildata på")
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    })
+                    .show();
+        }
     }
 
 
@@ -141,7 +198,7 @@ public class LoginActivity extends AppCompatActivity {
                         PreferenceManager.getDefaultSharedPreferences(LoginActivity.this)
                                 .edit()
                                 .putString(PrefValues.PREF_EMAIL, emailString)
-                                .putString(PrefValues.PREF_PASSWORD, passwordString)
+                                .putString(PREF_PASSWORD, passwordString)
                                 .commit();
 
                         startActivity(new Intent(LoginActivity.this, MainAcitivty.class));

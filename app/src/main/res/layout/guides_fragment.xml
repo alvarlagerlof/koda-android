@@ -6,118 +6,34 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:elevation="4dp">
-
-        <android.support.v7.widget.Toolbar
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="5dp"
-            app:elevation="4dp"/>
-
-    </android.support.design.widget.AppBarLayout>
-
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="5dp">
+        android:orientation="vertical">
 
-        <LinearLayout
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/appbarlayout"
+            android:paddingTop="@dimen/app_bar_top_padding">
+
+            <android.support.v7.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+                android:id="@+id/toolbar"
+                app:titleTextColor="#FFFFFF" />
+
+        </android.support.design.widget.AppBarLayout>
+
+
+        <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:id="@+id/recycler_view" />
 
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="YouTube"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginTop="16dp"
-                    style="@style/textLarge" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:lineSpacingMultiplier="1.1"
-                    android:text="Nu kan du lära dig programmera egna spel med programmeringsspråket JavaScript! Perfekt för dig som är nybörjare i programmering och vill komma igång och koda."
-                    style="@style/textSmall"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"/>
-
-                <android.support.v7.widget.RecyclerView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/recycler_view"
-                    android:clipToPadding="false"
-                    android:layout_marginBottom="16dp"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"/>
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider" />
+    </LinearLayout>
 
 
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:text="Boken"
-                    style="@style/textLarge" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/book_text"
-                    android:lineSpacingMultiplier="1.1"
-                    style="@style/textSmall" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/book_image"
-                        android:layout_marginRight="16dp" />
-
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Visa på www.gleerups.se"
-                        android:textColor="@color/colorAccent"
-                        android:layout_gravity="center_vertical"
-                        style="@style/Widget.AppCompat.Button.Borderless"
-                        android:id="@+id/book_button"/>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-    </ScrollView>
 
 </android.support.design.widget.CoordinatorLayout>

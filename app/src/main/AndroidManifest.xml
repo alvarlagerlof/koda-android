@@ -70,8 +70,7 @@
             android:name=".Comments.CommentsActivity"
             android:parentActivityName=".MainAcitivty"
             android:theme="@style/AppTheme"
-            android:configChanges="orientation|screenSize"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustResize">
+            android:windowSoftInputMode="adjustResize">
         </activity>
 
 
@@ -98,6 +97,7 @@
             android:name=".Login.ForgotPasswordActivity"
             android:parentActivityName=".MainAcitivty"
             android:theme="@style/TransNav"
+            android:windowSoftInputMode="stateVisible"
             android:configChanges="orientation|screenSize">
         </activity>
 
@@ -107,18 +107,10 @@
             android:name=".Login.NewAccountActivity"
             android:parentActivityName=".MainAcitivty"
             android:theme="@style/TransNav"
+            android:windowSoftInputMode="stateVisible"
             android:configChanges="orientation|screenSize">
         </activity>
 
-
-        // Min profil
-        <activity
-            android:name=".Settings.SettingsFragment"
-            android:parentActivityName=".MainAcitivty"
-            android:theme="@style/AppTheme"
-            android:label="Din profil"
-            android:configChanges="orientation|screenSize">
-        </activity>
 
 
         // QrViewer

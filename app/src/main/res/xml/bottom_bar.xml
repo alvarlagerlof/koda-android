@@ -12,6 +12,7 @@
         title="API"
         barColorWhenSelected="@color/colorPrimary" />
 
+    <!--
     <tab
         id="@+id/tab_guides"
         icon="@drawable/ic_tab_guides"
@@ -23,6 +24,8 @@
         icon="@drawable/ic_tab_archive"
         title="Arkivet"
         barColorWhenSelected="@color/colorPrimary" />
+
+    -->
 
     <tab
         id="@+id/tab_settings"

@@ -1,6 +1,7 @@
 package com.alvarlagerlof.koda.Editor;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,7 +12,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.inputmethod.InputMethodManager;
 
+import com.alvarlagerlof.koda.MainAcitivty;
 import com.alvarlagerlof.koda.Projects.ProjectsRealmObject;
 import com.alvarlagerlof.koda.R;
 import com.alvarlagerlof.koda.ViewPagerAdapter;
@@ -104,7 +107,7 @@ public class EditorActivity extends AppCompatActivity {
                 switch (pos) {
                     case 0:
                         // Editor
-                        editorRunFragment.clearWebView();
+                        //editorRunFragment.clearWebView();
 
                         toolbar.getMenu().findItem(R.id.colorpicker).setVisible(true);
                         toolbar.getMenu().findItem(R.id.fontminus).setVisible(true);
@@ -120,6 +123,9 @@ public class EditorActivity extends AppCompatActivity {
                         toolbar.getMenu().findItem(R.id.fontminus).setVisible(false);
                         toolbar.getMenu().findItem(R.id.fontplus).setVisible(false);
                         toolbar.getMenu().findItem(R.id.reload).setVisible(true);
+
+                        InputMethodManager inputMethodManager = (InputMethodManager) EditorActivity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+                        inputMethodManager.hideSoftInputFromWindow(EditorActivity.this.getCurrentFocus().getWindowToken(), 0);
 
                         EditorSave saveTask = new EditorSave(EditorActivity.this, private_id, editorEditFragment.getCode());
                         saveTask.execute();
@@ -176,5 +182,11 @@ public class EditorActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+    }
+
+    @Override
+    public void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        MainAcitivty.fragmentMyProjects.getData();
     }
 }
