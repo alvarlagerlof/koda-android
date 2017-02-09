@@ -86,7 +86,7 @@ public class ProjectsSync extends AsyncTask<Void, Void, Void> {
                             .putString("nick", Base64Utils.decode(jsonObject.getJSONObject("user").getString("nick")))
                             .apply();
                 }
-
+ 
 
             } catch (Exception e) {
                 e.printStackTrace();
