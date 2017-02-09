@@ -34,14 +34,7 @@ import okhttp3.internal.JavaNetCookieJar;
 
 public class ProjectsSync extends AsyncTask<Void, Void, Void> {
 
-
-    private int TYPE_SERVER = 0;
-    private int TYPE_REALM = 1;
-
-    private JSONArray serverProjects;
-
     private Realm realm = Realm.getDefaultInstance();
-
     private Context context;
 
 
@@ -50,8 +43,7 @@ public class ProjectsSync extends AsyncTask<Void, Void, Void> {
     }
 
 
-    @Override
-    final protected Void doInBackground(Void... progress) {
+    final protected JSONArray doInBackground(JSONArray serverProjects) {
 
 
         // Get all server projects
@@ -101,7 +93,7 @@ public class ProjectsSync extends AsyncTask<Void, Void, Void> {
 
 
     @Override
-    final protected void onPostExecute(Void nothing) {
+    final protected void onPostExecute(JSONArray serverProjects) {
 
         // Get all realm projects
         RealmResults<ProjectsRealmObject> realmProjects = Realm.getDefaultInstance().where(ProjectsRealmObject.class).findAll();
