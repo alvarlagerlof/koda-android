@@ -32,7 +32,7 @@ import okhttp3.internal.JavaNetCookieJar;
  * Created by alvar on 2016-11-08.
  */
 
-public class ProjectsSync extends AsyncTask<Void, Void, Void> {
+public class ProjectsSync extends AsyncTask<Object, Object, JSONArray> {
 
     private Realm realm = Realm.getDefaultInstance();
     private Context context;
@@ -43,8 +43,10 @@ public class ProjectsSync extends AsyncTask<Void, Void, Void> {
     }
 
 
-    final protected JSONArray doInBackground(JSONArray serverProjects) {
+    @Override
+    protected JSONArray doInBackground(Object... params) {
 
+        JSONArray serverProjects = new JSONArray();
 
         // Get all server projects
         if (ConnectionUtils.isConnected(context)) {
@@ -77,8 +79,10 @@ public class ProjectsSync extends AsyncTask<Void, Void, Void> {
                             .edit()
                             .putString("nick", Base64Utils.decode(jsonObject.getJSONObject("user").getString("nick")))
                             .apply();
+
+                    return serverProjects;
                 }
- 
+
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -92,8 +96,8 @@ public class ProjectsSync extends AsyncTask<Void, Void, Void> {
     }
 
 
-    @Override
-    final protected void onPostExecute(JSONArray serverProjects) {
+
+    protected void onPostExecute(JSONArray serverProjects) {
 
         // Get all realm projects
         RealmResults<ProjectsRealmObject> realmProjects = Realm.getDefaultInstance().where(ProjectsRealmObject.class).findAll();
@@ -325,6 +329,8 @@ public class ProjectsSync extends AsyncTask<Void, Void, Void> {
 
         return null;
     }
+
+
 
 }
 
