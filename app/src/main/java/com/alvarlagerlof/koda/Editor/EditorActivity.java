@@ -16,6 +16,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.alvarlagerlof.koda.MainAcitivty;
 import com.alvarlagerlof.koda.Projects.ProjectsRealmObject;
+import com.alvarlagerlof.koda.Projects.ProjectsSync;
 import com.alvarlagerlof.koda.R;
 import com.alvarlagerlof.koda.ViewPagerAdapter;
 
@@ -107,7 +108,7 @@ public class EditorActivity extends AppCompatActivity {
                 switch (pos) {
                     case 0:
                         // Editor
-                        //editorRunFragment.clearWebView();
+                        editorRunFragment.clearWebView();
 
                         toolbar.getMenu().findItem(R.id.colorpicker).setVisible(true);
                         toolbar.getMenu().findItem(R.id.fontminus).setVisible(true);
@@ -187,6 +188,6 @@ public class EditorActivity extends AppCompatActivity {
     @Override
     public void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        MainAcitivty.fragmentMyProjects.getData();
+        new ProjectsSync(EditorActivity.this).execute();
     }
 }

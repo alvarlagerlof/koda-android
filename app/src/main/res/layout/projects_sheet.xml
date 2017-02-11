@@ -58,8 +58,7 @@
             style="@style/textMedium"/>
 
     </LinearLayout>
-
-    <View
+    <!-- <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="?android:attr/listDivider"
@@ -121,7 +120,8 @@
             android:layout_gravity="center_vertical"
             style="@style/textMedium"/>
 
-    </LinearLayout>
+    </LinearLayout> -->
+
 
     <View
         android:layout_width="match_parent"

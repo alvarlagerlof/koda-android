@@ -34,8 +34,8 @@ public class ProjectsBottomSheetFragment extends BottomSheetDialogFragment {
 
     LinearLayout share;
     LinearLayout qr_share;
-    LinearLayout comments;
-    LinearLayout addToHomescreen;
+    //LinearLayout comments;
+    //LinearLayout addToHomescreen;
     LinearLayout edit;
     LinearLayout delete;
 
@@ -91,8 +91,8 @@ public class ProjectsBottomSheetFragment extends BottomSheetDialogFragment {
 
         share           = (LinearLayout) contentView.findViewById(R.id.share);
         qr_share        = (LinearLayout) contentView.findViewById(R.id.qr_share);
-        comments        = (LinearLayout) contentView.findViewById(R.id.comments);
-        addToHomescreen = (LinearLayout) contentView.findViewById(R.id.add_to_homescreen);
+        //comments        = (LinearLayout) contentView.findViewById(R.id.comments);
+        //addToHomescreen = (LinearLayout) contentView.findViewById(R.id.add_to_homescreen);
         edit            = (LinearLayout) contentView.findViewById(R.id.edit);
         delete          = (LinearLayout) contentView.findViewById(R.id.delete);
 
@@ -116,7 +116,7 @@ public class ProjectsBottomSheetFragment extends BottomSheetDialogFragment {
             }
         });
 
-        comments.setOnClickListener(new View.OnClickListener() {
+        /*comments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), CommentsActivity.class);
@@ -149,7 +149,7 @@ public class ProjectsBottomSheetFragment extends BottomSheetDialogFragment {
                 startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(startMain);
             }
-        });
+        });*/
 
 
 

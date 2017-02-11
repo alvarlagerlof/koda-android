@@ -32,6 +32,8 @@ public class EditorRunFragment extends Fragment {
     }
 
     public void startLoad() {
+        webView.onResume();
+        webView.resumeTimers();
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setLoadWithOverviewMode(true);
         webView.getSettings().setUseWideViewPort(true);
@@ -49,12 +51,15 @@ public class EditorRunFragment extends Fragment {
     }
 
     public void clearWebView() {
-        webView.loadUrl("settings_about:blank");
+        //webView.loadUrl("settings_about:blank");
         webView.pauseTimers();
+        webView.onPause();
     }
 
     public void reload() {
-        webView.reload();
+        //webView.reload();
+        //webView.destroy();
+        startLoad();
     }
 
 
