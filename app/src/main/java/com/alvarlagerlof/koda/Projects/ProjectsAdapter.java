@@ -6,6 +6,7 @@ package com.alvarlagerlof.koda.Projects;
 
 import android.content.Context;
 import android.content.Intent;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alvarlagerlof.koda.Editor.EditorActivity;
+import com.alvarlagerlof.koda.PrefValues;
 import com.alvarlagerlof.koda.R;
 
 import java.util.ArrayList;
@@ -118,7 +120,9 @@ class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     ProjectsBottomSheetFragment bottomSheetFragment = new ProjectsBottomSheetFragment();
                     bottomSheetFragment.passData(fragmentManager,
                             dataset.get(position).privateId,
-                            dataset.get(position).publicId);
+                            dataset.get(position).publicId,
+                            dataset.get(position).title,
+                            PreferenceManager.getDefaultSharedPreferences(context).getString(PrefValues.PREF_NICK, ""));
 
                     bottomSheetFragment.show(fragmentManager, bottomSheetFragment.getTag());
 

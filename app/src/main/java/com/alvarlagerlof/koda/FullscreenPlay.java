@@ -61,14 +61,14 @@ public class FullscreenPlay extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras == null) {
             SharedPreferences sharedPreferences = getSharedPreferences("Prefs", Context.MODE_PRIVATE);
-            public_id = sharedPreferences.getString("public_id", "");
+            public_id = sharedPreferences.getString("url", "");
             title     = sharedPreferences.getString("title", "");
         } else {
-            public_id = extras.getString("public_id");
+            public_id = extras.getString("url");
             title     = extras.getString("title");
             SharedPreferences sharedPreferences = getSharedPreferences("Prefs", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("public_id", public_id).apply();
+            editor.putString("url", public_id).apply();
             editor.putString("title", title).apply();
         }
 

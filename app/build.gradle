@@ -28,7 +28,8 @@ android {
 
 allprojects {
     project.ext {
-        supportVersion = "24.0.0"
+        supportVersion = "25.0.1"
+        firebaseVersion = "10.0.1"
     }
 }
 
@@ -43,7 +44,7 @@ dependencies {
 
 
     // Okhttp
-    compile 'com.squareup.okhttp3:okhttp:3.0.0'
+    compile 'com.squareup.okhttp3:okhttp:3.6.0'
     compile "com.squareup.okhttp3:okhttp-urlconnection:3.0.0-RC1"
 
 
@@ -53,24 +54,25 @@ dependencies {
 
 
     // Firebase
-    compile 'com.google.firebase:firebase-core:9.2.0'
-    compile 'com.google.firebase:firebase-crash:9.2.0'
-    compile 'com.google.firebase:firebase-invites:9.4.0'
+    compile 'com.google.firebase:firebase-core:' + project.ext.firebaseVersion
+    compile 'com.google.firebase:firebase-crash:' + project.ext.firebaseVersion
+    compile 'com.google.firebase:firebase-invites:' + project.ext.firebaseVersion
 
 
     // Bottombar
-    compile 'com.roughike:bottom-bar:2.0.2'
+    compile 'com.roughike:bottom-bar:2.1.1'
 
 
     // QR Codes
-    compile 'com.google.zxing:core:3.2.1'
-    compile 'com.journeyapps:zxing-android-embedded:3.0.2@aar'
+    compile ('com.dlazaro66.qrcodereaderview:qrcodereaderview:2.0.1@aar'){
+        transitive = true
+    }
 
-
-    // color picker
+    // Color picker
     compile 'com.github.QuadFlask:colorpicker:0.0.12'
 
 
+    // Easy async
     compile 'com.arasthel:asyncjob-library:1.0.3'
 
 

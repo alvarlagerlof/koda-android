@@ -29,13 +29,19 @@
         android:layout_height="wrap_content"
         android:background="?android:attr/listDivider"/>
 
+
+
+
+    <!-- Hidden -->
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/click"
         android:clickable="true"
         android:padding="16dp"
-        android:id="@+id/notifications">
+        android:id="@+id/notifications"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -66,9 +72,15 @@
     </FrameLayout>
 
     <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="?android:attr/listDivider"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/listDivider"
+        android:visibility="gone"/>
+
+    <!-- Visible -->
+
+
+
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -6,9 +6,12 @@
         android:id="@+id/reload"
         android:title="Ladda om"
         android:icon="@drawable/ic_reload"
-        app:showAsAction="always"
-        android:orderInCategory="0"/>
+        app:showAsAction="always"/>
 
-
+    <item
+        android:id="@+id/more"
+        android:title="Mer"
+        android:icon="@drawable/ic_more_white"
+        app:showAsAction="always" />
 
 </menu>

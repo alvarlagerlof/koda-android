@@ -13,6 +13,8 @@
 
     <dimen name="ambilwarna_color_width">60dp</dimen>
     <dimen name="ambilwarna_color_height">30dp</dimen>
+
+    <dimen name="scrim_height">56dp</dimen>
     
 
 </resources>

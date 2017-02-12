@@ -1,4 +1,4 @@
-package com.alvarlagerlof.koda.Archive;
+package com.alvarlagerlof.koda;
 
 import android.app.Dialog;
 import android.content.ComponentName;
@@ -10,15 +10,13 @@ import android.support.design.widget.CoordinatorLayout;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.alvarlagerlof.koda.FullscreenPlay;
 import com.alvarlagerlof.koda.Profile.ProfileActivity;
 import com.alvarlagerlof.koda.QrCodeShare.QrViewer;
-import com.alvarlagerlof.koda.R;
 
 /**
  * Created author alvar on 2016-07-03.
  */
-public class ArchiveBottomSheetFragment extends BottomSheetDialogFragment {
+public class StandardBottomSheetFragment extends BottomSheetDialogFragment {
 
     String public_id;
     String title;
@@ -58,7 +56,7 @@ public class ArchiveBottomSheetFragment extends BottomSheetDialogFragment {
     @Override
     public void setupDialog(final Dialog dialog, int style) {
         super.setupDialog(dialog, style);
-        final View contentView = View.inflate(getContext(), R.layout.archive_sheet, null);
+        final View contentView = View.inflate(getContext(), R.layout.standard_sheet, null);
         dialog.setContentView(contentView);
 
         CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) ((View) contentView.getParent()).getLayoutParams();
@@ -99,6 +97,8 @@ public class ArchiveBottomSheetFragment extends BottomSheetDialogFragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), QrViewer.class);
                 intent.putExtra("url", "http://koda.nu/arkivet/" + public_id);
+                intent.putExtra("title", title);
+                intent.putExtra("author", author);
                 startActivity(intent);
             }
         });

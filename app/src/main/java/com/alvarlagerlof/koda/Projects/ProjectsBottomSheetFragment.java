@@ -31,6 +31,7 @@ public class ProjectsBottomSheetFragment extends BottomSheetDialogFragment {
     String publicID;
 
     String title;
+    String author;
 
     LinearLayout share;
     LinearLayout qr_share;
@@ -41,10 +42,14 @@ public class ProjectsBottomSheetFragment extends BottomSheetDialogFragment {
 
     public final void passData(FragmentManager fragmentManager,
                                String privateID,
-                               String publicID) {
+                               String publicID,
+                               String title,
+                               String author) {
         this.fragmentManager = fragmentManager;
         this.privateID = privateID;
         this.publicID = publicID;
+        this.title = title;
+        this.author = author;
     }
 
     private BottomSheetBehavior.BottomSheetCallback mBottomSheetBehaviorCallback = new BottomSheetBehavior.BottomSheetCallback() {
@@ -112,6 +117,8 @@ public class ProjectsBottomSheetFragment extends BottomSheetDialogFragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), QrViewer.class);
                 intent.putExtra("url", "http://koda.nu/arkivet/" + publicID);
+                intent.putExtra("title", title);
+                intent.putExtra("author", author);
                 startActivity(intent);
             }
         });

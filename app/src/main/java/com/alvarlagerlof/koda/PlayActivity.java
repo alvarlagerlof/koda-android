@@ -20,8 +20,10 @@ public class PlayActivity extends AppCompatActivity {
     WebView webView;
     ProgressBar progressBar;
 
-    String public_id;
+    String url;
     String title;
+    String author;
+
 
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -77,24 +79,33 @@ public class PlayActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras == null) {
             SharedPreferences sharedPreferences = getSharedPreferences("Prefs", Context.MODE_PRIVATE);
-            public_id = sharedPreferences.getString("public_id", "");
-            title     = sharedPreferences.getString("title", "");
+            url = sharedPreferences.getString("url", "");
+            title = sharedPreferences.getString("title", "");
+            author = sharedPreferences.getString("author", "");
+
         } else {
-            public_id = extras.getString("public_id");
-            title     = extras.getString("title");
+            url = extras.getString("url");
+            title = extras.getString("title");
+            author = extras.getString("author");
             SharedPreferences sharedPreferences = getSharedPreferences("Prefs", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("public_id", public_id).apply();
+            editor.putString("url", url).apply();
             editor.putString("title", title).apply();
+            editor.putString("author", author).apply();
         }
 
 
         getSupportActionBar().setTitle(title.equals("") ? "Spela" : title);
 
+        load();
+
+    }
+
+    void load() {
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setLoadWithOverviewMode(true);
         webView.getSettings().setUseWideViewPort(true);
-        webView.loadUrl("http://koda.nu/arkivet/" + public_id);
+        webView.loadUrl(url);
         webView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -105,9 +116,7 @@ public class PlayActivity extends AppCompatActivity {
         webView.setHapticFeedbackEnabled(false);
         webView.setWebChromeClient(new WebClient().getClient(this, title));
         webView.setLayerType((Build.VERSION.SDK_INT >= 19) ? View.LAYER_TYPE_HARDWARE : View.LAYER_TYPE_SOFTWARE, null);
-
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -121,7 +130,12 @@ public class PlayActivity extends AppCompatActivity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.reload:
-                webView.reload();
+                load();
+                return true;
+            case R.id.more:
+                StandardBottomSheetFragment bottomSheetFragment = new StandardBottomSheetFragment();
+                bottomSheetFragment.passData(url, title, author);
+                bottomSheetFragment.show(getSupportFragmentManager(), bottomSheetFragment.getTag());
                 return true;
             case android.R.id.home:
                 finish();
@@ -150,6 +164,6 @@ public class PlayActivity extends AppCompatActivity {
                             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         }
 
-        webView.reload();
+        load();
     }
 }

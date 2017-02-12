@@ -64,5 +64,6 @@
         <item name="colorControlHighlight">@color/colorAccent</item>
     </style>
 
+    <style name="TransNav" parent="AppTheme"/>
 
 </resources>

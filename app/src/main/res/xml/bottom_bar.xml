@@ -12,8 +12,8 @@
         title="API"
         barColorWhenSelected="@color/colorPrimary" />
 
-    <!--
-    <tab
+
+    <!-- <tab
         id="@+id/tab_guides"
         icon="@drawable/ic_tab_guides"
         title="Guider"
@@ -23,9 +23,7 @@
         id="@+id/tab_archive"
         icon="@drawable/ic_tab_archive"
         title="Arkivet"
-        barColorWhenSelected="@color/colorPrimary" />
-
-    -->
+        barColorWhenSelected="@color/colorPrimary" /> -->
 
     <tab
         id="@+id/tab_settings"

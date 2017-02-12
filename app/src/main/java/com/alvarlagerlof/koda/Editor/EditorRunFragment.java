@@ -28,10 +28,12 @@ public class EditorRunFragment extends Fragment {
         View view = inflater.inflate(R.layout.editor_run_fragment, container, false);
         webView = (WebView) view.findViewById(R.id.webview);
 
+        load();
+
         return view;
     }
 
-    public void startLoad() {
+    public void load() {
         webView.onResume();
         webView.resumeTimers();
         webView.getSettings().setJavaScriptEnabled(true);
@@ -59,7 +61,7 @@ public class EditorRunFragment extends Fragment {
     public void reload() {
         //webView.reload();
         //webView.destroy();
-        startLoad();
+        load();
     }
 
 

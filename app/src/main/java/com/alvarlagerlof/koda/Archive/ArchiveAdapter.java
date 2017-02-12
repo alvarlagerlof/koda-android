@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alvarlagerlof.koda.StandardBottomSheetFragment;
 import com.alvarlagerlof.koda.Comments.CommentsActivity;
 import com.alvarlagerlof.koda.LikeDissLike;
 import com.alvarlagerlof.koda.PlayActivity;
@@ -215,7 +216,7 @@ class ArchiveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((ViewHolderItem) holder).more.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ArchiveBottomSheetFragment bottomSheetFragment = new ArchiveBottomSheetFragment();
+                    StandardBottomSheetFragment bottomSheetFragment = new StandardBottomSheetFragment();
                     bottomSheetFragment.passData(dataset.get(position).publicId, dataset.get(position).title, dataset.get(position).author);
 
                     bottomSheetFragment.show(fragmentManager, bottomSheetFragment.getTag());

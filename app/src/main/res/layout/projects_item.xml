@@ -36,8 +36,8 @@
         android:background="@drawable/click"
         android:id="@+id/more"
         android:gravity="center_vertical"
-        android:paddingRight="10dp"
-        android:paddingLeft="10dp">
+        android:paddingRight="16dp"
+        android:paddingLeft="16dp">
 
         <ImageView
             android:layout_width="24dp"

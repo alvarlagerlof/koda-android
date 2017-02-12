@@ -19,17 +19,20 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alvarlagerlof.koda.R;
+import com.alvarlagerlof.koda.Utils.Base64Utils;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by alvar on 2016-09-01.
  */
 public class QrViewer extends AppCompatActivity {
 
-    String url;
 
     ImageView qrImageView;
     ProgressBar progressBar;
@@ -61,10 +64,17 @@ public class QrViewer extends AppCompatActivity {
 
 
 
-        url = getIntent().getExtras().getString("url");
+        JSONObject data = new JSONObject();
+        try {
+            data.put("url", Base64Utils.encode(getIntent().getExtras().getString("url")));
+            data.put("title", Base64Utils.encode(getIntent().getExtras().getString("title")));
+            data.put("author", Base64Utils.encode(getIntent().getExtras().getString("author")));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         generate generate = new generate();
-        generate.execute(url);
+        generate.execute(data.toString());
 
     }
 

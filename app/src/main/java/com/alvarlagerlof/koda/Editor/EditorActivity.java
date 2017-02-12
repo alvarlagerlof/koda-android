@@ -14,7 +14,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
 
-import com.alvarlagerlof.koda.MainAcitivty;
 import com.alvarlagerlof.koda.Projects.ProjectsRealmObject;
 import com.alvarlagerlof.koda.Projects.ProjectsSync;
 import com.alvarlagerlof.koda.R;
@@ -118,7 +117,7 @@ public class EditorActivity extends AppCompatActivity {
                     case 1:
                         // Run
                         editorRunFragment.setCode(editorEditFragment.getCode());
-                        editorRunFragment.startLoad();
+                        editorRunFragment.load();
 
                         toolbar.getMenu().findItem(R.id.colorpicker).setVisible(false);
                         toolbar.getMenu().findItem(R.id.fontminus).setVisible(false);

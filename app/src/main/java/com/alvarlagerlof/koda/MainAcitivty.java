@@ -1,13 +1,19 @@
 package com.alvarlagerlof.koda;
 
+
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.design.widget.AppBarLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,14 +22,10 @@ import android.widget.LinearLayout;
 import com.alvarlagerlof.koda.Api.FragmentApi;
 import com.alvarlagerlof.koda.Login.KeepLoggedIn;
 import com.alvarlagerlof.koda.Projects.ProjectsFragment;
+import com.alvarlagerlof.koda.QrCodeShare.QrScanner;
 import com.alvarlagerlof.koda.Settings.SettingsFragment;
-import com.alvarlagerlof.koda.Utils.DateConversionUtils;
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
-
-import java.util.concurrent.TimeUnit;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -33,15 +35,11 @@ import io.realm.RealmConfiguration;
  */
 public class MainAcitivty extends AppCompatActivity {
 
-
-
     LinearLayout fragment_container;
-
-    public static ProjectsFragment fragmentMyProjects;
-
     Toolbar toolbar;
     AppBarLayout appBarLayout;
 
+    public static final int PERMISSION_REQUEST_USE_CAMERA = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,6 +51,7 @@ public class MainAcitivty extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         appBarLayout = (AppBarLayout) findViewById(R.id.appbarlayout);
         setSupportActionBar(toolbar);
+
 
 
         // Login
@@ -71,20 +70,19 @@ public class MainAcitivty extends AppCompatActivity {
         fragment_container = (LinearLayout) findViewById(R.id.fragment_container);
 
 
-
         BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
         bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelected(@IdRes int tabId) {
                 switch (tabId) {
                     case R.id.tab_projects:
-                        fragmentMyProjects = new ProjectsFragment();
+                        ProjectsFragment fragmentMyProjects = new ProjectsFragment();
                         FragmentTransaction ftMyCreations = getSupportFragmentManager().beginTransaction();
                         ftMyCreations.replace(R.id.fragment_container, fragmentMyProjects);
                         ftMyCreations.addToBackStack(null);
                         ftMyCreations.commit();
                         toolbar.setTitle("Projekt");
-                        appBarLayout.setElevation(16f);
+                        setAppBarElevation(16f);
 
                         break;
                     case R.id.tab_api:
@@ -94,7 +92,7 @@ public class MainAcitivty extends AppCompatActivity {
                         ftApi.addToBackStack(null);
                         ftApi.commit();
                         toolbar.setTitle("API");
-                        appBarLayout.setElevation(0f);
+                        setAppBarElevation(0f);
                         break;
                     /*case R.id.tab_guides:
                         GuidesFragment guidesFragment = new GuidesFragment();
@@ -103,7 +101,7 @@ public class MainAcitivty extends AppCompatActivity {
                         ftGuides.addToBackStack(null);
                         ftGuides.commit();
                         toolbar.setTitle("Guider");
-                        appBarLayout.setElevation(16f);
+                        setAppBarElevation(16f);
 
                         break;
                     case R.id.tab_archive:
@@ -113,7 +111,7 @@ public class MainAcitivty extends AppCompatActivity {
                         ftArchive.addToBackStack(null);
                         ftArchive.commit();
                         toolbar.setTitle("Arkivet");
-                        appBarLayout.setElevation(0f);
+                        setAppBarElevation(0f);
                         break;*/
                     case R.id.tab_settings:
                         SettingsFragment settingsFragment = new SettingsFragment();
@@ -122,7 +120,7 @@ public class MainAcitivty extends AppCompatActivity {
                         ftSettings.addToBackStack(null);
                         ftSettings.commit();
                         toolbar.setTitle("Inställningar");
-                        appBarLayout.setElevation(16f);
+                        setAppBarElevation(16f);
                         break;
 
                 }
@@ -138,24 +136,9 @@ public class MainAcitivty extends AppCompatActivity {
     }
 
 
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if (result != null) {
-            if (result.getContents() != null) {
-                String url = String.valueOf(result.getContents());
-
-                Intent intent = new Intent(MainAcitivty.this, PlayActivity.class);
-                intent.putExtra("title", "");
-                intent.putExtra("public_id", url.substring(url.lastIndexOf("/") + 1).trim());
-                startActivity(intent);
-
-            }
-        } else {
-            // This is important, otherwise the result will not be passed to the fragment
-            super.onActivityResult(requestCode, resultCode, data);
+    void setAppBarElevation(float elevation) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            appBarLayout.setElevation(elevation);
         }
     }
 
@@ -172,15 +155,81 @@ public class MainAcitivty extends AppCompatActivity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.scan:
-                IntentIntegrator integrator = new IntentIntegrator(MainAcitivty.this);
-                integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
-                integrator.setCameraId(0);
-                integrator.setOrientationLocked(true);
-                integrator.setBeepEnabled(false);
-                integrator.initiateScan();
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (ContextCompat.checkSelfPermission(MainAcitivty.this,
+                            android.Manifest.permission.CAMERA)
+                            != PackageManager.PERMISSION_GRANTED) {
+
+
+
+                        // Should we show an explanation?
+                        if (ActivityCompat.shouldShowRequestPermissionRationale(MainAcitivty.this,
+                                android.Manifest.permission.CAMERA)) {
+
+
+
+                            new AlertDialog.Builder(MainAcitivty.this)
+                                    .setTitle("Skanner")
+                                    .setMessage("Skannern böehver tillstånd att använda kameran för att fungera.")
+                                    .setPositiveButton("Ge tillstånd", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                            ActivityCompat.requestPermissions(MainAcitivty.this,
+                                                    new String[]{android.Manifest.permission.CAMERA},
+                                                    PERMISSION_REQUEST_USE_CAMERA);
+                                        }
+                                    })
+                                    .setNegativeButton("avbryt", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    })
+                                    .show();
+
+
+
+                        } else {
+                            // No explanation needed, we can request the permission.
+
+                            ActivityCompat.requestPermissions(MainAcitivty.this,
+                                    new String[]{android.Manifest.permission.CAMERA},
+                                    PERMISSION_REQUEST_USE_CAMERA);
+
+                        }
+                    } else {
+
+
+
+                        startActivity(new Intent(MainAcitivty.this, QrScanner.class));
+                    }
+                }
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_REQUEST_USE_CAMERA: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+
+
+                    startActivity(new Intent(MainAcitivty.this, QrScanner.class));
+                }
+                return;
+            }
+
+            // other 'case' statements for other permssions
         }
     }
 
