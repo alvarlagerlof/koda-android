@@ -28,7 +28,7 @@ android {
 
 allprojects {
     project.ext {
-        supportVersion = "25.0.1"
+        supportVersion = "25.2.0"
         firebaseVersion = "10.0.1"
     }
 }

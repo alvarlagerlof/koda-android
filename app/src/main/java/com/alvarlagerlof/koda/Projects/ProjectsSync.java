@@ -46,7 +46,7 @@ public class ProjectsSync extends AsyncTask<Object, Object, JSONArray> {
     @Override
     protected JSONArray doInBackground(Object... params) {
 
-        JSONArray serverProjects = new JSONArray();
+        JSONArray serverProjects;
 
         // Get all server projects
         if (ConnectionUtils.isConnected(context)) {
@@ -106,7 +106,7 @@ public class ProjectsSync extends AsyncTask<Object, Object, JSONArray> {
         // Loop over local projects
         for (int i = 0; i < realmProjects.size(); i++) {
             final ProjectsRealmObject realmProject = realmProjects.get(i);
-            JSONObject serverProject = getJsonObjectByPrivateId(serverProjects, realmProject.getPrivateId());
+            final JSONObject serverProject = getJsonObjectByPrivateId(serverProjects, realmProject.getPrivateId());
 
 
             if (serverProject != null) {
@@ -126,28 +126,27 @@ public class ProjectsSync extends AsyncTask<Object, Object, JSONArray> {
 
                                 try {
 
-                                    CookieHandler cookieHandler = new CookieManager(new PersistentCookieStore(context), CookiePolicy.ACCEPT_ALL);
-                                    OkHttpClient client = new OkHttpClient.Builder().cookieJar(new JavaNetCookieJar(cookieHandler)).build();
-
-                                    RequestBody formBody = new FormBody.Builder()
-                                            .add("title", realmProject.getTitle())
-                                            .add("description", realmProject.getDescription())
-                                            .add("author", "")
-                                            .add("public", String.valueOf(realmProject.getIsPublic()))
-                                            .add("code", realmProject.getCode())
-                                            .build();
+                                    ProjectsRealmObject realmProject = realm.where(ProjectsRealmObject.class)
+                                            .equalTo("privateId", serverProject.getString("privateID"))
+                                            .findFirst();
 
 
                                     Request request = new Request.Builder()
                                             .url(PrefValues.URL_MY_PROJECTS_CREATE_NEW)
-                                            .post(formBody)
+                                            .post(new FormBody.Builder()
+                                                    .add("title", realmProject.getTitle())
+                                                    .add("description", realmProject.getDescription())
+                                                    .add("author", "")
+                                                    .add("public", String.valueOf(realmProject.getIsPublic()))
+                                                    .add("code", realmProject.getCode())
+                                                    .build())
                                             .build();
 
 
-                                    Response response = client.newCall(request).execute();
+                                    Response response = new OkHttpClient.Builder().cookieJar(new JavaNetCookieJar(new CookieManager(new PersistentCookieStore(context), CookiePolicy.ACCEPT_ALL))).build().newCall(request).execute();
                                     response.body().close();
 
-                                } catch (java.io.IOException e) {
+                                } catch (java.io.IOException | JSONException e) {
                                     e.printStackTrace();
                                 }
                                 return true;
@@ -162,56 +161,57 @@ public class ProjectsSync extends AsyncTask<Object, Object, JSONArray> {
         }
 
 
-        // Loop over server projects
-        for (int i = 0; i < serverProjects.length(); i++) {
+        // Loop over server projects if not empty
+        if (serverProjects != null && serverProjects.length() > 0) {
 
-            try {
+            for (int i = 0; i < serverProjects.length(); i++) {
 
-                final JSONObject serverProject = serverProjects.getJSONObject(i);
+                try {
 
-                ProjectsRealmObject realmProject = realm.where(ProjectsRealmObject.class)
-                        .equalTo("privateId", serverProject.getString("privateID"))
-                        .findFirst();
+                    final JSONObject serverProject = serverProjects.getJSONObject(i);
 
-
-                if (realmProject != null) {
-
-                    // If it does exist on the server
-                    updateOldest(realmProject, serverProject);
+                    ProjectsRealmObject realmProject = realm.where(ProjectsRealmObject.class)
+                            .equalTo("privateId", serverProject.getString("privateID"))
+                            .findFirst();
 
 
-                } else {
+                    if (realmProject != null) {
 
-                    // If it does NOT exist on the realm
+                        // If it does exist on the server
+                        updateOldest(realmProject, serverProject);
 
-                    Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
-                        @Override
-                        public void execute(Realm realm) {
-                            ProjectsRealmObject object = realm.createObject(ProjectsRealmObject.class);
 
-                            try {
-                                object.setPrivateId(serverProject.getString("privateID"));
-                                object.setPublicId(serverProject.getString("publicID"));
-                                object.setTitle(Base64Utils.decode(serverProject.getString("title").equals("") ? context.getString(R.string.unnamed) : serverProject.getString("title")));
-                                object.setUpdated(serverProject.getString("updated"));
-                                object.setDescription(Base64Utils.decode(serverProject.getString("description")));
-                                object.setIsPublic(serverProject.getString("public").equals("CHECKED"));
-                                object.setCode(Base64Utils.decode(serverProject.getString("code")));
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                    } else {
+
+                        // If it does NOT exist on the realm
+
+                        Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+                            @Override
+                            public void execute(Realm realm) {
+                                ProjectsRealmObject object = realm.createObject(ProjectsRealmObject.class);
+
+                                try {
+                                    object.setPrivateId(serverProject.getString("privateID"));
+                                    object.setPublicId(serverProject.getString("publicID"));
+                                    object.setTitle(Base64Utils.decode(serverProject.getString("title").equals("") ? context.getString(R.string.unnamed) : serverProject.getString("title")));
+                                    object.setUpdated(serverProject.getString("updated"));
+                                    object.setDescription(Base64Utils.decode(serverProject.getString("description")));
+                                    object.setIsPublic(serverProject.getString("public").equals("CHECKED"));
+                                    object.setCode(Base64Utils.decode(serverProject.getString("code")));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
                             }
-
-                        }
-                    });                }
+                        });                }
 
 
-            } catch (JSONException e) {
-                e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
             }
-
-
-
-
 
 
         }
@@ -334,7 +334,7 @@ public class ProjectsSync extends AsyncTask<Object, Object, JSONArray> {
 
         try {
 
-            if (array.length() > 0) {
+            if (array != null && array.length() > 0 ) {
                 for (int i = 0; i < array.length(); i++) {
 
                     if (array.getJSONObject(i)
