@@ -57,7 +57,6 @@ class ProjectsAdd extends AsyncTask<Void, Void, Void> {
                 object.setUpdated(String.valueOf(System.currentTimeMillis() / 1000L));
                 object.setDescription("");
                 object.setIsPublic(false);
-                object.setCharCount("");
                 object.setCode("<script src=\"http://koda.nu/simple.js\">\n" +
                         "\n" +
                         "  circle(100, 100, 20, \"red\");\n" +

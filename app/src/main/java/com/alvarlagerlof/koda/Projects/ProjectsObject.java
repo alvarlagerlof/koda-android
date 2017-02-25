@@ -10,7 +10,6 @@ public class ProjectsObject {
     String updated;
     String description;
     Boolean isPublic;
-    String charCount;
     String code;
     int type;
 
@@ -21,7 +20,6 @@ public class ProjectsObject {
                           String updated,
                           String description,
                           Boolean isPublic,
-                          String charCount,
                           String code,
                           int type) {
 
@@ -31,7 +29,6 @@ public class ProjectsObject {
         this.updated      = updated;
         this.description  = description;
         this.isPublic     = isPublic;
-        this.charCount    = charCount;
         this.code         = code;
         this.type         = type;
 

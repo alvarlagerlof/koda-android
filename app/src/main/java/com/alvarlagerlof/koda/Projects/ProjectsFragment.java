@@ -90,16 +90,15 @@ public class ProjectsFragment extends Fragment {
             String updated      = DateConversionUtils.convert(realmObjects.get(i).getUpdated());
             String description  = realmObjects.get(i).getDescription();
             boolean isPublic    = realmObjects.get(i).getIsPublic();
-            String charCount    = realmObjects.get(i).getCharCount();
             String code         = realmObjects.get(i).getCode();
-            projectsList.add(new ProjectsObject(privateID, publicID, title, updated, description, isPublic, charCount, code, ProjectsAdapter.TYPE_ITEM));
+            projectsList.add(new ProjectsObject(privateID, publicID, title, updated, description, isPublic, code, ProjectsAdapter.TYPE_ITEM));
         }
 
 
 
         // If no objects
         if (realmObjects.size() == 0) {
-            projectsList.add(new ProjectsObject("", "", "", "", "", false, "", "", ProjectsAdapter.TYPE_NO_ITEMS));
+            projectsList.add(new ProjectsObject("", "", "", "", "", false, "", ProjectsAdapter.TYPE_NO_ITEMS));
         }
 
 

@@ -12,7 +12,6 @@ public class ProjectsRealmObject extends RealmObject {
     private String updated;
     private String description;
     private Boolean isPublic;
-    private String charCount;
     private String code;
 
 
@@ -74,17 +73,6 @@ public class ProjectsRealmObject extends RealmObject {
 
     public void setIsPublic(Boolean isPublic) {
         this.isPublic = isPublic;
-    }
-
-
-
-    // Char count
-    public String getCharCount() {
-        return charCount;
-    }
-
-    public void setCharCount(String charCount) {
-        this.charCount = charCount;
     }
 
 
