@@ -1,5 +1,6 @@
 package com.alvarlagerlof.koda.Login;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
@@ -19,6 +21,7 @@ import com.alvarlagerlof.koda.MainAcitivty;
 import com.alvarlagerlof.koda.PrefValues;
 import com.alvarlagerlof.koda.R;
 import com.alvarlagerlof.koda.Utils.ConnectionUtils;
+import com.arasthel.asyncjob.AsyncJob;
 import com.bumptech.glide.Glide;
 
 import org.json.JSONException;
@@ -82,7 +85,83 @@ public class LoginActivity extends AppCompatActivity {
             editor.putString(PREF_EMAIL, email.getText().toString());
             editor.putString(PREF_PASSWORD, password.getText().toString());
             editor.apply();
-            new LoginAsync().execute();
+
+
+
+            new AsyncJob.AsyncJobBuilder<String>()
+                    .doInBackground(new AsyncJob.AsyncAction<String>() {
+                        @Override
+                        public String doAsync() {
+
+                            String result = null;
+
+                            Log.d("emailtext", password.getText().toString());
+
+                            RequestBody formBody = new FormBody.Builder()
+                                    .add("email", email.getText().toString())
+                                    .add("password", email.getText().toString())
+                                    .add("headless", "thisIsHeadLess")
+                                    .build();
+
+                            Request request = new Request.Builder()
+                                    .url(PrefValues.URL_LOGIN)
+                                    .post(formBody)
+                                    .build();
+
+                            try {
+                                Response response = new OkHttpClient.Builder()
+                                        .cookieJar(new JavaNetCookieJar(new CookieManager(new PersistentCookieStore(getApplicationContext()), CookiePolicy.ACCEPT_ALL)))
+                                        .build().newCall(request).execute();
+
+                                result = response.body().string();
+                                response.body().close();
+
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+
+                            return result;
+                        }
+                    })
+                    .doWhenFinished(new AsyncJob.AsyncResultAction<String>() {
+                        @SuppressLint("ApplySharedPref")
+                        @Override
+                        public void onResult(String result) {
+                            if (result != null) {
+                                try {
+
+                                    if (new JSONObject(result).getString("access").equals("granted")) {
+
+                                        PreferenceManager.getDefaultSharedPreferences(LoginActivity.this)
+                                                .edit()
+                                                .putString(PrefValues.PREF_EMAIL, email.getText().toString())
+                                                .putString(PREF_PASSWORD, password.getText().toString())
+                                                .commit();
+
+                                        startActivity(new Intent(LoginActivity.this, MainAcitivty.class));
+
+                                    } else {
+
+                                        new AlertDialog.Builder(LoginActivity.this)
+                                                .setTitle("Ops!")
+                                                .setMessage("Felaktigt skriven email eller lösenord "+ new JSONObject(result).toString(2))
+                                                .setPositiveButton("Försök igen", new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        dialog.cancel();
+                                                    }
+                                                })
+                                                .show();
+
+                                    }
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+
+                    }).create().start();
 
         } else {
             new AlertDialog.Builder(LoginActivity.this)
@@ -139,7 +218,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-    class LoginAsync extends AsyncTask<Void, Integer, String> {
+    private class LoginAsync extends AsyncTask<Void, Void, String> {
 
         String emailString;
         String passwordString;
@@ -152,13 +231,12 @@ public class LoginActivity extends AppCompatActivity {
 
         }
 
-
         protected String doInBackground(Void...arg0) {
 
             String result = null;
 
-            CookieHandler cookieHandler = new CookieManager(
-                    new PersistentCookieStore(LoginActivity.this), CookiePolicy.ACCEPT_ALL);
+            CookieHandler cookieHandler = new CookieManager(new PersistentCookieStore(LoginActivity.this), CookiePolicy.ACCEPT_ALL);
+
 
             OkHttpClient client = new OkHttpClient.Builder()
                     .cookieJar(new JavaNetCookieJar(cookieHandler))
@@ -177,8 +255,11 @@ public class LoginActivity extends AppCompatActivity {
 
             try {
                 Response response = client.newCall(request).execute();
+
+
                 result = response.body().string();
                 response.body().close();
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -187,40 +268,13 @@ public class LoginActivity extends AppCompatActivity {
             return result;
         }
 
+        @SuppressLint("ApplySharedPref")
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
-            if (s != null) {
-                try {
-                    if (new JSONObject(s).getString("access").equals("granted")) {
 
-                        PreferenceManager.getDefaultSharedPreferences(LoginActivity.this)
-                                .edit()
-                                .putString(PrefValues.PREF_EMAIL, emailString)
-                                .putString(PREF_PASSWORD, passwordString)
-                                .commit();
 
-                        startActivity(new Intent(LoginActivity.this, MainAcitivty.class));
-
-                    } else {
-
-                        new AlertDialog.Builder(LoginActivity.this)
-                                .setTitle("Ops!")
-                                .setMessage("Felaktigt skriven email eller lösenord")
-                                .setPositiveButton("Försök igen", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.cancel();
-                                    }
-                                })
-                                .show();
-
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
 
 
         }
