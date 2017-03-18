@@ -66,16 +66,6 @@ public class MainAcitivty extends AppCompatActivity {
                 .build();
         Realm.setDefaultConfiguration(realmConfiguration);
 
-        // TODO: REMOVE THIS IN PRODUCTION
-
-        // Update every secound
-        /*new Timer().scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                //new ProjectsSync(MainAcitivty.this).execute();
-            }
-        }, 0, 10000);*/
-
 
         fragment_container = (LinearLayout) findViewById(R.id.fragment_container);
 

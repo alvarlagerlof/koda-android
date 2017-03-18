@@ -2,6 +2,7 @@ package com.alvarlagerlof.koda.Projects;
 
 import android.app.Dialog;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -104,22 +105,34 @@ public class ProjectsBottomSheetFragment extends BottomSheetDialogFragment {
         share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, title + " på Koda.nu: https://koda.nu/arkivet/" + publicID);
-                sendIntent.setType("text/plain");
-                startActivity(sendIntent);
+
+                if (publicID.startsWith("ny_")) {
+                    showCantShareDialog();
+                } else {
+                    Intent sendIntent = new Intent();
+                    sendIntent.setAction(Intent.ACTION_SEND);
+                    sendIntent.putExtra(Intent.EXTRA_TEXT, title + " på Koda.nu: https://koda.nu/arkivet/" + publicID);
+                    sendIntent.setType("text/plain");
+                    startActivity(sendIntent);
+                }
+
+
             }
         });
 
         qr_share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), QrViewer.class);
-                intent.putExtra("url", "http://koda.nu/arkivet/" + publicID);
-                intent.putExtra("title", title);
-                intent.putExtra("author", author);
-                startActivity(intent);
+
+                if (publicID.startsWith("ny_")) {
+                    showCantShareDialog();
+                } else {
+                    Intent intent = new Intent(getContext(), QrViewer.class);
+                    intent.putExtra("url", "http://koda.nu/arkivet/" + publicID);
+                    intent.putExtra("title", title);
+                    intent.putExtra("author", author);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -201,6 +214,26 @@ public class ProjectsBottomSheetFragment extends BottomSheetDialogFragment {
             }
         });
 
+
+    }
+
+
+
+
+    void showCantShareDialog() {
+
+        AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
+        alertDialog.setTitle("Kan inte dela projektet");
+        alertDialog.setMessage("Projektet är inte skapat offline och inte uppladdat på servern. Du kan därför inte dela det.");
+
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dismiss();
+            }
+        });
+
+        alertDialog.show();
 
     }
 

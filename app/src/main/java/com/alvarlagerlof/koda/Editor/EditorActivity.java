@@ -107,6 +107,7 @@ public class EditorActivity extends AppCompatActivity {
                 switch (pos) {
                     case 0:
                         // Editor
+                        editorRunFragment.pause();
                         editorRunFragment.clearWebView();
 
                         toolbar.getMenu().findItem(R.id.colorpicker).setVisible(true);
@@ -116,8 +117,12 @@ public class EditorActivity extends AppCompatActivity {
                         break;
                     case 1:
                         // Run
+
+
                         editorRunFragment.setCode(editorEditFragment.getCode());
-                        editorRunFragment.load();
+
+                        editorRunFragment.resume();
+
 
                         toolbar.getMenu().findItem(R.id.colorpicker).setVisible(false);
                         toolbar.getMenu().findItem(R.id.fontminus).setVisible(false);
@@ -172,7 +177,7 @@ public class EditorActivity extends AppCompatActivity {
                 return true;
 
             case R.id.reload:
-                editorRunFragment.reload();
+                editorRunFragment.load();
                 return true;
 
             case R.id.colorpicker:

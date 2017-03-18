@@ -188,6 +188,8 @@ public class ProjectsEditBottomSheetFragment extends BottomSheetDialogFragment {
 
                 new ProjectsSync(getContext());
 
+                dismiss();
+
             }
         });
 

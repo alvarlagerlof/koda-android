@@ -8,8 +8,8 @@ android {
         applicationId "com.alvarlagerlof.koda"
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 5
-        versionName "0.2.0 ALPHA"
+        versionCode 7
+        versionName "0.3.0 BETA"
     }
     buildTypes {
         release {
