@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/appbarlayout">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/search_field_layout"
+                android:background="@color/colorPrimary">
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:textColor="@color/white"
+                    android:textColorHint="#d7d7d7"
+                    android:hint="Sök..."
+                    android:singleLine="true"
+                    android:id="@+id/search_field"
+                    android:background="@null"
+                    android:layout_weight="1"/>
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/clear_button"
+                    android:src="@drawable/ic_close"
+                    android:background="@drawable/click"
+                    android:layout_gravity="right"
+                    android:padding="16dp"
+                    android:visibility="gone"/>
+
+            </LinearLayout>
+
+        </android.support.design.widget.AppBarLayout>
+
+
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/recycler_view"
+            android:scrollbars="vertical"
+            android:clipToPadding="false" />
+
+    </LinearLayout>
+
+
+</android.support.design.widget.CoordinatorLayout>

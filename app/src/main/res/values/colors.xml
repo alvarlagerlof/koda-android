@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="black">#000</color>
+    <color name="white">#FFF</color>
+    <color name="grey">#646464</color>
+    <color name="red">#ff0004</color>
+
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#009688</color>
+
+
+    <color name="textColor">@color/black</color>
+    <color name="textColorSecondary">@color/grey</color>
+
+
+
+    <color name="darkbackground">#8d000000</color>
+
+    <color name="navigation_background_color">#0D000000</color>
+
+    <color name="clickColor">#1A000000</color>
+
+    <color name="button_warning">@color/red</color>
+
+
+    <color name="syntax_error">#8800</color>
+    <color name="syntax_number">#116644</color>
+    <color name="syntax_keyword">#ae1f93</color>
+    <color name="syntax_comment">#0251c8</color>
+
+    <color name="syntax_varaiable">#0f47ff</color>
+    <color name="syntax_varaiable_content">#aa1111</color>
+
+
+</resources>

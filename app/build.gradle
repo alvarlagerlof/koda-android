@@ -1,0 +1,84 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion '25.0.2'
+
+    defaultConfig {
+        applicationId "com.alvarlagerlof.koda"
+        minSdkVersion 14
+        targetSdkVersion 25
+        versionCode 5
+        versionName "0.2.0 ALPHA"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE-FIREBASE.txt'
+        exclude 'META-INF/NOTICE'
+    }
+
+   
+}
+
+allprojects {
+    project.ext {
+        supportVersion = "25.2.0"
+        firebaseVersion = "10.0.1"
+    }
+}
+
+
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:' + project.ext.supportVersion
+    compile 'com.android.support:cardview-v7:' + project.ext.supportVersion
+    compile 'com.android.support:design:' + project.ext.supportVersion
+
+
+    // Okhttp
+    compile 'com.squareup.okhttp3:okhttp:3.6.0'
+    compile "com.squareup.okhttp3:okhttp-urlconnection:3.0.0-RC1"
+
+
+    // Glide
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.android.support:support-v4:' + project.ext.supportVersion
+
+
+    // Firebase
+    compile 'com.google.firebase:firebase-core:' + project.ext.firebaseVersion
+    compile 'com.google.firebase:firebase-crash:' + project.ext.firebaseVersion
+    compile 'com.google.firebase:firebase-invites:' + project.ext.firebaseVersion
+
+
+    // Bottombar
+    compile 'com.roughike:bottom-bar:2.1.1'
+
+
+    // QR Codes
+    compile ('com.dlazaro66.qrcodereaderview:qrcodereaderview:2.0.1@aar'){
+        transitive = true
+    }
+
+    // Color picker
+    compile 'com.github.QuadFlask:colorpicker:0.0.12'
+
+
+    // Easy async
+    compile 'com.arasthel:asyncjob-library:1.0.3'
+
+
+
+
+}
+
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'realm-android'
