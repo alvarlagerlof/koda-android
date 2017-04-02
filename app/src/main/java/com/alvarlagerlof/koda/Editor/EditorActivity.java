@@ -130,7 +130,7 @@ public class EditorActivity extends AppCompatActivity {
                         toolbar.getMenu().findItem(R.id.reload).setVisible(true);
 
                         InputMethodManager inputMethodManager = (InputMethodManager) EditorActivity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
-                        inputMethodManager.hideSoftInputFromWindow(EditorActivity.this.getCurrentFocus().getWindowToken(), 0);
+                        inputMethodManager.hideSoftInputFromWindow(toolbar.getWindowToken(), 0);
 
 
                         // Save

@@ -98,7 +98,7 @@ public class NewAccountActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 InputMethodManager inputMethodManager = (InputMethodManager) NewAccountActivity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
-                inputMethodManager.hideSoftInputFromWindow(NewAccountActivity.this.getCurrentFocus().getWindowToken(), 0);
+                inputMethodManager.hideSoftInputFromWindow(findViewById(R.id.background).getWindowToken(), 0);
             }
         });
 

@@ -12,9 +12,6 @@ public class PrefValues {
 
 
     // My projects
-    public static final String URL_MY_PROJECTS = BASE_URL + API_VERSION + "labbet";
-    public static final String URL_MY_PROJECTS_CREATE_NEW = BASE_URL + API_VERSION + "skapa/";
-    public static final String URL_MY_PROJECTS_EDIT = BASE_URL + "labbet/";
     public static final String URL_MY_PROJECTS_DELETE = BASE_URL + "delete/";
 
     // My projects
@@ -59,9 +56,8 @@ public class PrefValues {
     public static final String URL_LOGIN = BASE_URL + "login";
     public static final String URL_LOGIN_FORGOT = BASE_URL + "login";
     public static final String URL_LOGIN_CREATE = BASE_URL + "login";
-
-    public static final String URL_LOGIN_IMAGE = "https://hd.unsplash.com/photo-1461749280684-dccba630e2f6";
-    public static final String URL_LOGIN_FORGOT_IMAGE = "https://hd.unsplash.com/photo-1461632830798-3adb3034e4c8";
-    public static final String URL_LOGIN_CREATE_IMAGE = "https://hd.unsplash.com/photo-1429051883746-afd9d56fbdaf";
+    public static final String URL_LOGIN_IMAGE = "https://unsplash.com/photos/OqtafYT5kTw/download?force=true";
+    public static final String URL_LOGIN_FORGOT_IMAGE = "https://unsplash.com/photos/6njoEbtarec/download?force=true";
+    public static final String URL_LOGIN_CREATE_IMAGE = "https://unsplash.com/photos/XJXWbfSo2f0/download?force=true";
 
 }

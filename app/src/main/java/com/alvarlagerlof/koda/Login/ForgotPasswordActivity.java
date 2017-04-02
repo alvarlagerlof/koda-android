@@ -88,7 +88,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 InputMethodManager inputMethodManager = (InputMethodManager) ForgotPasswordActivity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
-                inputMethodManager.hideSoftInputFromWindow(ForgotPasswordActivity.this.getCurrentFocus().getWindowToken(), 0);
+                inputMethodManager.hideSoftInputFromWindow(findViewById(R.id.background).getWindowToken(), 0);
             }
         });
 

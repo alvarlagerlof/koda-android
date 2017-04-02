@@ -27,6 +27,8 @@ import com.alvarlagerlof.koda.PrefValues;
 import com.alvarlagerlof.koda.R;
 import com.bumptech.glide.Glide;
 
+import io.realm.Realm;
+
 
 /**
  * Created by alvar on 2016-07-02.
@@ -156,6 +158,11 @@ public class SettingsFragment extends Fragment {
                 editor.putString(PrefValues.PREF_NICK, null);
                 editor.putString(PrefValues.PREF_EMAIL, null);
                 editor.commit();
+
+
+                Realm.getDefaultInstance().beginTransaction();
+                Realm.getDefaultInstance().deleteAll();
+                Realm.getDefaultInstance().commitTransaction();
 
                 Intent intent = new Intent(getContext(), LoginActivity.class);
                 startActivity(intent);

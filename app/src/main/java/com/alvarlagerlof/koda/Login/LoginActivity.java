@@ -5,13 +5,11 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
@@ -28,10 +26,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
 
+import io.realm.Realm;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -71,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 InputMethodManager inputMethodManager = (InputMethodManager) LoginActivity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
-                inputMethodManager.hideSoftInputFromWindow(LoginActivity.this.getCurrentFocus().getWindowToken(), 0);
+                inputMethodManager.hideSoftInputFromWindow(findViewById(R.id.background).getWindowToken(), 0);
             }
         });
 
@@ -93,9 +91,11 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public String doAsync() {
 
-                            String result = null;
+                            Realm.getDefaultInstance().beginTransaction();
+                            Realm.getDefaultInstance().deleteAll();
+                            Realm.getDefaultInstance().commitTransaction();
 
-                            Log.d("emailtext", password.getText().toString());
+                            String result = null;
 
                             RequestBody formBody = new FormBody.Builder()
                                     .add("email", email.getText().toString())
@@ -145,7 +145,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                         new AlertDialog.Builder(LoginActivity.this)
                                                 .setTitle("Ops!")
-                                                .setMessage("Felaktigt skriven email eller lösenord "+ new JSONObject(result).toString(2))
+                                                .setMessage("Felaktigt skriven email eller lösenord")
                                                 .setPositiveButton("Försök igen", new DialogInterface.OnClickListener() {
                                                     public void onClick(DialogInterface dialog, int which) {
                                                         dialog.cancel();
@@ -214,71 +214,6 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-
-
-
-
-    private class LoginAsync extends AsyncTask<Void, Void, String> {
-
-        String emailString;
-        String passwordString;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            emailString = email.getText().toString();
-            passwordString = password.getText().toString();
-
-        }
-
-        protected String doInBackground(Void...arg0) {
-
-            String result = null;
-
-            CookieHandler cookieHandler = new CookieManager(new PersistentCookieStore(LoginActivity.this), CookiePolicy.ACCEPT_ALL);
-
-
-            OkHttpClient client = new OkHttpClient.Builder()
-                    .cookieJar(new JavaNetCookieJar(cookieHandler))
-                    .build();
-
-            RequestBody formBody = new FormBody.Builder()
-                    .add("email", emailString)
-                    .add("password", passwordString)
-                    .add("headless", "thisIsHeadLess")
-                    .build();
-
-            Request request = new Request.Builder()
-                    .url(PrefValues.URL_LOGIN)
-                    .post(formBody)
-                    .build();
-
-            try {
-                Response response = client.newCall(request).execute();
-
-
-                result = response.body().string();
-                response.body().close();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-
-            return result;
-        }
-
-        @SuppressLint("ApplySharedPref")
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-
-
-
-
-
-        }
-    }
 
 
 }
