@@ -47,8 +47,7 @@
                     android:textColor="@color/white"
                     android:backgroundTint="@color/white"
                     android:inputType="textEmailAddress"
-                    android:id="@+id/email"
-                    android:text="alvar.lagerlof@gmail.com"/>
+                    android:id="@+id/email"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -64,8 +63,7 @@
                     android:inputType="textPassword"
                     android:textColor="@color/white"
                     android:backgroundTint="@color/white"
-                    android:id="@+id/password"
-                    android:text="eEPANr"/>
+                    android:id="@+id/password" />
 
             </android.support.design.widget.TextInputLayout>
 

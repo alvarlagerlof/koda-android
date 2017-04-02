@@ -22,14 +22,10 @@ import android.widget.LinearLayout;
 import com.alvarlagerlof.koda.Api.FragmentApi;
 import com.alvarlagerlof.koda.Login.KeepLoggedIn;
 import com.alvarlagerlof.koda.Projects.ProjectsFragment;
-import com.alvarlagerlof.koda.Projects.ProjectsSync;
 import com.alvarlagerlof.koda.QrCodeShare.QrScanner;
 import com.alvarlagerlof.koda.Settings.SettingsFragment;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -69,16 +65,6 @@ public class MainAcitivty extends AppCompatActivity {
                 .deleteRealmIfMigrationNeeded()
                 .build();
         Realm.setDefaultConfiguration(realmConfiguration);
-
-        // TODO: REMOVE THIS IN PRODUCTION
-
-        // Update every secound
-        new Timer().scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                new ProjectsSync(MainAcitivty.this).execute();
-            }
-        }, 0, 10000);
 
 
         fragment_container = (LinearLayout) findViewById(R.id.fragment_container);

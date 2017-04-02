@@ -100,7 +100,7 @@ public class KeepLoggedIn extends AsyncTask<Void, Void, String> {
         }
 
         if (PreferenceManager.getDefaultSharedPreferences(context).getString(PrefValues.PREF_EMAIL, null) != null) {
-            new ProjectsSync(context).execute();
+            new ProjectsSync(context);
         }
     }
 }

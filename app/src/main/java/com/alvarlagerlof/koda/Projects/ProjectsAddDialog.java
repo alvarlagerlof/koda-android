@@ -32,12 +32,11 @@ class ProjectsAddDialog {
             public void onClick(DialogInterface dialog, int which) {
                 String title = String.valueOf(input.getText());
 
-                ProjectsAdd createTask = new ProjectsAdd(context, (title == null || title.equals("")) ? "Namnlös" : title);
-                createTask.execute();
+                new ProjectsAdd(context, (title == null || title.equals("")) ? "Namnlös" : title);
 
             }
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("Avbryt", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();

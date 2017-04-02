@@ -92,11 +92,11 @@ public class QrScanner extends AppCompatActivity {
         inflater.inflate(R.menu.menu_scan, menu);
 
         if (FLASH_STATE == FLASH_ON) {
-            menu.getItem(0).setVisible(false);
-            menu.getItem(1).setVisible(true);
-        } else {
             menu.getItem(0).setVisible(true);
             menu.getItem(1).setVisible(false);
+        } else {
+            menu.getItem(0).setVisible(false);
+            menu.getItem(1).setVisible(true);
         }
 
         return true;
@@ -111,13 +111,13 @@ public class QrScanner extends AppCompatActivity {
                 finish();
                 return true;
 
-            case R.id.flash_on:
+            case R.id.flash_off:
                 qrScannerView.setTorchEnabled(true);
                 FLASH_STATE = FLASH_ON;
                 invalidateOptionsMenu();
                 break;
 
-            case R.id.flash_off:
+            case R.id.flash_on:
                 qrScannerView.setTorchEnabled(false);
                 FLASH_STATE = FLASH_OFF;
                 invalidateOptionsMenu();

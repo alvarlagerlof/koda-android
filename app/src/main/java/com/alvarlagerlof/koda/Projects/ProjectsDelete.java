@@ -43,7 +43,7 @@ class ProjectsDelete extends AsyncTask<Void, Void, Void> {
         Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                RealmResults<ProjectsRealmObject> result = realm.where(ProjectsRealmObject.class).equalTo("privateId", privateID).findAll();
+                RealmResults<ProjectsRealmObject> result = realm.where(ProjectsRealmObject.class).equalTo("privateID", privateID).findAll();
                 result.deleteAllFromRealm();
             }
         });

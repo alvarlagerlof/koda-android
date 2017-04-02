@@ -162,7 +162,7 @@ class ProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(((ProfileAdapter.ViewHolderItem) holder).title.getContext(), PlayActivity.class);
-                    intent.putExtra("public_id", dataset.get(position).publicId);
+                    intent.putExtra("public_id", dataset.get(position).publicID);
                     intent.putExtra("title", dataset.get(position).title);
                     ((ProfileAdapter.ViewHolderItem) holder).title.getContext().startActivity(intent);
                 }
@@ -193,14 +193,14 @@ class ProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         ((ProfileAdapter.ViewHolderItem) holder).likesNum.setText(String.valueOf(Integer.parseInt(String.valueOf(Integer.parseInt(String.valueOf(((ProfileAdapter.ViewHolderItem) holder).likesNum.getText())) - 1))));
                         ((ProfileAdapter.ViewHolderItem) holder).heartImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_heart_outline));
                         dataset.get(position).liked = false;
-                        new LikeDissLike(context, PrefValues.URL_DISSLIKE, dataset.get(position).publicId);
+                        new LikeDissLike(context, PrefValues.URL_DISSLIKE, dataset.get(position).publicID);
 
                     } else {
 
                         ((ProfileAdapter.ViewHolderItem) holder).likesNum.setText(String.valueOf(Integer.parseInt(String.valueOf(((ProfileAdapter.ViewHolderItem) holder).likesNum.getText()) + 1)));
                         ((ProfileAdapter.ViewHolderItem) holder).heartImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_heart));
                         dataset.get(position).liked = true;
-                        new LikeDissLike(context, PrefValues.URL_LIKE, dataset.get(position).publicId);
+                        new LikeDissLike(context, PrefValues.URL_LIKE, dataset.get(position).publicID);
                     }
 
                 }
@@ -210,7 +210,7 @@ class ProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(((ProfileAdapter.ViewHolderItem) holder).title.getContext(), CommentsActivity.class);
-                    intent.putExtra("public_id", dataset.get(position).publicId);
+                    intent.putExtra("public_id", dataset.get(position).publicID);
                     intent.putExtra("title", dataset.get(position).title);
                     ((ProfileAdapter.ViewHolderItem) holder).title.getContext().startActivity(intent);
                 }
@@ -220,7 +220,7 @@ class ProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     ProfileBottomSheetFragment bottomSheetFragment = new ProfileBottomSheetFragment();
-                    bottomSheetFragment.passData(dataset.get(position).publicId, dataset.get(position).title, dataset.get(position).author);
+                    bottomSheetFragment.passData(dataset.get(position).publicID, dataset.get(position).title, dataset.get(position).author);
 
                     bottomSheetFragment.show(fragmentManager, bottomSheetFragment.getTag());
                 }

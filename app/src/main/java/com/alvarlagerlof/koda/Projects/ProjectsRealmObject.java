@@ -6,33 +6,35 @@ import io.realm.RealmObject;
  * Created by alvar on 2016-07-02.
  */
 public class ProjectsRealmObject extends RealmObject {
-    private String privateId;
-    private String publicId;
+    private String privateID;
+    private String publicID;
     private String title;
-    private String updated;
+    private String updatedRealm;
+    private String updatedServer;
     private String description;
     private Boolean isPublic;
     private String code;
+    private Boolean synced;
 
 
 
     // Private id
-    public String getPrivateId() {
-        return privateId;
+    public String getprivateID() {
+        return privateID;
     }
 
-    public void setPrivateId(String privateId) {
-        this.privateId = privateId;
+    public void setprivateID(String privateID) {
+        this.privateID = privateID;
     }
 
 
     // Public id
-    public String getPublicId() {
-        return publicId;
+    public String getpublicID() {
+        return publicID;
     }
 
-    public void setPublicId(String publicId) {
-        this.publicId = publicId;
+    public void setpublicID(String publicID) {
+        this.publicID = publicID;
     }
 
 
@@ -47,12 +49,22 @@ public class ProjectsRealmObject extends RealmObject {
 
 
     // Date
-    public String getUpdated() {
-        return updated;
+    public String getUpdatedServer() {
+        return updatedServer;
     }
 
-    public void setUpdated(String updated) {
-        this.updated = updated;
+    public void setUpdatedServer(String updatedServer) {
+        this.updatedServer = updatedServer;
+    }
+
+
+    // Date
+    public String getUpdatedRealm() {
+        return updatedRealm;
+    }
+
+    public void setUpdatedRealm(String updatedRealm) {
+        this.updatedRealm = updatedRealm;
     }
 
 
@@ -83,5 +95,15 @@ public class ProjectsRealmObject extends RealmObject {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+
+    // Synced
+    public Boolean getSynced() {
+        return synced;
+    }
+
+    public void setSynced(Boolean synced) {
+        this.synced = synced;
     }
 }

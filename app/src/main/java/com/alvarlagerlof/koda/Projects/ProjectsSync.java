@@ -1,12 +1,12 @@
 package com.alvarlagerlof.koda.Projects;
 
 import android.content.Context;
-import android.os.AsyncTask;
-import android.preference.PreferenceManager;
+import android.content.Intent;
+import android.util.Log;
 
 import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
+import com.alvarlagerlof.koda.Editor.EditorActivity;
 import com.alvarlagerlof.koda.PrefValues;
-import com.alvarlagerlof.koda.R;
 import com.alvarlagerlof.koda.Utils.Base64Utils;
 import com.alvarlagerlof.koda.Utils.ConnectionUtils;
 import com.arasthel.asyncjob.AsyncJob;
@@ -16,7 +16,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
 
@@ -25,7 +24,6 @@ import io.realm.RealmResults;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.internal.JavaNetCookieJar;
 
@@ -33,191 +31,195 @@ import okhttp3.internal.JavaNetCookieJar;
  * Created by alvar on 2016-11-08.
  */
 
-public class ProjectsSync extends AsyncTask<Object, Object, Void> {
+public class ProjectsSync {
 
     private Context context;
-    private int asyncTaskRemaining = 0;
+    private String openPrivateID = null;
 
 
     public ProjectsSync(Context context) {
         this.context = context;
+
+        if (ConnectionUtils.isConnected(context)) {
+            sendToServer();
+        }
+
     }
 
 
-    @Override
-    protected Void doInBackground(Object... params) {
+    public ProjectsSync(Context context, String openPrivateID) {
+        this.context = context;
+        this.openPrivateID = openPrivateID;
 
-        JSONArray serverProjects = null;
-
-        // Get all server projects
         if (ConnectionUtils.isConnected(context)) {
-            try {
+            sendToServer();
+        } else {
 
-                CookieHandler cookieHandler = new CookieManager(
-                        new PersistentCookieStore(context), CookiePolicy.ACCEPT_ALL);
-
-                OkHttpClient client = new OkHttpClient.Builder()
-                        .cookieJar(new JavaNetCookieJar(cookieHandler))
-                        .build();
-
-                Request request = new Request.Builder()
-                        .url(PrefValues.URL_MY_PROJECTS)
-                        .build();
-
-                Response response = client.newCall(request).execute();
-
-                String json = response.body().string();
-                response.body().close();
-
-
-                // Create json objects and save nick
-                if (!json.equals("")) {
-                    JSONObject jsonObject = new JSONObject(json);
-
-                    serverProjects = jsonObject.getJSONArray("games");
-
-                    PreferenceManager.getDefaultSharedPreferences(context)
-                            .edit()
-                            .putString("nick", Base64Utils.decode(jsonObject.getJSONObject("user").getString("nick")))
-                            .apply();
-
-                }
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-
-       
-        
-
-        // Get all realm projects
-        RealmResults<ProjectsRealmObject> realmProjects = Realm.getDefaultInstance().where(ProjectsRealmObject.class).findAll();
-
-
-        // Loop over local projects
-        for (int i = 0; i < realmProjects.size(); i++) {
-            final ProjectsRealmObject realmProject = realmProjects.get(i);
-            final JSONObject serverProject = getJsonObjectByPrivateId(serverProjects, realmProject.getPrivateId());
-
-
-            if (serverProject != null) {
-
-                // If it does exist on the server
-                updateOldest(realmProject, serverProject);
-
-
-            } else {
-
-                // If it does NOT exist on the server
-
-                // Request
-                final Request request = new Request.Builder()
-                        .url(PrefValues.URL_MY_PROJECTS_CREATE_NEW)
-                        .post(new FormBody.Builder()
-                                .add("title", realmProject.getTitle())
-                                .add("description", realmProject.getDescription())
-                                .add("author", "")
-                                .add("public", String.valueOf(realmProject.getIsPublic()))
-                                .add("code", realmProject.getCode())
-                                .build())
-                        .build();
-
-
-                // Async
-                new AsyncJob.AsyncJobBuilder<Boolean>()
-                        .doInBackground(new AsyncJob.AsyncAction<Boolean>() {
-                            @Override
-                            public Boolean doAsync() {
-
-                                asyncTaskRemaining += 1;
-
-                                try {
-
-                                        Response response = new OkHttpClient.Builder().cookieJar(new JavaNetCookieJar(new CookieManager(new PersistentCookieStore(context), CookiePolicy.ACCEPT_ALL))).build().newCall(request).execute();
-
-                                        JSONObject responseJson = new JSONObject(response.body().string());
-
-                                        Realm.getDefaultInstance().beginTransaction();
-                                        realmProject.setPublicId(responseJson.getString("publicID"));
-                                        realmProject.setPrivateId(responseJson.getString("privateID"));
-                                        Realm.getDefaultInstance().commitTransaction();
-
-                                        response.body().close();
-
-
-                                } catch (IOException | JSONException e) {
-                                    e.printStackTrace();
-                                }
-                                return true;
-
-                            }
-                        }).doWhenFinished(new AsyncJob.AsyncResultAction<Boolean>() {
-                            @Override
-                            public void onResult(Boolean result) {
-                                asyncTaskRemaining -= 1;
-                            }
-                        }).create().start();
-            }
-
-
-
-
+            Intent intent = new Intent(context, EditorActivity.class);
+            intent.putExtra("privateID", openPrivateID);
+            intent.putExtra("publicID", openPrivateID);
+            context.startActivity(intent);
         }
 
 
-        while (true) {
 
-            //Log.d("Remaining: ", String.valueOf(asyncTaskRemaining));
-                    
-            if (asyncTaskRemaining == 0) {
-                
-                
-                // Loop over server projects if not empty
-                if (serverProjects != null && serverProjects.length() > 0) {
+    }
 
-                    for (int i = 0; i < serverProjects.length(); i++) {
+
+    private void sendToServer() {
+        new AsyncJob.AsyncJobBuilder<JSONObject>()
+                .doInBackground(new AsyncJob.AsyncAction<JSONObject>() {
+                    @Override
+                    public JSONObject doAsync() {
+
+                            try {
+
+                                // Get all Realm projects
+                                RealmResults<ProjectsRealmObject> realmProjects = Realm.getDefaultInstance().where(ProjectsRealmObject.class).findAll();
+
+
+                                // Create a json array
+                                final JSONArray projects = new JSONArray();
+
+
+                                // Loop over Realm projects
+                                for (int i = 0; i < realmProjects.size(); i++) {
+
+                                    ProjectsRealmObject realmObject = realmProjects.get(i);
+                                    JSONObject jsonObject = new JSONObject();
+
+
+                                    jsonObject.put("privateID", realmObject.getprivateID());
+                                    jsonObject.put("updated", realmObject.getUpdatedServer());
+
+                                    if (!realmObject.getSynced()) {
+                                        jsonObject.put("title",       Base64Utils.encode(realmObject.getTitle()));
+                                        jsonObject.put("description", Base64Utils.encode(realmObject.getDescription()));
+                                        jsonObject.put("public",      realmObject.getIsPublic());
+                                        jsonObject.put("code",        Base64Utils.encode(realmObject.getCode()));
+                                    }
+
+                                    projects.put(jsonObject);
+
+                                }
+
+
+                                // Send it
+                                Request request = new Request.Builder()
+                                        .url(PrefValues.URL_SYNC)
+                                        .post(new FormBody.Builder()
+                                                .add("projects", projects.toString())
+                                                .build())
+                                        .build();
+
+                                Response response = new OkHttpClient.Builder().cookieJar(new JavaNetCookieJar(new CookieManager(new PersistentCookieStore(context), CookiePolicy.ACCEPT_ALL))).build().newCall(request).execute();
+
+
+                                // Response to string
+                                String stringResponse = response.body().string();
+
+                                // Close response
+                                response.body().close();
+
+                                return new JSONObject(stringResponse);
+
+
+                            } catch (JSONException | IOException e) {
+                                e.printStackTrace();
+                            }
+
+
+                            return null;
+                    }
+                })
+                .doWhenFinished(new AsyncJob.AsyncResultAction<JSONObject>() {
+                    @Override
+                    public void onResult(JSONObject response) {
+                        dealWithRespose(response);
+                    }
+                }).create().start();
+    }
+
+
+
+
+
+    private void dealWithRespose(final JSONObject response) {
+
+        new AsyncJob.AsyncJobBuilder<JSONObject>()
+                .doInBackground(new AsyncJob.AsyncAction<JSONObject>() {
+                    @Override
+                    public JSONObject doAsync() {
 
                         try {
 
-                            final JSONObject serverProject = serverProjects.getJSONObject(i);
-
-                            ProjectsRealmObject realmProject = Realm.getDefaultInstance().where(ProjectsRealmObject.class)
-                                    .equalTo("privateId", serverProject.getString("privateID"))
-                                    .findFirst();
+                            Realm realm = Realm.getDefaultInstance();
 
 
-                            if (realmProject != null) {
+                            // If response not empty
+                            if (response != null) {
 
-                                // If it does exist on the server
-                                updateOldest(realmProject, serverProject);
+                                Log.d("jsoon", String.valueOf(response.getJSONArray("projects")));
+
+                                // Loop over response
+                                for (int i = 0; i < response.getJSONArray("projects").length(); i++) {
+
+                                    // Get projects
+                                    JSONObject responseItem = response.getJSONArray("projects").getJSONObject(i);
 
 
-                            } else {
+                                    // Get Realm project based on privateID
+                                    ProjectsRealmObject realmProject = Realm.getDefaultInstance().where(ProjectsRealmObject.class).equalTo("privateID", responseItem.getString("old_privateID")).findFirst();
 
-                                // If it does NOT exist on the realm
 
-                                Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
-                                    @Override
-                                    public void execute(Realm realm) {
-                                        ProjectsRealmObject object = realm.createObject(ProjectsRealmObject.class);
+                                    if (realmProject != null) {
 
-                                        try {
-                                            object.setPrivateId(serverProject.getString("privateID"));
-                                            object.setPublicId(serverProject.getString("publicID"));
-                                            object.setTitle(Base64Utils.decode(serverProject.getString("title").equals("") ? context.getString(R.string.unnamed) : serverProject.getString("title")));
-                                            object.setUpdated(serverProject.getString("updated"));
-                                            object.setDescription(Base64Utils.decode(serverProject.getString("description")));
-                                            object.setIsPublic(serverProject.getString("public").equals("CHECKED"));
-                                            object.setCode(Base64Utils.decode(serverProject.getString("code")));
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                        }
+                                        // Edit the existing one
+                                        realm.beginTransaction();
+                                        realmProject.setprivateID(responseItem.getString("privateID"));
+                                        realmProject.setpublicID(responseItem.getString("publicID"));
+                                        realmProject.setTitle(Base64Utils.decode(responseItem.getString("title")));
+                                        realmProject.setDescription(Base64Utils.decode(responseItem.getString("description")));
+                                        realmProject.setCode(Base64Utils.decode(responseItem.getString("code")));
+                                        realmProject.setSynced(true);
+                                        realmProject.setIsPublic(responseItem.getBoolean("public"));
+                                        realmProject.setUpdatedServer(responseItem.getString("updated"));
+                                        realmProject.setUpdatedRealm(responseItem.getString("updated"));
+                                        realm.commitTransaction();
+
+                                    } else {
+
+                                        // Create a new one
+                                        realm.beginTransaction();
+                                        ProjectsRealmObject object = realm.createObject(ProjectsRealmObject.class); // Create a new object
+                                        object.setprivateID(responseItem.getString("privateID"));
+                                        object.setpublicID(responseItem.getString("publicID"));
+                                        object.setTitle(Base64Utils.decode(responseItem.getString("title")));
+                                        object.setDescription(Base64Utils.decode(responseItem.getString("description")));
+                                        object.setCode(Base64Utils.decode(responseItem.getString("code")));
+                                        object.setSynced(true);
+                                        object.setIsPublic(responseItem.getBoolean("public"));
+                                        object.setUpdatedServer(responseItem.getString("updated"));
+                                        object.setUpdatedRealm(responseItem.getString("updated"));
+                                        realm.commitTransaction();
+
 
                                     }
-                                });
+
+
+                                    // Open new project
+                                    if (openPrivateID != null && openPrivateID.equals(responseItem.getString("old_privateID"))) {
+                                        Intent intent = new Intent(context, EditorActivity.class);
+                                        intent.putExtra("privateID", responseItem.getString("privateID"));
+                                        intent.putExtra("publicID", responseItem.getString("publicID"));
+                                        context.startActivity(intent);
+                                    }
+
+
+
+                                }
                             }
+
 
 
                         } catch (JSONException e) {
@@ -225,156 +227,12 @@ public class ProjectsSync extends AsyncTask<Object, Object, Void> {
                         }
 
 
+                        return null;
                     }
+                }).create().start();
 
-
-                }
-            }
-
-
-        }
-
-        }
-        
-        return null;
-        
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    private void updateOldest(final ProjectsRealmObject realmProject, final JSONObject serverProject) {
-
-        try {
-            if (Integer.parseInt(realmProject.getUpdated()) > Integer.parseInt(serverProject.getString("updated"))) {
-
-                // If latest updated on realm
-
-
-                new AsyncJob.AsyncJobBuilder<Boolean>()
-                        .doInBackground(new AsyncJob.AsyncAction<Boolean>() {
-                            @Override
-                            public Boolean doAsync() {
-
-                                try {
-
-
-                                    // Code
-                                    CookieHandler cookieHandler = new CookieManager(new PersistentCookieStore(context), CookiePolicy.ACCEPT_ALL);
-                                    OkHttpClient client = new OkHttpClient.Builder().cookieJar(new JavaNetCookieJar(cookieHandler)).build();
-
-                                    RequestBody formBody = new FormBody.Builder()
-                                            .add("code", realmProject.getCode())
-                                            .build();
-
-                                    Request request = new Request.Builder()
-                                            .url("https://koda.nu/labbet/" + realmProject.getPrivateId())
-                                            .post(formBody)
-                                            .build();
-
-                                    Response response = client.newCall(request).execute();
-                                    response.body().close();
-
-
-
-                                    // Meta data
-                                    formBody = new FormBody.Builder()
-                                            .add("title", realmProject.getTitle())
-                                            .add("description", realmProject.getDescription())
-                                            .add("author", "")
-                                            .add("publicOrNot", realmProject.getIsPublic() ? "CHECKED" : "")
-                                            .build();
-
-
-                                    request = new Request.Builder()
-                                            .url(PrefValues.URL_MY_PROJECTS_EDIT + realmProject.getPrivateId())
-                                            .post(formBody)
-                                            .build();
-
-
-                                    response = client.newCall(request).execute();
-                                    response.body().close();
-
-                                } catch (java.io.IOException e) {
-                                    e.printStackTrace();
-                                }
-                                return true;
-                            }
-                        }).create().start();
-            }
-
-
-            if (Integer.parseInt(serverProject.getString("updated")) > Integer.parseInt(realmProject.getUpdated())) {
-
-                // If latest updated on server
-
-                Realm.getDefaultInstance().beginTransaction();
-                realmProject.setTitle(Base64Utils.decode(serverProject.getString("title")));
-                realmProject.setUpdated(serverProject.getString("updated"));
-                realmProject.setDescription(Base64Utils.decode(serverProject.getString("description")));
-                realmProject.setIsPublic(serverProject.getString("public").equals("CHECKED"));
-                realmProject.setCode(Base64Utils.decode(serverProject.getString("code")));
-                Realm.getDefaultInstance().commitTransaction();
-
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
     }
-
-
-
-
-    private JSONObject getJsonObjectByPrivateId(JSONArray array, String privateId) {
-
-        try {
-
-            if (array != null && array.length() > 0) {
-                for (int i = 0; i < array.length(); i++) {
-
-                    if (array.getJSONObject(i)
-                            .getString("privateID")
-                            .equals(privateId)) {
-
-                        return array.getJSONObject(i);
-                    }
-
-
-                }
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
 
 
 }

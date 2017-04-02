@@ -66,9 +66,9 @@ public class EditorActivity extends AppCompatActivity {
 
 
         // Get the code
-        Realm realm = Realm.getDefaultInstance();
+        final Realm realm = Realm.getDefaultInstance();
         ProjectsRealmObject object = realm.where(ProjectsRealmObject.class)
-                .equalTo("privateId", private_id)
+                .equalTo("privateID", private_id)
                 .findFirst();
 
         realm.beginTransaction();
@@ -107,6 +107,7 @@ public class EditorActivity extends AppCompatActivity {
                 switch (pos) {
                     case 0:
                         // Editor
+                        editorRunFragment.pause();
                         editorRunFragment.clearWebView();
 
                         toolbar.getMenu().findItem(R.id.colorpicker).setVisible(true);
@@ -116,8 +117,12 @@ public class EditorActivity extends AppCompatActivity {
                         break;
                     case 1:
                         // Run
+
+
                         editorRunFragment.setCode(editorEditFragment.getCode());
-                        editorRunFragment.load();
+
+                        editorRunFragment.resume();
+
 
                         toolbar.getMenu().findItem(R.id.colorpicker).setVisible(false);
                         toolbar.getMenu().findItem(R.id.fontminus).setVisible(false);
@@ -127,8 +132,18 @@ public class EditorActivity extends AppCompatActivity {
                         InputMethodManager inputMethodManager = (InputMethodManager) EditorActivity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
                         inputMethodManager.hideSoftInputFromWindow(EditorActivity.this.getCurrentFocus().getWindowToken(), 0);
 
-                        EditorSave saveTask = new EditorSave(EditorActivity.this, private_id, editorEditFragment.getCode());
-                        saveTask.execute();
+
+                        // Save
+                        ProjectsRealmObject realmProject = Realm.getDefaultInstance().where(ProjectsRealmObject.class).equalTo("privateID", private_id).findFirst();
+
+                        realm.beginTransaction();
+                        realmProject.setCode(editorEditFragment.getCode());
+                        realmProject.setUpdatedRealm(String.valueOf(System.currentTimeMillis() / 1000L));
+                        realmProject.setSynced(false);
+                        realm.commitTransaction();
+
+                        new ProjectsSync(EditorActivity.this);
+
                 }
             }
         };
@@ -162,7 +177,7 @@ public class EditorActivity extends AppCompatActivity {
                 return true;
 
             case R.id.reload:
-                editorRunFragment.reload();
+                editorRunFragment.load();
                 return true;
 
             case R.id.colorpicker:
@@ -184,9 +199,4 @@ public class EditorActivity extends AppCompatActivity {
         finish();
     }
 
-    @Override
-    public void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        new ProjectsSync(EditorActivity.this).execute();
-    }
 }

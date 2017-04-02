@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
 import com.alvarlagerlof.koda.PrefValues;
@@ -45,13 +46,9 @@ public class ProjectsEditBottomSheetFragment extends BottomSheetDialogFragment {
     String privateID;
     String publicID;
 
-    String title;
-    String description;
-    Boolean isPublic;
 
     LinearLayout content;
-    LinearLayout processing;
-    LinearLayout saved;
+
 
     TextInputEditText titleInput;
     TextInputEditText descriptionInput;
@@ -103,8 +100,6 @@ public class ProjectsEditBottomSheetFragment extends BottomSheetDialogFragment {
 
 
         content = (LinearLayout) contentView.findViewById(R.id.content);
-        processing = (LinearLayout) contentView.findViewById(R.id.processing);
-        saved = (LinearLayout) contentView.findViewById(R.id.saved);
 
 
         titleInput = (TextInputEditText) contentView.findViewById(R.id.title);
@@ -120,7 +115,7 @@ public class ProjectsEditBottomSheetFragment extends BottomSheetDialogFragment {
         // Get and set values
         Realm realm = Realm.getDefaultInstance();
         ProjectsRealmObject object = realm.where(ProjectsRealmObject.class)
-                .equalTo("privateId", privateID)
+                .equalTo("privateID", privateID)
                 .findFirst();
 
         realm.beginTransaction();
@@ -174,119 +169,31 @@ public class ProjectsEditBottomSheetFragment extends BottomSheetDialogFragment {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveAsync saveAsync = new saveAsync();
-                saveAsync.execute();
+
+                // Save to realm
+                Realm realm = Realm.getDefaultInstance();
+                ProjectsRealmObject object = realm.where(ProjectsRealmObject.class)
+                        .equalTo("privateID", privateID)
+                        .findFirst();
+
+                realm.beginTransaction();
+                object.setTitle(titleInput.getText().toString().equals("") ? getString(R.string.unnamed) : titleInput.getText().toString());
+                object.setDescription(descriptionInput.getText().toString());
+                object.setIsPublic(publicCheckbox.isChecked());
+                object.setSynced(false);
+                object.setUpdatedRealm(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()) + "");
+                realm.commitTransaction();
+
+                Toast.makeText(getContext(), "Sparat", Toast.LENGTH_SHORT).show();
+
+                new ProjectsSync(getContext());
+
+                dismiss();
 
             }
         });
 
     }
-
-
-    // TODO: IF OPENED AGAIN, NEW DATA NOT THERE
-
-    class saveAsync extends AsyncTask<Void, Integer, String> {
-
-        String titleString;
-        String descriptionString;
-        Boolean checked;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            titleString = titleInput.getText().toString();
-            descriptionString = descriptionInput.getText().toString();
-            checked = publicCheckbox.isChecked();
-
-            if (titleString.equals("")) {
-                titleString = getString(R.string.unnamed);
-            }
-
-
-            titleInput.setCursorVisible(false);
-            titleInput.setFocusable(false);
-            titleInput.setFocusableInTouchMode(false);
-
-            descriptionInput.setCursorVisible(false);
-            descriptionInput.setFocusable(false);
-            descriptionInput.setFocusableInTouchMode(false);
-
-            titleInput.clearFocus();
-            descriptionInput.clearFocus();
-
-            //AnimationUtils.fadeOut(content);
-            AnimationUtils.fadeIn(processing);
-
-        }
-
-
-        protected String doInBackground(Void...arg0) {
-
-            CookieHandler cookieHandler = new CookieManager(
-                    new PersistentCookieStore(getContext()), CookiePolicy.ACCEPT_ALL);
-
-            OkHttpClient client = new OkHttpClient.Builder()
-                    .cookieJar(new JavaNetCookieJar(cookieHandler))
-                    .build();
-
-            RequestBody formBody = new FormBody.Builder()
-                    .add("title", titleString)
-                    .add("description", descriptionString)
-                    .add("author", "")
-                    .add("publicOrNot", checked ? "CHECKED" : "")
-                    .build();
-
-
-            Request request = new Request.Builder()
-                    .url(PrefValues.URL_MY_PROJECTS_EDIT + privateID)
-                    .post(formBody)
-                    .build();
-
-            try {
-                Response response = client.newCall(request).execute();
-                Log.d("response", response.toString());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-
-            return "";
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-
-            // Save to realm
-            Realm realm = Realm.getDefaultInstance();
-            ProjectsRealmObject object = realm.where(ProjectsRealmObject.class)
-                    .equalTo("privateId", privateID)
-                    .findFirst();
-
-            realm.beginTransaction();
-            object.setTitle(titleString);
-            object.setDescription(descriptionString);
-            object.setIsPublic(publicCheckbox.isChecked());
-            object.setUpdated(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()) + "");
-            realm.commitTransaction();
-
-            AnimationUtils.fadeIn(saved);
-
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                public void run() {
-                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
-                    SharedPreferences.Editor editor = sharedPref.edit();
-                    editor.putString("update", String.valueOf(System.currentTimeMillis()/1000));
-                    editor.commit();
-                    dismiss();
-                }
-            }, 1000);
-
-
-        }
-    }
-
 
 
 

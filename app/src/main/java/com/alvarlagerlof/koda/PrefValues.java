@@ -17,6 +17,9 @@ public class PrefValues {
     public static final String URL_MY_PROJECTS_EDIT = BASE_URL + "labbet/";
     public static final String URL_MY_PROJECTS_DELETE = BASE_URL + "delete/";
 
+    // My projects
+    public static final String URL_SYNC = BASE_URL + API_VERSION + "synkronisera";
+
 
     // API
     public static final String URL_API_2D = BASE_URL + API_VERSION + "api_2d";

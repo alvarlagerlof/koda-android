@@ -18,6 +18,8 @@ import android.widget.TextView;
 import com.alvarlagerlof.koda.Editor.EditorActivity;
 import com.alvarlagerlof.koda.PrefValues;
 import com.alvarlagerlof.koda.R;
+import com.alvarlagerlof.koda.Universal.UniversalLoadingObject;
+import com.alvarlagerlof.koda.Universal.UniversalLodingViewHolder;
 
 import java.util.ArrayList;
 
@@ -30,25 +32,18 @@ class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
     private FragmentManager fragmentManager;
-    private ArrayList<ProjectsObject> dataset;
+    private ArrayList<Object> dataset;
     static final int TYPE_LOADING  = 0;
     static final int TYPE_ITEM     = 1;
     static final int TYPE_NO_ITEMS = 2;
 
 
 
-
-    ProjectsAdapter(ArrayList<ProjectsObject> dataset, FragmentManager fragmentManager) {
+    ProjectsAdapter(ArrayList<Object> dataset, FragmentManager fragmentManager) {
         this.dataset = dataset;
         this.fragmentManager = fragmentManager;
     }
 
-
-    private static class ViewHolderLoading extends RecyclerView.ViewHolder  {
-        ViewHolderLoading(View itemView){
-            super(itemView);
-        }
-    }
 
     private static class ViewHolderItem extends RecyclerView.ViewHolder {
         TextView title;
@@ -68,7 +63,6 @@ class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         ViewHolderNoItems(View itemView) {
             super(itemView);
         }
-
     }
 
 
@@ -82,7 +76,7 @@ class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         switch (i) {
             case TYPE_LOADING:
-                return new ViewHolderLoading(loadingView);
+                return new UniversalLodingViewHolder(loadingView);
             case TYPE_ITEM:
                 return new ViewHolderItem(itemView);
             case TYPE_NO_ITEMS:
@@ -95,20 +89,24 @@ class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+
        if (holder instanceof ViewHolderItem) {
             final Context context = ((ViewHolderItem) holder).title.getContext();
 
-            ((ViewHolderItem) holder).title.setText(dataset.get(position).title);
-            ((ViewHolderItem) holder).meta.setText(dataset.get(position).updated);
+            final ProjectsObjectData object = (ProjectsObjectData) dataset.get(position);
+
+
+            ((ViewHolderItem) holder).title.setText(object.title);
+            ((ViewHolderItem) holder).meta.setText(object.updated);
 
 
             ((ViewHolderItem) holder).itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, EditorActivity.class);
-                    intent.putExtra("privateID", dataset.get(position).privateId);
-                    intent.putExtra("publicID", dataset.get(position).publicId);
-                    intent.putExtra("title", dataset.get(position).title);
+                    intent.putExtra("privateID", object.privateID);
+                    intent.putExtra("publicID", object.publicID);
+                    intent.putExtra("title", object.title);
                     context.startActivity(intent);
                 }
             });
@@ -119,9 +117,9 @@ class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 public void onClick(View v) {
                     ProjectsBottomSheetFragment bottomSheetFragment = new ProjectsBottomSheetFragment();
                     bottomSheetFragment.passData(fragmentManager,
-                            dataset.get(position).privateId,
-                            dataset.get(position).publicId,
-                            dataset.get(position).title,
+                            object.privateID,
+                            object.publicID,
+                            object.title,
                             PreferenceManager.getDefaultSharedPreferences(context).getString(PrefValues.PREF_NICK, ""));
 
                     bottomSheetFragment.show(fragmentManager, bottomSheetFragment.getTag());
@@ -139,7 +137,19 @@ class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public int getItemViewType(int position) {
 
-        return dataset.get(position).type;
+        if (dataset.get(position) instanceof UniversalLoadingObject) {
+            return TYPE_LOADING;
+        }
+
+        if (dataset.get(position) instanceof ProjectsObjectNoItems) {
+            return TYPE_NO_ITEMS;
+        }
+
+        if (dataset.get(position) instanceof ProjectsObjectData) {
+            return TYPE_ITEM;
+        }
+
+        return TYPE_LOADING;
 
     }
 

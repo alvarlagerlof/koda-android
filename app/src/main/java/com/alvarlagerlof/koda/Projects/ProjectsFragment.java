@@ -27,16 +27,14 @@ import io.realm.Sort;
 public class ProjectsFragment extends Fragment {
 
     ProjectsAdapter adapter;
-    ArrayList<ProjectsObject> projectsList = new ArrayList<>();
+    ArrayList<Object> projectsList = new ArrayList<>();
 
-    Realm realm;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         // Init
         View view = inflater.inflate(R.layout.projects_fragment, container, false);
-        realm = Realm.getDefaultInstance();
 
 
         // Recyclerview
@@ -61,7 +59,7 @@ public class ProjectsFragment extends Fragment {
         getData();
 
         // On database change
-        realm.addChangeListener(new RealmChangeListener<Realm>() {
+        Realm.getDefaultInstance().addChangeListener(new RealmChangeListener<Realm>() {
             @Override
             public void onChange(Realm element) {
                 getData();
@@ -85,24 +83,25 @@ public class ProjectsFragment extends Fragment {
 
 
         // Get all objects and add to list
-        RealmResults<ProjectsRealmObject> realmObjects = Realm.getDefaultInstance().where(ProjectsRealmObject.class).findAll().sort("updated", Sort.DESCENDING);
+        RealmResults<ProjectsRealmObject> realmObjects = Realm.getDefaultInstance().where(ProjectsRealmObject.class).findAll()
+                .sort("updatedRealm", Sort.DESCENDING);
         for (int i = 0; i < realmObjects.size(); i++) {
 
-            String privateID    = realmObjects.get(i).getPrivateId();
-            String publicID     = realmObjects.get(i).getPublicId();
+            String privateID    = realmObjects.get(i).getprivateID();
+            String publicID     = realmObjects.get(i).getpublicID();
             String title        = realmObjects.get(i).getTitle();
-            String updated      = DateConversionUtils.convert(realmObjects.get(i).getUpdated());
+            String updated      = DateConversionUtils.convert(realmObjects.get(i).getUpdatedRealm());
             String description  = realmObjects.get(i).getDescription();
             boolean isPublic    = realmObjects.get(i).getIsPublic();
             String code         = realmObjects.get(i).getCode();
-            projectsList.add(new ProjectsObject(privateID, publicID, title, updated, description, isPublic, code, ProjectsAdapter.TYPE_ITEM));
+            projectsList.add(new ProjectsObjectData(privateID, publicID, title, updated, description, isPublic, code));
         }
 
 
 
         // If no objects
         if (realmObjects.size() == 0) {
-            projectsList.add(new ProjectsObject("", "", "", "", "", false, "", ProjectsAdapter.TYPE_NO_ITEMS));
+            projectsList.add(new ProjectsObjectNoItems());
         }
 
 

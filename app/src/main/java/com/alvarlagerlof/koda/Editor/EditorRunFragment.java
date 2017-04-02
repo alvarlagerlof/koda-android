@@ -17,18 +17,20 @@ import com.alvarlagerlof.koda.WebClient;
 
 public class EditorRunFragment extends Fragment {
 
+    View view;
+
     private String title;
     private String code;
 
     private WebView webView;
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.editor_run_fragment, container, false);
+        view = inflater.inflate(R.layout.editor_run_fragment, container, false);
         webView = (WebView) view.findViewById(R.id.webview);
-
-        load();
 
         return view;
     }
@@ -58,10 +60,20 @@ public class EditorRunFragment extends Fragment {
         webView.onPause();
     }
 
-    public void reload() {
-        //webView.reload();
-        //webView.destroy();
-        load();
+
+    public void pause() {
+        if (webView != null) webView.pauseTimers();
+    }
+
+    public void resume() {
+        if (webView != null) {
+            webView.resumeTimers();
+
+            webView = (WebView) view.findViewById(R.id.webview);
+
+            load();
+
+        }
     }
 
 

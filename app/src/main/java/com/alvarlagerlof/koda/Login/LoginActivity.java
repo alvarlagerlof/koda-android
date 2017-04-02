@@ -99,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
 
                             RequestBody formBody = new FormBody.Builder()
                                     .add("email", email.getText().toString())
-                                    .add("password", email.getText().toString())
+                                    .add("password", password.getText().toString())
                                     .add("headless", "thisIsHeadLess")
                                     .build();
 
