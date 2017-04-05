@@ -19,8 +19,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.alvarlagerlof.koda.PrefValues;
 import com.alvarlagerlof.koda.R;
+import com.alvarlagerlof.koda.RemoteConfigValues;
 import com.bumptech.glide.Glide;
 import com.google.firebase.crash.FirebaseCrash;
 
@@ -81,7 +81,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
 
         Glide.with(this)
-                .load(PrefValues.URL_LOGIN_FORGOT_IMAGE)
+                .load(RemoteConfigValues.URL_LOGIN_FORGOT_IMAGE)
                 .into((ImageView) findViewById(R.id.background));
 
         findViewById(R.id.background).setOnClickListener(new View.OnClickListener() {
@@ -104,6 +104,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     }
 
     public void finish(View view) {
+        InputMethodManager inputMethodManager = (InputMethodManager) ForgotPasswordActivity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(findViewById(R.id.background).getWindowToken(), 0);
         finish();
     }
 
@@ -131,7 +133,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
 
             Request request = new Request.Builder()
-                    .url(PrefValues.URL_LOGIN_FORGOT)
+                    .url(RemoteConfigValues.URL_LOGIN_FORGOT)
                     .post(formBody)
                     .build();
 
@@ -280,6 +282,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         // Handle item selection
         switch (item.getItemId()) {
             case android.R.id.home:
+                InputMethodManager inputMethodManager = (InputMethodManager) ForgotPasswordActivity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(findViewById(R.id.background).getWindowToken(), 0);
                 finish();
                 return true;
             default:

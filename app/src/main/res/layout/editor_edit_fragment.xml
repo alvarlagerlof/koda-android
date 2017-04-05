@@ -4,12 +4,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.alvarlagerlof.koda.ShaderEditor
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/editor_editext"
-        android:gravity="top|left"
-        android:textSize="15sp"
-        android:background="@android:color/transparent" />
+        android:id="@+id/scrollView">
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbarAlwaysDrawHorizontalTrack="true">
+
+            <com.alvarlagerlof.koda.Editor.ShaderEditor
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/editor_editext"
+                android:gravity="top|left"
+                android:textSize="15sp"
+                android:background="@android:color/transparent" />
+
+
+        </HorizontalScrollView>
+
+
+
+    </android.support.v4.widget.NestedScrollView>
+
+
 
 </LinearLayout>

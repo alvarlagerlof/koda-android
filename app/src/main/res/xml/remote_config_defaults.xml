@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaultsMap>
+
+    <entry>
+        <key>base_url</key>
+        <value>http://koda.nu/</value>
+    </entry>
+
+    <entry>
+        <key>api_version</key>
+        <value>api_v1/</value>
+    </entry>
+
+
+
+
+    <entry>
+        <key>url_login_image</key>
+        <value>https://unsplash.com/photos/OqtafYT5kTw/download?force=true</value>
+    </entry>
+
+    <entry>
+        <key>url_login_forgot_image</key>
+        <value>https://unsplash.com/photos/6njoEbtarec/download?force=true</value>
+    </entry>
+
+    <entry>
+        <key>url_login_new_image</key>
+        <value>https://unsplash.com/photos/XJXWbfSo2f0/download?force=true</value>
+    </entry>
+
+
+    <entry>
+        <key>url_projects_delete</key>
+        <value>delete/</value>
+    </entry>
+
+    <entry>
+        <key>url_sync</key>
+        <value>synkronisera</value>
+    </entry>
+
+    <entry>
+        <key>url_api_2d</key>
+        <value>api_2d</value>
+    </entry>
+
+    <entry>
+        <key>url_api_3d</key>
+        <value>api_3d</value>
+    </entry>
+
+    <entry>
+        <key>url_guides</key>
+        <value>https://ravla.org/guider.json</value>
+    </entry>
+
+    <entry>
+        <key>url_archive</key>
+        <value>arkivet</value>
+    </entry>
+
+    <entry>
+        <key>pref_nick</key>
+        <value>nick</value>
+    </entry>
+
+    <entry>
+        <key>pref_email</key>
+        <value>email</value>
+    </entry>
+
+    <entry>
+        <key>pref_notifications</key>
+        <value>notifications</value>
+    </entry>
+
+    <entry>
+        <key>pref_password</key>
+        <value>password</value>
+    </entry>
+
+    <entry>
+        <key>url_comments</key>
+        <value>kommentera/</value>
+    </entry>
+
+    <entry>
+        <key>url_comments_send</key>
+        <value>kommentera/</value>
+    </entry>
+
+    <entry>
+        <key>url_profile</key>
+        <value>https://ravla.org/profile.txt</value>
+    </entry>
+
+    <entry>
+        <key>url_like</key>
+        <value>plus/</value>
+    </entry>
+
+    <entry>
+        <key>url_disslike</key>
+        <value>minus/</value>
+    </entry>
+
+    <entry>
+        <key>url_login</key>
+        <value>login</value>
+    </entry>
+
+    <entry>
+        <key>url_login_forgot</key>
+        <value>login</value>
+    </entry>
+
+    <entry>
+        <key>url_login_new</key>
+        <value>login</value>
+    </entry>
+
+    <entry>
+        <key>url_settings_save_nick</key>
+        <value>labbet</value>
+    </entry>
+
+
+</defaultsMap>

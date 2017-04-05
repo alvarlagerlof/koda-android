@@ -18,8 +18,8 @@ import android.widget.TextView;
 
 import com.alvarlagerlof.koda.Comments.CommentsActivity;
 import com.alvarlagerlof.koda.LikeDissLike;
-import com.alvarlagerlof.koda.PlayActivity;
-import com.alvarlagerlof.koda.PrefValues;
+import com.alvarlagerlof.koda.Play.PlayActivity;
+import com.alvarlagerlof.koda.RemoteConfigValues;
 import com.alvarlagerlof.koda.R;
 import com.alvarlagerlof.koda.Utils.AnimationUtils;
 
@@ -193,14 +193,14 @@ class ProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         ((ProfileAdapter.ViewHolderItem) holder).likesNum.setText(String.valueOf(Integer.parseInt(String.valueOf(Integer.parseInt(String.valueOf(((ProfileAdapter.ViewHolderItem) holder).likesNum.getText())) - 1))));
                         ((ProfileAdapter.ViewHolderItem) holder).heartImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_heart_outline));
                         dataset.get(position).liked = false;
-                        new LikeDissLike(context, PrefValues.URL_DISSLIKE, dataset.get(position).publicID);
+                        new LikeDissLike(context, RemoteConfigValues.URL_DISSLIKE, dataset.get(position).publicID);
 
                     } else {
 
                         ((ProfileAdapter.ViewHolderItem) holder).likesNum.setText(String.valueOf(Integer.parseInt(String.valueOf(((ProfileAdapter.ViewHolderItem) holder).likesNum.getText()) + 1)));
                         ((ProfileAdapter.ViewHolderItem) holder).heartImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_heart));
                         dataset.get(position).liked = true;
-                        new LikeDissLike(context, PrefValues.URL_LIKE, dataset.get(position).publicID);
+                        new LikeDissLike(context, RemoteConfigValues.URL_LIKE, dataset.get(position).publicID);
                     }
 
                 }

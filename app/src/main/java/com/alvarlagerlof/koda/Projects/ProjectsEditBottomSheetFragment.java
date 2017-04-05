@@ -2,41 +2,23 @@ package com.alvarlagerlof.koda.Projects;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.AsyncTask;
-import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.widget.AppCompatCheckBox;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
-import com.alvarlagerlof.koda.PrefValues;
 import com.alvarlagerlof.koda.R;
-import com.alvarlagerlof.koda.Utils.AnimationUtils;
 
-import java.io.IOException;
-import java.net.CookieHandler;
-import java.net.CookieManager;
-import java.net.CookiePolicy;
 import java.util.concurrent.TimeUnit;
 
 import io.realm.Realm;
-import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.internal.JavaNetCookieJar;
 
 /**
  * Created by alvar on 2016-07-03.

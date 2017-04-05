@@ -11,7 +11,7 @@ import com.alvarlagerlof.koda.Guides.SmallImageWithButton.GuidesSmallImageWithBu
 import com.alvarlagerlof.koda.Guides.Text.GuidesTextObject;
 import com.alvarlagerlof.koda.Guides.TextWithTitle.GuidesTextWithTitleObject;
 import com.alvarlagerlof.koda.Guides.YoutubeList.GuidesYouTubeListObject;
-import com.alvarlagerlof.koda.PrefValues;
+import com.alvarlagerlof.koda.RemoteConfigValues;
 import com.alvarlagerlof.koda.Universal.UniversalLoadingObject;
 import com.alvarlagerlof.koda.Universal.UniversalOfflineObject;
 import com.alvarlagerlof.koda.Utils.ConnectionUtils;
@@ -72,7 +72,7 @@ class GuidesGetData extends AsyncTask<Void, Void, String> {
                         .build();
 
                 Request request = new Request.Builder()
-                        .url(PrefValues.URL_GUIDES)
+                        .url(RemoteConfigValues.URL_GUIDES)
                         .build();
 
                 Response response = client.newCall(request).execute();

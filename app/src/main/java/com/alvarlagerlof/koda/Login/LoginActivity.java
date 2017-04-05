@@ -15,9 +15,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 
 import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
-import com.alvarlagerlof.koda.MainAcitivty;
-import com.alvarlagerlof.koda.PrefValues;
+import com.alvarlagerlof.koda.Main.MainAcitivty;
 import com.alvarlagerlof.koda.R;
+import com.alvarlagerlof.koda.RemoteConfigValues;
 import com.alvarlagerlof.koda.Utils.ConnectionUtils;
 import com.arasthel.asyncjob.AsyncJob;
 import com.bumptech.glide.Glide;
@@ -37,8 +37,8 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.internal.JavaNetCookieJar;
 
-import static com.alvarlagerlof.koda.PrefValues.PREF_EMAIL;
-import static com.alvarlagerlof.koda.PrefValues.PREF_PASSWORD;
+import static com.alvarlagerlof.koda.RemoteConfigValues.PREF_EMAIL;
+import static com.alvarlagerlof.koda.RemoteConfigValues.PREF_PASSWORD;
 
 /**
  * Created by alvar on 2016-07-02.
@@ -60,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
         Glide.with(LoginActivity.this)
-                .load(PrefValues.URL_LOGIN_IMAGE)
+                .load(RemoteConfigValues.URL_LOGIN_IMAGE)
                 .into((ImageView) findViewById(R.id.background));
 
 
@@ -104,7 +104,7 @@ public class LoginActivity extends AppCompatActivity {
                                     .build();
 
                             Request request = new Request.Builder()
-                                    .url(PrefValues.URL_LOGIN)
+                                    .url(RemoteConfigValues.URL_LOGIN)
                                     .post(formBody)
                                     .build();
 
@@ -135,7 +135,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                         PreferenceManager.getDefaultSharedPreferences(LoginActivity.this)
                                                 .edit()
-                                                .putString(PrefValues.PREF_EMAIL, email.getText().toString())
+                                                .putString(RemoteConfigValues.PREF_EMAIL, email.getText().toString())
                                                 .putString(PREF_PASSWORD, password.getText().toString())
                                                 .commit();
 
@@ -213,7 +213,5 @@ public class LoginActivity extends AppCompatActivity {
                     .show();
         }
     }
-
-
 
 }

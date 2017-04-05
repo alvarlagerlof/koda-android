@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
         android:layout_width="match_parent"
@@ -14,25 +15,35 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@color/darkbackground"
-        android:paddingRight="16dp"
-        android:paddingLeft="16dp"
-        android:paddingTop="48dp">
+        android:background="@color/darkbackground">
+
+
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/app_bar_top_padding"
+            android:background="@null"
+            app:elevation="0dp">
+
+            <android.support.v7.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/toolbar"
+                app:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+                app:titleTextColor="#FFF"
+                app:title="Välkommen!" />
+
+        </android.support.design.widget.AppBarLayout>
+
+
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Koda.nu"
-                android:textSize="40sp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/app_bar_top_padding"
-                android:layout_marginBottom="38dp"
-                android:textColor="@color/white"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="48dp"
+            android:paddingRight="16dp"
+            android:paddingLeft="16dp">
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -79,46 +90,51 @@
                 android:layout_gravity="center_horizontal"
                 android:onClick="login"/>
 
-        </LinearLayout>
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:orientation="vertical"
-            android:layout_marginBottom="@dimen/navigation_height">
-
-            <Button
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:text="Skapa konto"
-                style="@style/Widget.AppCompat.Button"
-                android:backgroundTint="@color/white"
-                android:textColor="#000"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="8dp"
-                android:onClick="createAccount" />
+                android:layout_gravity="bottom"
+                android:orientation="vertical"
+                android:layout_marginBottom="@dimen/navigation_height">
 
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                style="@style/Widget.AppCompat.Button"
-                android:backgroundTint="@color/white"
-                android:text="Glömt lösenordet?"
-                android:textColor="#000"
-                android:layout_gravity="center_horizontal"
-                android:onClick="forgotPassword"
-                android:layout_marginBottom="16dp"/>
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:text="Skapa konto"
+                    style="@style/Widget.AppCompat.Button"
+                    android:backgroundTint="@color/white"
+                    android:textColor="#000"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="8dp"
+                    android:onClick="createAccount" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    style="@style/Widget.AppCompat.Button"
+                    android:backgroundTint="@color/white"
+                    android:text="Glömt lösenordet?"
+                    android:textColor="#000"
+                    android:layout_gravity="center_horizontal"
+                    android:onClick="forgotPassword"
+                    android:layout_marginBottom="16dp"/>
+
+            </LinearLayout>
+
 
         </LinearLayout>
+
+
 
     </LinearLayout>
+
 
 </android.support.design.widget.CoordinatorLayout>

@@ -6,7 +6,7 @@ import android.preference.PreferenceManager;
 
 import com.alvarlagerlof.koda.Utils.ConnectionUtils;
 import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
-import com.alvarlagerlof.koda.PrefValues;
+import com.alvarlagerlof.koda.RemoteConfigValues;
 
 import java.io.IOException;
 import java.net.CookieHandler;
@@ -39,7 +39,7 @@ class SettingsUpdateNick extends AsyncTask<Void, Void, Void> {
         // Save locally
         PreferenceManager.getDefaultSharedPreferences(context)
                 .edit()
-                .putString(PrefValues.PREF_NICK, nick)
+                .putString(RemoteConfigValues.PREF_NICK, nick)
                 .apply();
 
 
@@ -57,7 +57,7 @@ class SettingsUpdateNick extends AsyncTask<Void, Void, Void> {
                     .build();
 
             Request request = new Request.Builder()
-                    .url(PrefValues.URL_SETTINGS_SAVE_NICK)
+                    .url(RemoteConfigValues.URL_SETTINGS_SAVE_NICK)
                     .post(data)
                     .build();
 

@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:maxWidth="250dp"
-        android:text="Klicka på plus-kappen längst ned för att ta göra gubben glad"
+        android:text="Klicka på plus-kappen längst ned för att göra gubben glad"
         android:textColor="@color/textColorSecondary"
         android:textSize="15sp"
         android:gravity="center_horizontal"/>

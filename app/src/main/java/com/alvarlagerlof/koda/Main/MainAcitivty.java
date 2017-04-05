@@ -1,4 +1,4 @@
-package com.alvarlagerlof.koda;
+package com.alvarlagerlof.koda.Main;
 
 
 import android.content.DialogInterface;
@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
@@ -20,10 +21,16 @@ import android.view.MenuItem;
 import android.widget.LinearLayout;
 
 import com.alvarlagerlof.koda.Api.FragmentApi;
+import com.alvarlagerlof.koda.BuildConfig;
 import com.alvarlagerlof.koda.Login.KeepLoggedIn;
 import com.alvarlagerlof.koda.Projects.ProjectsFragment;
 import com.alvarlagerlof.koda.QrCodeShare.QrScanner;
-import com.alvarlagerlof.koda.Settings.SettingsFragment;
+import com.alvarlagerlof.koda.R;
+import com.alvarlagerlof.koda.Settings.SettingsActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 
@@ -54,17 +61,35 @@ public class MainAcitivty extends AppCompatActivity {
 
 
 
-        // Login
+        // Do stuff
         new KeepLoggedIn(this).execute();
 
+        final FirebaseRemoteConfig firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+                .setDeveloperModeEnabled(BuildConfig.DEBUG)
+                .build();
 
-        // Realm
-        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(this)
+        firebaseRemoteConfig.setConfigSettings(configSettings);
+        firebaseRemoteConfig.setDefaults(R.xml.remote_config_defaults);
+        firebaseRemoteConfig.fetch(firebaseRemoteConfig.getInfo().getConfigSettings().isDeveloperModeEnabled() ? 0 : 3600)
+                .addOnCompleteListener(MainAcitivty.this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            // After config data is successfully fetched, it must be activated before newly fetched
+                            // values are returned.
+                            firebaseRemoteConfig.activateFetched();
+                        }
+                    }
+                });
+
+        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(MainAcitivty.this)
                 .name(Realm.DEFAULT_REALM_NAME)
                 .schemaVersion(0)
-                .deleteRealmIfMigrationNeeded()
+                //.migration(new MyMigration())
                 .build();
         Realm.setDefaultConfiguration(realmConfiguration);
+
 
 
         fragment_container = (LinearLayout) findViewById(R.id.fragment_container);
@@ -113,15 +138,7 @@ public class MainAcitivty extends AppCompatActivity {
                         toolbar.setTitle("Arkivet");
                         setAppBarElevation(0f);
                         break;*/
-                    case R.id.tab_settings:
-                        SettingsFragment settingsFragment = new SettingsFragment();
-                        FragmentTransaction ftSettings = getSupportFragmentManager().beginTransaction();
-                        ftSettings.replace(R.id.fragment_container, settingsFragment);
-                        ftSettings.addToBackStack(null);
-                        ftSettings.commit();
-                        toolbar.setTitle("Inställningar");
-                        setAppBarElevation(16f);
-                        break;
+
 
                 }
             }
@@ -154,20 +171,20 @@ public class MainAcitivty extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-            case R.id.scan:
+            case R.id.settings:
+                startActivity(new Intent(MainAcitivty.this, SettingsActivity.class));
 
+                break;
+
+            case R.id.scan:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (ContextCompat.checkSelfPermission(MainAcitivty.this,
                             android.Manifest.permission.CAMERA)
                             != PackageManager.PERMISSION_GRANTED) {
 
-
-
                         // Should we show an explanation?
                         if (ActivityCompat.shouldShowRequestPermissionRationale(MainAcitivty.this,
                                 android.Manifest.permission.CAMERA)) {
-
-
 
                             new AlertDialog.Builder(MainAcitivty.this)
                                     .setTitle("Skanner")
@@ -190,7 +207,6 @@ public class MainAcitivty extends AppCompatActivity {
                                     .show();
 
 
-
                         } else {
                             // No explanation needed, we can request the permission.
 
@@ -205,12 +221,16 @@ public class MainAcitivty extends AppCompatActivity {
 
                         startActivity(new Intent(MainAcitivty.this, QrScanner.class));
                     }
+                } else {
+                    startActivity(new Intent(MainAcitivty.this, QrScanner.class));
                 }
 
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+
+        return false;
     }
 
 

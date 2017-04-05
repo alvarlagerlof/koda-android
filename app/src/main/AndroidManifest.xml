@@ -20,7 +20,7 @@
         android:hardwareAccelerated="true">
 
         <activity
-            android:name=".MainAcitivty"
+            android:name=".Main.MainAcitivty"
             android:label="@string/app_name"
             android:theme="@style/TransNav">
             <intent-filter>
@@ -34,33 +34,33 @@
         <activity
             android:name=".Editor.EditorActivity"
             android:label="Editor"
-            android:parentActivityName=".MainAcitivty"
+            android:parentActivityName=".Main.MainAcitivty"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize|stateHidden"
             android:configChanges="orientation|screenSize"
             >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainAcitivty" />
+                android:value=".Main.MainAcitivty" />
 
         </activity>
 
 
         // Play
         <activity
-            android:name=".PlayActivity"
-            android:parentActivityName=".MainAcitivty"
+            android:name=".Play.PlayActivity"
+            android:parentActivityName=".Main.MainAcitivty"
             android:theme="@style/AppTheme"
             android:configChanges="orientation|screenSize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainAcitivty" />
+                android:value=".Main.MainAcitivty" />
         </activity>
 
         // Fullscreen
         <activity
             android:name=".FullscreenPlay"
-            android:parentActivityName=".MainAcitivty"
+            android:parentActivityName=".Main.MainAcitivty"
             android:theme="@style/AppTheme"
             android:configChanges="orientation|screenSize"
             android:exported="true">
@@ -71,7 +71,7 @@
         // Comments
         <activity
             android:name=".Comments.CommentsActivity"
-            android:parentActivityName=".MainAcitivty"
+            android:parentActivityName=".Main.MainAcitivty"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize">
         </activity>
@@ -80,7 +80,7 @@
         // Profile
         <activity
             android:name=".Profile.ProfileActivity"
-            android:parentActivityName=".MainAcitivty"
+            android:parentActivityName=".Main.MainAcitivty"
             android:theme="@style/AppTheme"
             android:label="Profil"
             android:configChanges="orientation|screenSize">
@@ -90,7 +90,7 @@
         // Login
         <activity
             android:name=".Login.LoginActivity"
-            android:parentActivityName=".MainAcitivty"
+            android:parentActivityName=".Main.MainAcitivty"
             android:theme="@style/TransNav"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden">
@@ -99,7 +99,7 @@
         // Forgot password
         <activity
             android:name=".Login.ForgotPasswordActivity"
-            android:parentActivityName=".MainAcitivty"
+            android:parentActivityName=".Main.MainAcitivty"
             android:theme="@style/TransNav"
             android:windowSoftInputMode="stateVisible"
             android:screenOrientation="portrait">
@@ -109,18 +109,26 @@
         // New account
         <activity
             android:name=".Login.NewAccountActivity"
-            android:parentActivityName=".MainAcitivty"
+            android:parentActivityName=".Main.MainAcitivty"
             android:theme="@style/TransNav"
             android:windowSoftInputMode="stateVisible"
             android:screenOrientation="portrait">
         </activity>
 
+        // Settings
+        <activity
+            android:name=".Settings.SettingsActivity"
+            android:parentActivityName=".Main.MainAcitivty"
+            android:theme="@style/AppTheme"
+            android:label="Inställnigar"
+            android:windowSoftInputMode="stateHidden">
+        </activity>
 
 
         // QrViewer
         <activity
             android:name=".QrCodeShare.QrViewer"
-            android:parentActivityName=".MainAcitivty"
+            android:parentActivityName=".Main.MainAcitivty"
             android:theme="@style/TransNav"
             android:label="Din profil"
             android:configChanges="orientation|screenSize">
@@ -130,7 +138,7 @@
         // QrScanner
         <activity
             android:name=".QrCodeShare.QrScanner"
-            android:parentActivityName=".MainAcitivty"
+            android:parentActivityName=".Main.MainAcitivty"
             android:theme="@style/TransNav"
             android:label="Skanna Qr-kod">
         </activity>

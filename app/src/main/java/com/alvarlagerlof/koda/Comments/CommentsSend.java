@@ -6,7 +6,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
-import com.alvarlagerlof.koda.PrefValues;
+import com.alvarlagerlof.koda.RemoteConfigValues;
 
 import java.io.IOException;
 import java.net.CookieHandler;
@@ -31,7 +31,7 @@ class CommentsSend extends AsyncTask<Void, Void, String> {
 
     CommentsSend(Context context, String publicID, String comment) {
         this.context = context;
-        this.url = PrefValues.URL_COMMENTS_SEND + publicID;
+        this.url = RemoteConfigValues.URL_COMMENTS_SEND + publicID;
         this.comment = comment;
     }
 

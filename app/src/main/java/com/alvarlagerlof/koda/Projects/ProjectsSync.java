@@ -6,7 +6,7 @@ import android.util.Log;
 
 import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
 import com.alvarlagerlof.koda.Editor.EditorActivity;
-import com.alvarlagerlof.koda.PrefValues;
+import com.alvarlagerlof.koda.RemoteConfigValues;
 import com.alvarlagerlof.koda.Utils.Base64Utils;
 import com.alvarlagerlof.koda.Utils.ConnectionUtils;
 import com.arasthel.asyncjob.AsyncJob;
@@ -104,9 +104,11 @@ public class ProjectsSync {
                                 }
 
 
+
+
                                 // Send it
                                 Request request = new Request.Builder()
-                                        .url(PrefValues.URL_SYNC)
+                                        .url(RemoteConfigValues.URL_SYNC)
                                         .post(new FormBody.Builder()
                                                 .add("projects", projects.toString())
                                                 .build())
@@ -117,6 +119,11 @@ public class ProjectsSync {
 
                                 // Response to string
                                 String stringResponse = response.body().string();
+
+                                Log.d("response", RemoteConfigValues.URL_SYNC);
+
+
+                                Log.d("response", stringResponse);
 
                                 // Close response
                                 response.body().close();

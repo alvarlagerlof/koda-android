@@ -22,9 +22,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
-import com.alvarlagerlof.koda.MainAcitivty;
-import com.alvarlagerlof.koda.PrefValues;
+import com.alvarlagerlof.koda.Main.MainAcitivty;
 import com.alvarlagerlof.koda.R;
+import com.alvarlagerlof.koda.RemoteConfigValues;
 import com.bumptech.glide.Glide;
 import com.google.firebase.crash.FirebaseCrash;
 
@@ -91,7 +91,7 @@ public class NewAccountActivity extends AppCompatActivity {
 
 
         Glide.with(this)
-                .load(PrefValues.URL_LOGIN_CREATE_IMAGE)
+                .load(RemoteConfigValues.URL_LOGIN_NEW_IMAGE)
                 .into((ImageView) findViewById(R.id.background));
 
         findViewById(R.id.background).setOnClickListener(new View.OnClickListener() {
@@ -111,6 +111,8 @@ public class NewAccountActivity extends AppCompatActivity {
     }
 
     public void finish(View view) {
+        InputMethodManager inputMethodManager = (InputMethodManager) NewAccountActivity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(findViewById(R.id.background).getWindowToken(), 0);
         finish();
     }
 
@@ -140,12 +142,12 @@ public class NewAccountActivity extends AppCompatActivity {
             RequestBody formBody = new FormBody.Builder()
                     .add("email", emailString)
                     .add("verification", "8")
-                    .add("headless", "thisIsSet")
+                    .add("headless", "yes")
                     .build();
 
 
             Request request = new Request.Builder()
-                    .url(PrefValues.URL_LOGIN_CREATE)
+                    .url(RemoteConfigValues.URL_LOGIN_NEW)
                     .post(formBody)
                     .build();
 
@@ -180,8 +182,8 @@ public class NewAccountActivity extends AppCompatActivity {
 
                         PreferenceManager.getDefaultSharedPreferences(NewAccountActivity.this)
                                 .edit()
-                                .putString(PrefValues.PREF_EMAIL, jsonObject.getString("username"))
-                                .putString(PrefValues.PREF_PASSWORD, jsonObject.getString("password"))
+                                .putString(RemoteConfigValues.PREF_EMAIL, jsonObject.getString("username"))
+                                .putString(RemoteConfigValues.PREF_PASSWORD, jsonObject.getString("password"))
                                 .commit();
 
 
@@ -312,8 +314,8 @@ public class NewAccountActivity extends AppCompatActivity {
         startActivity(new Intent(this, MainAcitivty.class));
         PreferenceManager.getDefaultSharedPreferences(NewAccountActivity.this)
                 .edit()
-                .putString(PrefValues.PREF_EMAIL, String.valueOf(usernameText.getText()))
-                .putString(PrefValues.PREF_PASSWORD,  String.valueOf(passwordText.getText()))
+                .putString(RemoteConfigValues.PREF_EMAIL, String.valueOf(usernameText.getText()))
+                .putString(RemoteConfigValues.PREF_PASSWORD,  String.valueOf(passwordText.getText()))
                 .apply();
 
     }
@@ -323,12 +325,13 @@ public class NewAccountActivity extends AppCompatActivity {
         // Handle item selection
         switch (item.getItemId()) {
             case android.R.id.home:
+                InputMethodManager inputMethodManager = (InputMethodManager) NewAccountActivity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(findViewById(R.id.background).getWindowToken(), 0);
                 finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
-
 
 }

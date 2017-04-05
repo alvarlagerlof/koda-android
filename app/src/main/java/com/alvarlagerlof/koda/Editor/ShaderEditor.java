@@ -1,4 +1,4 @@
-package com.alvarlagerlof.koda;
+package com.alvarlagerlof.koda.Editor;
 
 /**
  * Created by alvar on 2016-07-07.
@@ -22,10 +22,13 @@ import android.widget.EditText;
 import android.os.Handler;
 
 
+import com.alvarlagerlof.koda.R;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ShaderEditor extends EditText {
+
     public interface OnTextChangedListener {
         public void onTextChanged( String text );
     }

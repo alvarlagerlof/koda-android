@@ -5,7 +5,7 @@ import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 
 import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
-import com.alvarlagerlof.koda.PrefValues;
+import com.alvarlagerlof.koda.RemoteConfigValues;
 import com.alvarlagerlof.koda.Utils.ConnectionUtils;
 import com.alvarlagerlof.koda.Utils.DateConversionUtils;
 
@@ -64,7 +64,7 @@ class ProfileGetData extends AsyncTask<Void, Void, String> {
                         .build();
 
                 Request request = new Request.Builder()
-                        .url(PrefValues.URL_PROFILE)
+                        .url(RemoteConfigValues.URL_PROFILE)
                         .build();
 
                 Response response = client.newCall(request).execute();

@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.alvarlagerlof.koda.R;
-import com.alvarlagerlof.koda.ShaderEditor;
 import com.flask.colorpicker.ColorPickerView;
 import com.flask.colorpicker.OnColorSelectedListener;
 import com.flask.colorpicker.builder.ColorPickerClickListener;
@@ -34,6 +33,7 @@ public class EditorEditFragment extends Fragment {
 
         editor.setText(code);
         editor.setTypeface(Typeface.createFromAsset(getContext().getAssets(),"SourceCodePro-Regular.ttf"));
+
 
         return view;
     }

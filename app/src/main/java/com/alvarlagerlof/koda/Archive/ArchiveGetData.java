@@ -5,7 +5,7 @@ import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 
 import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
-import com.alvarlagerlof.koda.PrefValues;
+import com.alvarlagerlof.koda.RemoteConfigValues;
 import com.alvarlagerlof.koda.R;
 import com.alvarlagerlof.koda.Utils.Base64Utils;
 import com.alvarlagerlof.koda.Utils.ConnectionUtils;
@@ -65,7 +65,7 @@ class ArchiveGetData extends AsyncTask<Void, Void, String> {
                         .build();
 
                 Request request = new Request.Builder()
-                        .url(PrefValues.URL_ARCHIVE)
+                        .url(RemoteConfigValues.URL_ARCHIVE)
                         .build();
 
                 Response response = client.newCall(request).execute();

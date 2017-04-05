@@ -15,6 +15,8 @@ public class ProjectsRealmObject extends RealmObject {
     private Boolean isPublic;
     private String code;
     private Boolean synced;
+    private String hoho;
+    private String hoha;
 
 
 
@@ -106,4 +108,20 @@ public class ProjectsRealmObject extends RealmObject {
     public void setSynced(Boolean synced) {
         this.synced = synced;
     }
+
+    /*public String getHoho() {
+        return hoho;
+    }
+
+    public void setHoho(String hoho) {
+        this.hoho = hoho;
+    }
+
+    public String getHoha() {
+        return hoha;
+    }
+
+    public void setHoha(String hoha) {
+        this.hoha = hoha;
+    }*/
 }

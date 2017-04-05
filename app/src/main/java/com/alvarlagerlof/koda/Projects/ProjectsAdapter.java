@@ -16,7 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alvarlagerlof.koda.Editor.EditorActivity;
-import com.alvarlagerlof.koda.PrefValues;
+import com.alvarlagerlof.koda.RemoteConfigValues;
 import com.alvarlagerlof.koda.R;
 import com.alvarlagerlof.koda.Universal.UniversalLoadingObject;
 import com.alvarlagerlof.koda.Universal.UniversalLodingViewHolder;
@@ -120,7 +120,7 @@ class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                             object.privateID,
                             object.publicID,
                             object.title,
-                            PreferenceManager.getDefaultSharedPreferences(context).getString(PrefValues.PREF_NICK, ""));
+                            PreferenceManager.getDefaultSharedPreferences(context).getString(RemoteConfigValues.PREF_NICK, ""));
 
                     bottomSheetFragment.show(fragmentManager, bottomSheetFragment.getTag());
 

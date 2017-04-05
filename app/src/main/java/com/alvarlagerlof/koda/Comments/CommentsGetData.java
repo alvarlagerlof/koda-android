@@ -6,7 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
-import com.alvarlagerlof.koda.PrefValues;
+import com.alvarlagerlof.koda.RemoteConfigValues;
 import com.alvarlagerlof.koda.R;
 import com.alvarlagerlof.koda.Utils.Base64Utils;
 import com.alvarlagerlof.koda.Utils.ConnectionUtils;
@@ -76,7 +76,7 @@ class CommentsGetData extends AsyncTask<Void, Void, String> {
                         .build();
 
                 Request request = new Request.Builder()
-                        .url(PrefValues.URL_COMMENTS + publicID)
+                        .url(RemoteConfigValues.URL_COMMENTS + publicID)
                         .post(formBody)
                         .build();
 

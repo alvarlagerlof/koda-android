@@ -8,8 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.alvarlagerlof.koda.MainAcitivty;
-import com.alvarlagerlof.koda.PrefValues;
+import com.alvarlagerlof.koda.RemoteConfigValues;
 import com.alvarlagerlof.koda.R;
 import com.alvarlagerlof.koda.ViewPagerAdapter;
 
@@ -30,12 +29,12 @@ public class FragmentApi extends Fragment {
 
         // 2D
         ApiTabFragment apiTabFragment2D = new ApiTabFragment();
-        apiTabFragment2D.url = PrefValues.URL_API_2D;
+        apiTabFragment2D.url = RemoteConfigValues.URL_API_2D;
         adapter.addFragment(apiTabFragment2D, "2D");
 
         // 3D
         ApiTabFragment apiTabFragment3D = new ApiTabFragment();
-        apiTabFragment3D.url = PrefValues.URL_API_3D;
+        apiTabFragment3D.url = RemoteConfigValues.URL_API_3D;
         adapter.addFragment(apiTabFragment3D, "3D");
 
         viewPager.setAdapter(adapter);

@@ -9,7 +9,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.alvarlagerlof.koda.PlayActivity;
+import com.alvarlagerlof.koda.Play.PlayActivity;
 import com.alvarlagerlof.koda.R;
 import com.alvarlagerlof.koda.Utils.Base64Utils;
 import com.dlazaro66.qrcodereaderview.QRCodeReaderView;

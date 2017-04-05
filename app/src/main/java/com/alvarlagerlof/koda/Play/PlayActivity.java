@@ -1,4 +1,4 @@
-package com.alvarlagerlof.koda;
+package com.alvarlagerlof.koda.Play;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -13,6 +13,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
+
+import com.alvarlagerlof.koda.R;
+import com.alvarlagerlof.koda.StandardBottomSheetFragment;
+import com.alvarlagerlof.koda.WebClient;
 
 public class PlayActivity extends AppCompatActivity {
 

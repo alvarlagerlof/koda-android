@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
-import com.alvarlagerlof.koda.PrefValues;
+import com.alvarlagerlof.koda.RemoteConfigValues;
 import com.alvarlagerlof.koda.Utils.ConnectionUtils;
 
 import java.net.CookieHandler;
@@ -63,7 +63,7 @@ class ProjectsDelete extends AsyncTask<Void, Void, Void> {
                         .build();
 
                 Request request = new Request.Builder()
-                        .url(PrefValues.URL_MY_PROJECTS_DELETE + privateID)
+                        .url(RemoteConfigValues.URL_MY_PROJECTS_DELETE + privateID)
                         .build();
 
                 Response response = client.newCall(request).execute();

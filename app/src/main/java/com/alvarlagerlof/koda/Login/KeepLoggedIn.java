@@ -7,8 +7,8 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 
 import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
-import com.alvarlagerlof.koda.PrefValues;
 import com.alvarlagerlof.koda.Projects.ProjectsSync;
+import com.alvarlagerlof.koda.RemoteConfigValues;
 import com.alvarlagerlof.koda.Utils.ConnectionUtils;
 
 import java.io.IOException;
@@ -46,12 +46,14 @@ public class KeepLoggedIn extends AsyncTask<Void, Void, String> {
         progressDialog.setMessage("Loggar in...");
         progressDialog.setIndeterminate(true);
         progressDialog.show();
+
+
     }
 
     @Override
     protected String doInBackground(Void... params) {
 
-        if (new PersistentCookieStore(context).getCookies().size() < 1 || PreferenceManager.getDefaultSharedPreferences(context).getString(PrefValues.PREF_EMAIL, null) == null) {
+        if (new PersistentCookieStore(context).getCookies().size() < 1 || PreferenceManager.getDefaultSharedPreferences(context).getString(RemoteConfigValues.PREF_EMAIL, null) == null) {
             context.startActivity(new Intent(context, LoginActivity.class));
         }
 
@@ -64,13 +66,13 @@ public class KeepLoggedIn extends AsyncTask<Void, Void, String> {
                     .build();
 
             RequestBody formBody = new FormBody.Builder()
-                    .add("email", PreferenceManager.getDefaultSharedPreferences(context).getString(PrefValues.PREF_EMAIL, ""))
-                    .add("password", PreferenceManager.getDefaultSharedPreferences(context).getString(PrefValues.PREF_EMAIL, ""))
+                    .add("email", PreferenceManager.getDefaultSharedPreferences(context).getString(RemoteConfigValues.PREF_EMAIL, ""))
+                    .add("password", PreferenceManager.getDefaultSharedPreferences(context).getString(RemoteConfigValues.PREF_EMAIL, ""))
                     .add("headless", "thisIsHeadLess")
                     .build();
 
             Request request = new Request.Builder()
-                    .url(PrefValues.URL_LOGIN)
+                    .url(RemoteConfigValues.URL_LOGIN)
                     .post(formBody)
                     .build();
 
@@ -99,7 +101,8 @@ public class KeepLoggedIn extends AsyncTask<Void, Void, String> {
             progressDialog.dismiss();
         }
 
-        if (PreferenceManager.getDefaultSharedPreferences(context).getString(PrefValues.PREF_EMAIL, null) != null) {
+
+        if (PreferenceManager.getDefaultSharedPreferences(context).getString(RemoteConfigValues.PREF_EMAIL, null) != null) {
             new ProjectsSync(context);
         }
     }

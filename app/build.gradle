@@ -8,8 +8,8 @@ android {
         applicationId "com.alvarlagerlof.koda"
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 7
-        versionName "0.3.0 BETA"
+        versionCode 8
+        versionName "1.0.0"
     }
     buildTypes {
         release {
@@ -29,7 +29,7 @@ android {
 allprojects {
     project.ext {
         supportVersion = "25.2.0"
-        firebaseVersion = "10.0.1"
+        firebaseVersion = "10.2.1"
     }
 }
 
@@ -57,6 +57,8 @@ dependencies {
     compile 'com.google.firebase:firebase-core:' + project.ext.firebaseVersion
     compile 'com.google.firebase:firebase-crash:' + project.ext.firebaseVersion
     compile 'com.google.firebase:firebase-invites:' + project.ext.firebaseVersion
+    compile 'com.google.firebase:firebase-config:' + project.ext.firebaseVersion
+
 
 
     // Bottombar
