@@ -21,6 +21,7 @@ import com.alvarlagerlof.koda.RemoteConfigValues;
 import com.alvarlagerlof.koda.Utils.ConnectionUtils;
 import com.arasthel.asyncjob.AsyncJob;
 import com.bumptech.glide.Glide;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -84,6 +85,9 @@ public class LoginActivity extends AppCompatActivity {
             editor.putString(PREF_PASSWORD, password.getText().toString());
             editor.apply();
 
+            Bundle params = new Bundle();
+            params.putString("email", email.getText().toString());
+            FirebaseAnalytics.getInstance(LoginActivity.this).logEvent("login", params);
 
 
             new AsyncJob.AsyncJobBuilder<String>()
@@ -95,12 +99,15 @@ public class LoginActivity extends AppCompatActivity {
                             Realm.getDefaultInstance().deleteAll();
                             Realm.getDefaultInstance().commitTransaction();
 
+<<<<<<< Updated upstream
                             String result = null;
 
+=======
+>>>>>>> Stashed changes
                             RequestBody formBody = new FormBody.Builder()
                                     .add("email", email.getText().toString())
                                     .add("password", password.getText().toString())
-                                    .add("headless", "thisIsHeadLess")
+                                    .add("headless", "thisIsHeadless")
                                     .build();
 
                             Request request = new Request.Builder()
@@ -143,6 +150,11 @@ public class LoginActivity extends AppCompatActivity {
 
                                     } else {
 
+                                        Bundle params = new Bundle();
+                                        params.putString("email", email.getText().toString());
+                                        params.putString("error_type", "user_details");
+                                        FirebaseAnalytics.getInstance(LoginActivity.this).logEvent("login_error", params);
+
                                         new AlertDialog.Builder(LoginActivity.this)
                                                 .setTitle("Ops!")
                                                 .setMessage("Felaktigt skriven email eller lösenord")
@@ -164,6 +176,12 @@ public class LoginActivity extends AppCompatActivity {
                     }).create().start();
 
         } else {
+
+            Bundle params = new Bundle();
+            params.putString("email", email.getText().toString());
+            params.putString("error_type", "connection");
+            FirebaseAnalytics.getInstance(LoginActivity.this).logEvent("login_error", params);
+
             new AlertDialog.Builder(LoginActivity.this)
                     .setTitle("Ingen ansluting")
                     .setMessage("Gå in i inställingar och se till att du har Wifi eller mobildata på")
@@ -180,10 +198,21 @@ public class LoginActivity extends AppCompatActivity {
 
     public void createAccount(View view) {
         if (ConnectionUtils.isConnected(this)) {
+
+            Bundle params = new Bundle();
+            params.putString("email", email.getText().toString());
+            FirebaseAnalytics.getInstance(LoginActivity.this).logEvent("login_create_account", params);
+
             Intent intent = new Intent(this, NewAccountActivity.class);
             startActivity(intent);
 
         } else {
+
+            Bundle params = new Bundle();
+            params.putString("email", email.getText().toString());
+            params.putString("error_type", "connection");
+            FirebaseAnalytics.getInstance(LoginActivity.this).logEvent("login_error", params);
+
             new AlertDialog.Builder(LoginActivity.this)
                     .setTitle("Ingen ansluting")
                     .setMessage("Gå in i inställingar och se till att du har Wifi eller mobildata på")
@@ -198,10 +227,21 @@ public class LoginActivity extends AppCompatActivity {
 
     public void forgotPassword(View view) {
         if (ConnectionUtils.isConnected(this)) {
+
+            Bundle params = new Bundle();
+            params.putString("email", email.getText().toString());
+            FirebaseAnalytics.getInstance(LoginActivity.this).logEvent("login_forgot_pass", params);
+
             Intent intent = new Intent(this, ForgotPasswordActivity.class);
             startActivity(intent);
 
         } else {
+
+            Bundle params = new Bundle();
+            params.putString("email", email.getText().toString());
+            params.putString("error_type", "connection");
+            FirebaseAnalytics.getInstance(LoginActivity.this).logEvent("login_error", params);
+
             new AlertDialog.Builder(LoginActivity.this)
                     .setTitle("Ingen ansluting")
                     .setMessage("Gå in i inställingar och se till att du har Wifi eller mobildata på")

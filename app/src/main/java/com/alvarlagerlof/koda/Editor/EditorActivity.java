@@ -18,6 +18,7 @@ import com.alvarlagerlof.koda.Projects.ProjectsRealmObject;
 import com.alvarlagerlof.koda.Projects.ProjectsSync;
 import com.alvarlagerlof.koda.R;
 import com.alvarlagerlof.koda.ViewPagerAdapter;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import io.realm.Realm;
 
@@ -63,6 +64,18 @@ public class EditorActivity extends AppCompatActivity {
             editor.putString("title", title);
             editor.apply();
         }
+
+
+
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, private_id);
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, title);
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "project");
+        FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+
+
+
 
 
         // Get the code
@@ -143,6 +156,11 @@ public class EditorActivity extends AppCompatActivity {
                         realm.commitTransaction();
 
                         new ProjectsSync(EditorActivity.this);
+
+                        Bundle params = new Bundle();
+                        params.putString("privateID", private_id);
+                        params.putString("title", title);
+                        FirebaseAnalytics.getInstance(EditorActivity.this).logEvent("run_project", params);
 
                 }
             }

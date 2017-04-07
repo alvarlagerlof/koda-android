@@ -2,7 +2,6 @@ package com.alvarlagerlof.koda.Projects;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
 import com.alvarlagerlof.koda.Editor.EditorActivity;
@@ -108,7 +107,11 @@ public class ProjectsSync {
 
                                 // Send it
                                 Request request = new Request.Builder()
+<<<<<<< Updated upstream
                                         .url(RemoteConfigValues.URL_SYNC)
+=======
+                                        .url(PrefValues.URL_PROJECTS_SYNC)
+>>>>>>> Stashed changes
                                         .post(new FormBody.Builder()
                                                 .add("projects", projects.toString())
                                                 .build())
@@ -166,12 +169,10 @@ public class ProjectsSync {
                             // If response not empty
                             if (response != null) {
 
-                                Log.d("jsoon", String.valueOf(response.getJSONArray("projects")));
-
                                 // Loop over response
                                 for (int i = 0; i < response.getJSONArray("projects").length(); i++) {
 
-                                    // Get projects
+                                    // Get project
                                     JSONObject responseItem = response.getJSONArray("projects").getJSONObject(i);
 
 

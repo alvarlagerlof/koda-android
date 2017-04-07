@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.widget.LinearLayout;
 
 import com.alvarlagerlof.koda.Api.FragmentApi;
+<<<<<<< Updated upstream:app/src/main/java/com/alvarlagerlof/koda/Main/MainAcitivty.java
 import com.alvarlagerlof.koda.BuildConfig;
 import com.alvarlagerlof.koda.Login.KeepLoggedIn;
 import com.alvarlagerlof.koda.Projects.ProjectsFragment;
@@ -31,6 +32,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
+=======
+import com.alvarlagerlof.koda.Login.LoginSync;
+import com.alvarlagerlof.koda.Projects.ProjectsFragment;
+import com.alvarlagerlof.koda.QrCodeShare.QrScanner;
+import com.alvarlagerlof.koda.Settings.SettingsFragment;
+import com.google.firebase.analytics.FirebaseAnalytics;
+>>>>>>> Stashed changes:app/src/main/java/com/alvarlagerlof/koda/MainAcitivty.java
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 
@@ -61,8 +69,13 @@ public class MainAcitivty extends AppCompatActivity {
 
 
 
+<<<<<<< Updated upstream:app/src/main/java/com/alvarlagerlof/koda/Main/MainAcitivty.java
         // Do stuff
         new KeepLoggedIn(this).execute();
+=======
+        // Login
+        new LoginSync(this).execute();
+>>>>>>> Stashed changes:app/src/main/java/com/alvarlagerlof/koda/MainAcitivty.java
 
         final FirebaseRemoteConfig firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
         FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
@@ -99,6 +112,9 @@ public class MainAcitivty extends AppCompatActivity {
         bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelected(@IdRes int tabId) {
+
+
+
                 switch (tabId) {
                     case R.id.tab_projects:
                         ProjectsFragment fragmentMyProjects = new ProjectsFragment();
@@ -109,6 +125,8 @@ public class MainAcitivty extends AppCompatActivity {
                         toolbar.setTitle("Projekt");
                         setAppBarElevation(16f);
 
+                        FirebaseAnalytics.getInstance(MainAcitivty.this).logEvent("tab_projects", new Bundle());
+
                         break;
                     case R.id.tab_api:
                         FragmentApi fragmentApi = new FragmentApi();
@@ -118,6 +136,8 @@ public class MainAcitivty extends AppCompatActivity {
                         ftApi.commit();
                         toolbar.setTitle("API");
                         setAppBarElevation(0f);
+
+                        FirebaseAnalytics.getInstance(MainAcitivty.this).logEvent("tab_api", new Bundle());
                         break;
                     /*case R.id.tab_guides:
                         GuidesFragment guidesFragment = new GuidesFragment();
@@ -128,6 +148,9 @@ public class MainAcitivty extends AppCompatActivity {
                         toolbar.setTitle("Guider");
                         setAppBarElevation(16f);
 
+                        FirebaseAnalytics.getInstance(MainAcitivty.this).logEvent("tab_guides", new Bundle());
+
+
                         break;
                     case R.id.tab_archive:
                         ArchiveFragment fragmentArchive = new ArchiveFragment();
@@ -137,8 +160,24 @@ public class MainAcitivty extends AppCompatActivity {
                         ftArchive.commit();
                         toolbar.setTitle("Arkivet");
                         setAppBarElevation(0f);
-                        break;*/
 
+                        FirebaseAnalytics.getInstance(MainAcitivty.this).logEvent("tab_archive", new Bundle());
+                        break;*/
+<<<<<<< Updated upstream:app/src/main/java/com/alvarlagerlof/koda/Main/MainAcitivty.java
+
+=======
+                    case R.id.tab_settings:
+                        SettingsFragment settingsFragment = new SettingsFragment();
+                        FragmentTransaction ftSettings = getSupportFragmentManager().beginTransaction();
+                        ftSettings.replace(R.id.fragment_container, settingsFragment);
+                        ftSettings.addToBackStack(null);
+                        ftSettings.commit();
+                        toolbar.setTitle("Inställningar");
+                        setAppBarElevation(16f);
+
+                        FirebaseAnalytics.getInstance(MainAcitivty.this).logEvent("tab_settings", new Bundle());
+                        break;
+>>>>>>> Stashed changes:app/src/main/java/com/alvarlagerlof/koda/MainAcitivty.java
 
                 }
             }
@@ -174,9 +213,15 @@ public class MainAcitivty extends AppCompatActivity {
             case R.id.settings:
                 startActivity(new Intent(MainAcitivty.this, SettingsActivity.class));
 
+<<<<<<< Updated upstream:app/src/main/java/com/alvarlagerlof/koda/Main/MainAcitivty.java
                 break;
 
             case R.id.scan:
+=======
+                Bundle params = new Bundle();
+                FirebaseAnalytics.getInstance(MainAcitivty.this).logEvent("scan", params);
+
+>>>>>>> Stashed changes:app/src/main/java/com/alvarlagerlof/koda/MainAcitivty.java
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (ContextCompat.checkSelfPermission(MainAcitivty.this,
                             android.Manifest.permission.CAMERA)
@@ -239,14 +284,9 @@ public class MainAcitivty extends AppCompatActivity {
         switch (requestCode) {
             case PERMISSION_REQUEST_USE_CAMERA: {
                 // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-
-
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     startActivity(new Intent(MainAcitivty.this, QrScanner.class));
                 }
-                return;
             }
 
             // other 'case' statements for other permssions

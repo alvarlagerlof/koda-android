@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.alvarlagerlof.koda.R;
 import com.alvarlagerlof.koda.Utils.Base64Utils;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
@@ -75,6 +76,10 @@ public class QrViewer extends AppCompatActivity {
 
         generate generate = new generate();
         generate.execute(data.toString());
+
+
+        Bundle params = new Bundle();
+        FirebaseAnalytics.getInstance(QrViewer.this).logEvent("qr_share", params);
 
     }
 

@@ -13,6 +13,7 @@ import com.alvarlagerlof.koda.Play.PlayActivity;
 import com.alvarlagerlof.koda.R;
 import com.alvarlagerlof.koda.Utils.Base64Utils;
 import com.dlazaro66.qrcodereaderview.QRCodeReaderView;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -52,6 +53,10 @@ public class QrScanner extends AppCompatActivity {
             public void onQRCodeRead(String text, PointF[] points) {
 
                 try {
+
+                    Bundle params = new Bundle();
+                    FirebaseAnalytics.getInstance(QrScanner.this).logEvent("qr_scan_successful", params);
+
                     JSONObject jsonObject = new JSONObject(text);
 
                     Intent intent = new Intent(QrScanner.this, PlayActivity.class);
@@ -112,12 +117,18 @@ public class QrScanner extends AppCompatActivity {
                 return true;
 
             case R.id.flash_off:
+                Bundle params = new Bundle();
+                FirebaseAnalytics.getInstance(QrScanner.this).logEvent("qr_scan_flash_on", params);
+
                 qrScannerView.setTorchEnabled(true);
                 FLASH_STATE = FLASH_ON;
                 invalidateOptionsMenu();
                 break;
 
             case R.id.flash_on:
+                Bundle params2 = new Bundle();
+                FirebaseAnalytics.getInstance(QrScanner.this).logEvent("qr_scan_flash_off", params2);
+
                 qrScannerView.setTorchEnabled(false);
                 FLASH_STATE = FLASH_OFF;
                 invalidateOptionsMenu();

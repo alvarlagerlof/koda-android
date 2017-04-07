@@ -2,10 +2,12 @@ package com.alvarlagerlof.koda.Projects;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Bundle;
 
 import com.alvarlagerlof.koda.Cookies.PersistentCookieStore;
 import com.alvarlagerlof.koda.RemoteConfigValues;
 import com.alvarlagerlof.koda.Utils.ConnectionUtils;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.net.CookieHandler;
 import java.net.CookieManager;
@@ -47,6 +49,10 @@ class ProjectsDelete extends AsyncTask<Void, Void, Void> {
                 result.deleteAllFromRealm();
             }
         });
+
+        Bundle params = new Bundle();
+        params.putString("privateID", privateID);
+        FirebaseAnalytics.getInstance(context).logEvent("delete_project", params);
 
     }
 
