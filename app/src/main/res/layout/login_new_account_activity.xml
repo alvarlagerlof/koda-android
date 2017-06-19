@@ -79,14 +79,14 @@
                     android:layout_gravity="center_horizontal"
                     android:onClick="createAccount"/>
 
-                <ProgressBar
-                    android:id="@+id/progress_bar"
-                    style="?android:attr/progressBarStyleLarge"
+                <com.wang.avi.AVLoadingIndicatorView
+                    android:id="@+id/pacman_progress"
                     android:layout_width="42dp"
                     android:layout_height="42dp"
-                    android:layout_marginTop="16dp"
+                    android:visibility="gone"
                     android:layout_gravity="center_horizontal"
-                    android:visibility="gone"/>
+                    app:indicatorName="PacmanIndicator"
+                    app:indicatorColor="#FFF" />
 
             </LinearLayout>
 
@@ -140,7 +140,7 @@
                     android:layout_height="wrap_content"
                     style="@style/textMedium"
                     android:textColor="@color/white"
-                    android:id="@+id/error"
+                    android:id="@+id/error_text"
                     android:gravity="center_horizontal"/>
 
                 <Button

@@ -34,6 +34,15 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="EditorBarButton" parent="@android:style/Widget.Button">
+        <item name="android:textColor">@color/editor_bar_button_text_color</item>
+        <item name="android:shadowColor">#ce000000</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:background">@drawable/editor_bar_button</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+    </style>
+
 
 
     <style name="textSmall">

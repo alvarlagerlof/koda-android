@@ -2,24 +2,29 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:grid="http://schemas.android.com/tools"
+    android:fitsSystemWindows="true"
+    android:background="@color/colorPrimary">
 
-    <RelativeLayout
+
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white">
+        android:orientation="vertical"
+        android:background="#FFF">
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/appbarlayout">
+            android:id="@+id/appbar_layout">
 
             <android.support.v7.widget.Toolbar
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:theme="@style/ThemeOverlay.AppCompat.ActionBar"
                 android:id="@+id/toolbar"
-                android:paddingTop="@dimen/app_bar_top_padding"
                 app:titleTextColor="#FFFFFF" />
 
             <android.support.design.widget.TabLayout
@@ -27,16 +32,74 @@
                 android:layout_width="match_parent"
                 android:id="@+id/tabs"
                 app:tabTextColor="#a5ffffff"
-                app:tabSelectedTextColor="#FFF"/>
+                app:tabSelectedTextColor="#FFF"
+                app:tabGravity="fill"
+                app:tabMode="fixed"/>
 
         </android.support.design.widget.AppBarLayout>
 
-        <android.support.v4.view.ViewPager
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/viewpager"
-            android:layout_below="@id/appbarlayout"/>
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:id="@+id/loading_container"
+            android:background="#FFF"
+            android:gravity="center">
 
-    </RelativeLayout>
+            <com.wang.avi.AVLoadingIndicatorView
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:visibility="visible"
+                app:indicatorName="PacmanIndicator"
+                app:indicatorColor="@color/colorAccent" />
+
+        </LinearLayout>
+
+        <ScrollView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            tools:ignore="Overdraw"
+            android:id="@+id/editor_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="48dp">
+
+            <com.alvarlagerlof.koda.Editor.ShaderEditor
+                android:id="@+id/editor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start|top"
+                android:textSize="15sp"
+                android:ellipsize="end"
+                android:imeOptions="flagNoExtractUi"
+                android:privateImeOptions="nm"
+                android:inputType="textMultiLine|textNoSuggestions"
+                android:background="@android:color/transparent"/>
+        </ScrollView>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:id="@+id/web_view_container">
+
+            <WebView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/web_view" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/special_chars"
+        android:layout_gravity="bottom"
+        android:background="@color/editor_bar_background"
+        android:orientation="horizontal"/>
+
 
 </android.support.design.widget.CoordinatorLayout>

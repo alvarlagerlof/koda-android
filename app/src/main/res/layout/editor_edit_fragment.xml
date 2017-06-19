@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v4.widget.NestedScrollView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/scrollView">
+        android:id="@+id/scrollView"
+        android:isScrollContainer="true">
 
         <HorizontalScrollView
             android:layout_width="match_parent"
@@ -17,17 +17,17 @@
             <com.alvarlagerlof.koda.Editor.ShaderEditor
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/editor_editext"
+                android:id="@+id/shader_editor"
                 android:gravity="top|left"
                 android:textSize="15sp"
-                android:background="@android:color/transparent" />
+                android:background="#000" />
 
 
         </HorizontalScrollView>
 
 
 
-    </android.support.v4.widget.NestedScrollView>
+    </ScrollView>
 
 
 

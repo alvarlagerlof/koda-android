@@ -12,7 +12,7 @@
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/appbarlayout"
+            android:id="@+id/appbar_layout"
             android:paddingTop="@dimen/app_bar_top_padding">
 
             <android.support.v7.widget.Toolbar
@@ -27,14 +27,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/appbarlayout"
+            android:layout_below="@+id/appbar_layout"
             android:id="@+id/fragment_container"
             android:orientation="vertical"
-            android:layout_above="@+id/bottomBar"
+            android:layout_above="@+id/bottom_bar"
             android:layout_marginBottom="-5dp"/>
 
         <com.roughike.bottombar.BottomBar
-            android:id="@+id/bottomBar"
+            android:id="@+id/bottom_bar"
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_alignParentBottom="true"

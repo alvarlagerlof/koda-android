@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import com.alvarlagerlof.koda.R;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
 
@@ -47,7 +46,7 @@ public class GuidesYouTubeListAdapter extends RecyclerView.Adapter<RecyclerView.
          ViewHolderVideo(View itemView) {
             super(itemView);
             image = (ImageView) itemView.findViewById(R.id.image);
-            title = (TextView) itemView.findViewById(R.id.title);
+            title = (TextView) itemView.findViewById(R.id.title_input);
         }
     }
 
@@ -57,7 +56,7 @@ public class GuidesYouTubeListAdapter extends RecyclerView.Adapter<RecyclerView.
 
         ViewHolderPlayList(View itemView){
             super(itemView);
-            title = (TextView) itemView.findViewById(R.id.title);
+            title = (TextView) itemView.findViewById(R.id.title_input);
         }
     }
 
@@ -108,7 +107,6 @@ public class GuidesYouTubeListAdapter extends RecyclerView.Adapter<RecyclerView.
             // Set image
             Glide.with(((ViewHolderVideo) holder).title.getContext())
                     .load(object.imageUrl)
-                    .diskCacheStrategy( DiskCacheStrategy.RESULT)
                     .into(((ViewHolderVideo) holder).image);
 
             // On click

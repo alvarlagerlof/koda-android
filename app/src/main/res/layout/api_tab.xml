@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/recycler_view"
-    android:paddingBottom="16dp"
+    android:paddingBottom="80dp"
     android:clipToPadding="false"
     android:background="#f4f4f4"
     android:scrollbars="vertical"

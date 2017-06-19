@@ -7,7 +7,9 @@ package com.alvarlagerlof.koda.Editor;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.AppCompatEditText;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spannable;
@@ -18,16 +20,13 @@ import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.ReplacementSpan;
 import android.util.AttributeSet;
-import android.widget.EditText;
-import android.os.Handler;
-
 
 import com.alvarlagerlof.koda.R;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ShaderEditor extends EditText {
+public class ShaderEditor extends AppCompatEditText {
 
     public interface OnTextChangedListener {
         public void onTextChanged( String text );

@@ -34,7 +34,6 @@ import com.alvarlagerlof.koda.Universal.UniversalLodingViewHolder;
 import com.alvarlagerlof.koda.Universal.UniversalOfflineObject;
 import com.alvarlagerlof.koda.Universal.UniversalOfflineViewHolder;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.crash.FirebaseCrash;
 
 import org.json.JSONException;
@@ -146,7 +145,6 @@ public class GuidesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             // Image
             Glide.with(((GuidesImageViewHolder) holder).image.getContext())
                     .load(object.imageUrl)
-                    .diskCacheStrategy(DiskCacheStrategy.RESULT)
                     .into(((GuidesImageViewHolder) holder).image);
 
             // On click
@@ -169,7 +167,6 @@ public class GuidesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             // Image
             Glide.with(((GuidesSmallImageWithButtonViewHolder) holder).image.getContext())
                     .load(object.imageUrl)
-                    .diskCacheStrategy(DiskCacheStrategy.RESULT)
                     .into(((GuidesSmallImageWithButtonViewHolder) holder).image);
 
             // Set button text

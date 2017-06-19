@@ -17,7 +17,7 @@ public class GuidesTextWithTitleViewHolder extends RecyclerView.ViewHolder{
 
     public GuidesTextWithTitleViewHolder(View itemView) {
         super(itemView);
-        title = (TextView) itemView.findViewById(R.id.title);
+        title = (TextView) itemView.findViewById(R.id.title_input);
         text = (TextView) itemView.findViewById(R.id.text);
     }
 

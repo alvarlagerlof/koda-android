@@ -10,7 +10,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.alvarlagerlof.koda.FullscreenPlay;
+import com.alvarlagerlof.koda.Play.FullscreenPlay;
 import com.alvarlagerlof.koda.QrCodeShare.QrViewer;
 import com.alvarlagerlof.koda.R;
 

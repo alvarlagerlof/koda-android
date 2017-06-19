@@ -5,6 +5,8 @@ import io.realm.RealmObject;
 /**
  * Created by alvar on 2016-07-02.
  */
+
+
 public class ProjectsRealmObject extends RealmObject {
     private String privateID;
     private String publicID;
@@ -15,27 +17,25 @@ public class ProjectsRealmObject extends RealmObject {
     private Boolean isPublic;
     private String code;
     private Boolean synced;
-    private String hoho;
-    private String hoha;
 
 
 
     // Private id
-    public String getprivateID() {
+    public String getPrivateID() {
         return privateID;
     }
 
-    public void setprivateID(String privateID) {
+    public void setPrivateID(String privateID) {
         this.privateID = privateID;
     }
 
 
     // Public id
-    public String getpublicID() {
+    public String getPublicID() {
         return publicID;
     }
 
-    public void setpublicID(String publicID) {
+    public void setPublicID(String publicID) {
         this.publicID = publicID;
     }
 
@@ -109,19 +109,4 @@ public class ProjectsRealmObject extends RealmObject {
         this.synced = synced;
     }
 
-    /*public String getHoho() {
-        return hoho;
-    }
-
-    public void setHoho(String hoho) {
-        this.hoho = hoho;
-    }
-
-    public String getHoha() {
-        return hoha;
-    }
-
-    public void setHoha(String hoha) {
-        this.hoha = hoha;
-    }*/
 }

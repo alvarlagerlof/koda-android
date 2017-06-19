@@ -90,7 +90,7 @@ public class ArchiveFragment extends Fragment {
 
                 // Do the search
                 for (int i = 0; i < list.size(); i++) {
-                    if (list.get(i).type == ArchiveAdapter.TYPE_ITEM) {
+                    if (list.get(i).type == ArchiveAdapter.Companion.getTYPE_ITEM()) {
                         if (list.get(i).title.toLowerCase().contains(String.valueOf(searchField.getText()).toLowerCase()) || list.get(i).author.toLowerCase().contains(String.valueOf(searchField.getText()).toLowerCase())) {
                             listVisible.add(list.get(i));
                         }
@@ -101,7 +101,7 @@ public class ArchiveFragment extends Fragment {
 
                 // If no results
                 if (listVisible.isEmpty()) {
-                    listVisible.add(new ArchiveObject("", "", "", "", "", "", "", "", false, ArchiveAdapter.TYPE_NO_RESULTS));
+                    listVisible.add(new ArchiveObject("", "", "", "", "", "", "", "", false, ArchiveAdapter.Companion.getTYPE_NO_RESULTS()));
                 }
 
 

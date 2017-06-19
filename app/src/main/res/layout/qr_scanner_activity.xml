@@ -9,7 +9,7 @@
         android:layout_height="match_parent">
 
         <com.dlazaro66.qrcodereaderview.QRCodeReaderView
-            android:id="@+id/qrdecoderview"
+            android:id="@+id/qr_scanner"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
@@ -27,7 +27,7 @@
             android:background="@null"
             app:elevation="0dp"
             android:layout_gravity="top"
-            android:id="@+id/appbarlayout">
+            android:id="@+id/appbar_layout">
 
             <android.support.v7.widget.Toolbar
                 android:layout_width="match_parent"

@@ -13,7 +13,7 @@
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/appbarlayout">
+            android:id="@+id/appbar_layout">
 
             <android.support.v7.widget.Toolbar
                 android:layout_width="match_parent"
@@ -114,7 +114,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Om appen"
+                android:text="Om Koda.nu"
                 style="@style/textMedium"/>
 
         </LinearLayout>
@@ -137,6 +137,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Logga ut"
+                android:textColor="#ed0000"
                 style="@style/textMedium"/>
 
         </LinearLayout>

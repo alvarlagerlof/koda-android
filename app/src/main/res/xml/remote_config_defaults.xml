@@ -60,25 +60,6 @@
         <value>arkivet</value>
     </entry>
 
-    <entry>
-        <key>pref_nick</key>
-        <value>nick</value>
-    </entry>
-
-    <entry>
-        <key>pref_email</key>
-        <value>email</value>
-    </entry>
-
-    <entry>
-        <key>pref_notifications</key>
-        <value>notifications</value>
-    </entry>
-
-    <entry>
-        <key>pref_password</key>
-        <value>password</value>
-    </entry>
 
     <entry>
         <key>url_comments</key>
@@ -123,6 +104,25 @@
     <entry>
         <key>url_settings_save_nick</key>
         <value>labbet</value>
+    </entry>
+
+
+    <entry>
+        <key>killswitch_on</key>
+        <value>false</value>
+    </entry>
+
+    <entry>
+        <key>killswitch_title</key>
+        <value>Tjänsten nere.</value>
+    </entry>
+    <entry>
+        <key>killswitch_description</key>
+        <value>Appen kunde inte nå servern.</value>
+    </entry>
+    <entry>
+        <key>killswitch_action</key>
+        <value>Pröva att stara appen igen om en stund.</value>
     </entry>
 
 

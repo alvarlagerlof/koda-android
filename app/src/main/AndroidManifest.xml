@@ -3,147 +3,124 @@
     package="com.alvarlagerlof.koda">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
-
-    <uses-permission android:name="android.permission.CAMERA"/>
-
-
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:hardwareAccelerated="true">
-
+        android:theme="@style/AppTheme">
         <activity
-            android:name=".Main.MainAcitivty"
+            android:name=".Main.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/TransNav">
+            android:theme="@style/TransNav"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
         // Editor
         <activity
             android:name=".Editor.EditorActivity"
-            android:label="Editor"
-            android:parentActivityName=".Main.MainAcitivty"
-            android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustResize|stateHidden"
             android:configChanges="orientation|screenSize"
-            >
+            android:label="Editor"
+            android:parentActivityName=".Main.MainActivity"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize|stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Main.MainAcitivty" />
-
+                android:value=".Main.MainActivity" />
         </activity>
-
-
         // Play
         <activity
             android:name=".Play.PlayActivity"
-            android:parentActivityName=".Main.MainAcitivty"
-            android:theme="@style/AppTheme"
-            android:configChanges="orientation|screenSize">
+            android:configChanges="orientation|screenSize"
+            android:parentActivityName=".Main.MainActivity"
+            android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Main.MainAcitivty" />
+                android:value=".Main.MainActivity" />
         </activity>
-
         // Fullscreen
         <activity
-            android:name=".FullscreenPlay"
-            android:parentActivityName=".Main.MainAcitivty"
-            android:theme="@style/AppTheme"
+            android:name=".Play.FullscreenPlay"
             android:configChanges="orientation|screenSize"
-            android:exported="true">
-
-        </activity>
-
-
+            android:exported="true"
+            android:parentActivityName=".Main.MainActivity"
+            android:theme="@style/AppTheme" />
         // Comments
         <activity
             android:name=".Comments.CommentsActivity"
-            android:parentActivityName=".Main.MainAcitivty"
+            android:parentActivityName=".Main.MainActivity"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustResize">
-        </activity>
-
-
+            android:windowSoftInputMode="adjustResize" />
         // Profile
         <activity
             android:name=".Profile.ProfileActivity"
-            android:parentActivityName=".Main.MainAcitivty"
-            android:theme="@style/AppTheme"
+            android:configChanges="orientation|screenSize"
             android:label="Profil"
-            android:configChanges="orientation|screenSize">
-        </activity>
-
-
+            android:parentActivityName=".Main.MainActivity"
+            android:theme="@style/AppTheme" />
         // Login
         <activity
             android:name=".Login.LoginActivity"
-            android:parentActivityName=".Main.MainAcitivty"
-            android:theme="@style/TransNav"
+            android:noHistory="true"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden">
-        </activity>
-
+            android:theme="@style/TransNav"
+            android:windowSoftInputMode="stateHidden" />
         // Forgot password
         <activity
             android:name=".Login.ForgotPasswordActivity"
-            android:parentActivityName=".Main.MainAcitivty"
+            android:parentActivityName=".Main.MainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/TransNav"
-            android:windowSoftInputMode="stateVisible"
-            android:screenOrientation="portrait">
-        </activity>
-
-
+            android:windowSoftInputMode="stateVisible" />
         // New account
         <activity
             android:name=".Login.NewAccountActivity"
-            android:parentActivityName=".Main.MainAcitivty"
+            android:parentActivityName=".Main.MainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/TransNav"
-            android:windowSoftInputMode="stateVisible"
-            android:screenOrientation="portrait">
-        </activity>
-
+            android:windowSoftInputMode="stateVisible" />
         // Settings
         <activity
             android:name=".Settings.SettingsActivity"
-            android:parentActivityName=".Main.MainAcitivty"
-            android:theme="@style/AppTheme"
             android:label="Inställnigar"
-            android:windowSoftInputMode="stateHidden">
-        </activity>
-
-
+            android:parentActivityName=".Main.MainActivity"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateHidden" />
         // QrViewer
         <activity
             android:name=".QrCodeShare.QrViewer"
-            android:parentActivityName=".Main.MainAcitivty"
-            android:theme="@style/TransNav"
+            android:configChanges="orientation|screenSize"
             android:label="Din profil"
-            android:configChanges="orientation|screenSize">
-        </activity>
-
-
+            android:parentActivityName=".Main.MainActivity"
+            android:theme="@style/TransNav" />
         // QrScanner
         <activity
             android:name=".QrCodeShare.QrScanner"
-            android:parentActivityName=".Main.MainAcitivty"
-            android:theme="@style/TransNav"
-            android:label="Skanna Qr-kod">
-        </activity>
-
-
+            android:label="Skanna Qr-kod"
+            android:parentActivityName=".Main.MainActivity"
+            android:theme="@style/TransNav" />
+        // KillSwitch
+        <activity
+            android:name=".Killswitch.KillswitchActivity"
+            android:label="Tjänsten nere"
+            android:parentActivityName=".Main.MainActivity"
+            android:theme="@style/TransNav" />
+        <activity android:name=".Settings.About.AboutActivity" />
+        <activity
+            android:name=".Projects.ProjectsEditActivity"
+            android:label="Redigera info"
+            android:parentActivityName=".Main.MainActivity"
+            android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>

@@ -2,7 +2,7 @@
 <resources>
 
     <dimen name="app_bar_top_padding">24dp</dimen>
-    <dimen name="navigation_height">52dp</dimen>
+    <dimen name="navigation_height">48dp</dimen>
 
     <dimen name="scrim_height">90dp</dimen>
 

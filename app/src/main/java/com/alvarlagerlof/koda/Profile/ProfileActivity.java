@@ -30,7 +30,7 @@ public class ProfileActivity extends AppCompatActivity {
         // Init toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_close);
+        toolbar.setNavigationIcon(R.drawable.ic_close_white);
 
 
         // Init RecylerView

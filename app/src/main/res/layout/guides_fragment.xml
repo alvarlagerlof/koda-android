@@ -14,7 +14,7 @@
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/appbarlayout"
+            android:id="@+id/appbar_layout"
             android:paddingTop="@dimen/app_bar_top_padding">
 
             <android.support.v7.widget.Toolbar
