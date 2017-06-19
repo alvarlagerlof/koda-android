@@ -14,5 +14,5 @@ The repo for the iOS app is [here](https://github.com/alvarlagerlof/koda-ios)
 ## Contributing
 Contributions are welcome! I'll check for new ones regularly and review them as fast as possible.
 
-## License
+## License 
 This project is licensed under the CC BY-SA 3.0 License - see the [LICENSE.md](https://github.com/alvarlagerlof/koda-android/blob/master/LICENCE.md) file for details

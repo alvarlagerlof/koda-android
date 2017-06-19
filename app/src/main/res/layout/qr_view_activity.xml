@@ -42,13 +42,16 @@
                 android:orientation="vertical"
                 android:padding="24dp">
 
-                <ProgressBar
-                    android:id="@+id/progress_bar"
-                    style="?android:attr/progressBarStyleLarge"
-                    android:layout_width="match_parent"
+                <com.wang.avi.AVLoadingIndicatorView
+                    android:id="@+id/avi"
+                    android:layout_width="42dp"
                     android:layout_height="42dp"
-                    android:layout_marginTop="55dp"
-                    android:layout_gravity="center_horizontal"/>
+                    android:visibility="visible"
+                    android:layout_gravity="center_horizontal"
+                    app:indicatorName="PacmanIndicator"
+                    app:indicatorColor="@color/colorAccent"
+                    android:layout_marginTop="100dp"
+                    android:layout_marginBottom="100dp"/>
 
                 <ImageView
                     android:layout_width="250dp"
@@ -56,7 +59,8 @@
                     android:scaleType="fitCenter"
                     android:adjustViewBounds="true"
                     android:layout_gravity="center"
-                    android:id="@+id/qr_image" />
+                    android:id="@+id/qr_image"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -65,7 +69,7 @@
                     style="@style/textMedium"
                     android:textColor="@color/textColorSecondary"
                     android:id="@+id/how_to_scan"
-                    android:visibility="invisible"
+                    android:visibility="gone"
                     android:gravity="center"
                     android:layout_marginBottom="8dp"/>
 

@@ -68,7 +68,7 @@ class QrViewer : AppCompatActivity() {
 
                 qr_image.setImageBitmap(bitmap)
 
-                progress_bar.visibility = View.GONE
+                avi.visibility = View.GONE
                 qr_image.visibility = View.VISIBLE
                 how_to_scan.visibility = View.VISIBLE
 
