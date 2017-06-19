@@ -30,6 +30,7 @@ class LoginSync(private val context: Context)  {
 
             if (PersistentCookieStore(context).cookies.size < 1 || PreferenceManager.getDefaultSharedPreferences(context).getString(Vars.PREF_EMAIL, null) == null) {
                 val intent = Intent(context, LoginActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 context.startActivity(intent)
             }
 
