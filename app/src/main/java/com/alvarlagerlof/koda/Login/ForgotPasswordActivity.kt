@@ -1,5 +1,6 @@
 package com.alvarlagerlof.koda.Login
 
+import android.content.Intent
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
@@ -237,11 +238,15 @@ class ForgotPasswordActivity : AppCompatActivity() {
         when (item.itemId) {
             android.R.id.home -> {
                 background.hideKeyboard()
-                finish()
+                startActivity(Intent(this, LoginActivity::class.java))
                 return true
             }
             else -> return super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onBackPressed() {
+        startActivity(Intent(this, LoginActivity::class.java))
     }
 
 }
