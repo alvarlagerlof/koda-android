@@ -29,8 +29,9 @@ class LoginSync(private val context: Context)  {
         AsyncJob.doInBackground {
 
             if (PersistentCookieStore(context).cookies.size < 1 || PreferenceManager.getDefaultSharedPreferences(context).getString(Vars.PREF_EMAIL, null) == null) {
+               //EventBus.getDefault().post(LoginOpenEvent())
                 val intent = Intent(context, LoginActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 context.startActivity(intent)
             }
 

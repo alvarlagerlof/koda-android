@@ -17,6 +17,8 @@ import com.alvarlagerlof.koda.BuildConfig
 import com.alvarlagerlof.koda.Extensions.isConnected
 import com.alvarlagerlof.koda.Extensions.replaceFragment
 import com.alvarlagerlof.koda.Killswitch.KillswitchActivity
+import com.alvarlagerlof.koda.Login.LoginActivity
+import com.alvarlagerlof.koda.Login.LoginOpenEvent
 import com.alvarlagerlof.koda.Login.LoginSync
 import com.alvarlagerlof.koda.MigrationRealm
 import com.alvarlagerlof.koda.Projects.ProjectsFragment
@@ -157,6 +159,12 @@ class MainActivity : AppCompatActivity() {
                 appbar_layout.elevation = event.elevation
             }, 30)
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(event: LoginOpenEvent) {
+        val intent = Intent(this, LoginActivity::class.java)
+        this.startActivity(intent)
     }
 
 

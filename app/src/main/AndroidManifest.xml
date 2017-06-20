@@ -71,7 +71,6 @@
         // Login
         <activity
             android:name=".Login.LoginActivity"
-            android:noHistory="true"
             android:screenOrientation="portrait"
             android:theme="@style/TransNav"
             android:windowSoftInputMode="stateHidden" />

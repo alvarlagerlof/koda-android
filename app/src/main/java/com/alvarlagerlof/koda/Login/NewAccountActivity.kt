@@ -288,15 +288,12 @@ class NewAccountActivity : AppCompatActivity() {
         when (item.itemId) {
             android.R.id.home -> {
                 background.hideKeyboard()
-                startActivity(Intent(this, LoginActivity::class.java))
+                finish()
                 return true
             }
             else -> return super.onOptionsItemSelected(item)
         }
     }
 
-    override fun onBackPressed() {
-        startActivity(Intent(this, LoginActivity::class.java))
-    }
 
 }
