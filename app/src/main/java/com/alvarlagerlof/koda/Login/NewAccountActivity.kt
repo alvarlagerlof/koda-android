@@ -21,6 +21,7 @@ import com.alvarlagerlof.koda.Main.MainActivity
 import com.alvarlagerlof.koda.R
 import com.alvarlagerlof.koda.Vars
 import com.bumptech.glide.Glide
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crash.FirebaseCrash
 import kotlinx.android.synthetic.main.login_new_account_activity.*
 import okhttp3.FormBody
@@ -46,7 +47,6 @@ class NewAccountActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         toolbar.setNavigationIcon(R.drawable.ic_close_white)
 
-
         Glide.with(this)
                 .load(Vars.URL_LOGIN_NEW_IMAGE)
                 .into(background)
@@ -54,6 +54,8 @@ class NewAccountActivity : AppCompatActivity() {
         background.setOnClickListener {
             it.hideKeyboard()
         }
+
+        FirebaseAnalytics.getInstance(this).logEvent("login_create_open", Bundle())
 
     }
 
@@ -140,6 +142,9 @@ class NewAccountActivity : AppCompatActivity() {
 
                     if (!jsonObject.has("error")) {
 
+                        FirebaseAnalytics.getInstance(this@NewAccountActivity).logEvent("login_create_successful", Bundle())
+
+
                         username_text.append(jsonObject.getString("username"))
                         password_text.append(jsonObject.getString("password"))
 
@@ -182,6 +187,8 @@ class NewAccountActivity : AppCompatActivity() {
                         result_view.startAnimation(fadeIn)
 
                     } else {
+
+                        FirebaseAnalytics.getInstance(applicationContext).logEvent("login_create_failed", Bundle())
 
                         error_text.text = jsonObject.getString("error")
 

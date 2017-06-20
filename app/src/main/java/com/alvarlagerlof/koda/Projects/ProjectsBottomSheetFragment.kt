@@ -2,6 +2,7 @@ package com.alvarlagerlof.koda.Projects
 
 import android.app.Dialog
 import android.content.Intent
+import android.os.Bundle
 import android.support.design.widget.BottomSheetBehavior
 import android.support.design.widget.BottomSheetDialogFragment
 import android.support.design.widget.CoordinatorLayout
@@ -9,6 +10,7 @@ import android.support.v7.app.AlertDialog
 import android.view.View
 import com.alvarlagerlof.koda.QrCodeShare.QrViewer
 import com.alvarlagerlof.koda.R
+import com.google.firebase.analytics.FirebaseAnalytics
 import kotlinx.android.synthetic.main.projects_sheet.view.*
 import org.jetbrains.anko.support.v4.alert
 
@@ -52,6 +54,8 @@ class ProjectsBottomSheetFragment(var privateID: String,
 
 
         view.share.setOnClickListener {
+            FirebaseAnalytics.getInstance(context).logEvent("projects_more_share_normal", Bundle())
+
             if (publicID.startsWith("ny_")) {
                 showCantShareDialog()
             } else {
@@ -64,6 +68,8 @@ class ProjectsBottomSheetFragment(var privateID: String,
         }
 
         view.qr_share.setOnClickListener {
+            FirebaseAnalytics.getInstance(context).logEvent("projects_more_share_qr", Bundle())
+
             if (publicID.startsWith("ny_")) {
                 showCantShareDialog()
             } else {
@@ -76,10 +82,14 @@ class ProjectsBottomSheetFragment(var privateID: String,
         }
 
         view.edit.setOnClickListener {
+            FirebaseAnalytics.getInstance(context).logEvent("projects_more_edit", Bundle())
+
             context.startActivity(Intent(context, ProjectsEditActivity::class.java).putExtra("privateID", privateID))
         }
 
         view.delete.setOnClickListener {
+            FirebaseAnalytics.getInstance(context).logEvent("projects_more_delete", Bundle())
+
             AlertDialog.Builder(context)
                     .setTitle("Är du säker?")
                     .setMessage("Vill du ta bort $title? Denna operation går inte att ångra")

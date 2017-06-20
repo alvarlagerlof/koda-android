@@ -17,6 +17,7 @@ import com.alvarlagerlof.koda.Extensions.showKeyboard
 import com.alvarlagerlof.koda.R
 import com.alvarlagerlof.koda.Vars
 import com.bumptech.glide.Glide
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crash.FirebaseCrash
 import kotlinx.android.synthetic.main.login_forgot_pass_activity.*
 import okhttp3.FormBody
@@ -46,6 +47,8 @@ class ForgotPasswordActivity : AppCompatActivity() {
         background.setOnClickListener {
             background.hideKeyboard()
         }
+
+        FirebaseAnalytics.getInstance(this).logEvent("login_forgot_open", Bundle())
 
 
     }
@@ -125,6 +128,9 @@ class ForgotPasswordActivity : AppCompatActivity() {
 
                     if (jsonObject.getString("success") == "true") {
 
+                        FirebaseAnalytics.getInstance(applicationContext).logEvent("login_forgot_successful", Bundle())
+
+
                         result_text.text = jsonObject.getString("message")
 
                         val fadeOut = AlphaAnimation(1f, 0f)
@@ -159,6 +165,10 @@ class ForgotPasswordActivity : AppCompatActivity() {
 
 
                     } else {
+
+                        FirebaseAnalytics.getInstance(applicationContext).logEvent("login_forgot_failed", Bundle())
+
+
                         error_text.text = jsonObject.getString("message")
 
                         val fadeOut = AlphaAnimation(1f, 0f)

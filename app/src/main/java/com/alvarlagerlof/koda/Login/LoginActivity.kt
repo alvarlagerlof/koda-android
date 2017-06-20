@@ -14,6 +14,7 @@ import com.alvarlagerlof.koda.R
 import com.alvarlagerlof.koda.Vars
 import com.arasthel.asyncjob.AsyncJob
 import com.bumptech.glide.Glide
+import com.google.firebase.analytics.FirebaseAnalytics
 import io.realm.Realm
 import kotlinx.android.synthetic.main.login_activty.*
 import okhttp3.FormBody
@@ -46,6 +47,9 @@ class LoginActivity : AppCompatActivity() {
         background.setOnClickListener {
             background.hideKeyboard()
         }
+
+        FirebaseAnalytics.getInstance(this).logEvent("login_main_open", Bundle())
+
 
     }
 
@@ -102,6 +106,9 @@ class LoginActivity : AppCompatActivity() {
 
                                 if (JSONObject(result.toString()).getString("access") == "granted") {
 
+                                    FirebaseAnalytics.getInstance(this).logEvent("login_main_successful", Bundle())
+
+
                                     PreferenceManager.getDefaultSharedPreferences(this@LoginActivity)
                                             .edit()
                                             .putString(Vars.PREF_EMAIL, email.text.toString())
@@ -111,6 +118,8 @@ class LoginActivity : AppCompatActivity() {
                                     startActivity(Intent(this@LoginActivity, MainActivity::class.java))
 
                                 } else {
+
+                                    FirebaseAnalytics.getInstance(this).logEvent("login_main_failed", Bundle())
 
                                     AlertDialog.Builder(this@LoginActivity)
                                             .setTitle("Ops!")

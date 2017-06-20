@@ -23,6 +23,7 @@ import com.alvarlagerlof.koda.Vars
 import com.alvarlagerlof.koda.WebClient
 import com.flask.colorpicker.ColorPickerView
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder
+import com.google.firebase.analytics.FirebaseAnalytics
 import io.realm.Realm
 import kotlinx.android.synthetic.main.editor_activity.*
 import kotlinx.android.synthetic.main.editor_more_special_chars.view.*
@@ -39,16 +40,16 @@ class EditorActivity : AppCompatActivity() {
     internal lateinit var realm: Realm
     internal lateinit var project: ProjectsRealmObject
 
-    var privateID: String? = null
+    lateinit var firstPrivateID: String
+    var syncedPrivateID: String? = null
 
 
     internal var codeSize = 15
 
 
-    internal var VIEW_LOADING = 0
-    internal var VIEW_EDITOR = 1
-    internal var VIEW_RESULT = 2
-    internal var currentView = VIEW_LOADING
+    internal var VIEW_EDITOR = 0
+    internal var VIEW_RESULT = 1
+    internal var currentView = VIEW_EDITOR
 
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -56,10 +57,15 @@ class EditorActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.editor_activity)
 
+        FirebaseAnalytics.getInstance(this).logEvent("projects_edit_open", Bundle())
+
 
         // From intent
         if (intent.extras != null) {
-            privateID = intent.extras.getString("privateID")
+            firstPrivateID = intent.extras.getString("privateID")
+            if (!firstPrivateID.contains("ny_ny_")) {
+                syncedPrivateID = firstPrivateID
+            }
         }
 
 
@@ -74,7 +80,9 @@ class EditorActivity : AppCompatActivity() {
 
         // Get realm project
         realm = Realm.getDefaultInstance()
-        getProject()
+        getProject(setText = true)
+
+
 
         // Tabs
         tabs.addTab(tabs.newTab().setText("Redigera"))
@@ -99,13 +107,9 @@ class EditorActivity : AppCompatActivity() {
 
 
     fun setCurrentView(view: Int) {
-        if (privateID == null) {
-            currentView = VIEW_LOADING
-        } else {
-            currentView = view
-        }
+        currentView = view
+
         when (currentView) {
-            VIEW_LOADING -> showLoading()
             VIEW_EDITOR -> showEditor()
             VIEW_RESULT -> showResult()
         }
@@ -113,28 +117,11 @@ class EditorActivity : AppCompatActivity() {
 
 
 
-    fun showLoading() {
-
-        // Fix views
-        loading_container.visibility = View.VISIBLE
-        editor_container.visibility = View.GONE
-        web_view_container.visibility = View.GONE
-        special_chars.visibility = View.GONE
-
-        // Stop webiew
-        web_view.pauseTimers()
-        web_view.onPause()
-
-        // Fix Toolbar
-        toolbar.menu.show(R.id.colorpicker)
-        toolbar.menu.show(R.id.fontminus)
-        toolbar.menu.show(R.id.fontplus)
-        toolbar.menu.hide(R.id.reload)
-
-
-    }
 
     fun showEditor() {
+
+        FirebaseAnalytics.getInstance(this).logEvent("projects_edit_editor", Bundle())
+
 
         // Fix views
         editor_container.visibility = View.VISIBLE
@@ -158,6 +145,9 @@ class EditorActivity : AppCompatActivity() {
 
     fun showResult() {
 
+        FirebaseAnalytics.getInstance(this).logEvent("projects_edit_play", Bundle())
+
+
         // Fix views
         web_view_container.visibility = View.VISIBLE
         editor_container.visibility = View.GONE
@@ -176,7 +166,7 @@ class EditorActivity : AppCompatActivity() {
         editor.hideKeyboard()
 
         saveCode()
-        ProjectsSync(this@EditorActivity)
+
     }
 
 
@@ -191,23 +181,12 @@ class EditorActivity : AppCompatActivity() {
         web_view.setOnLongClickListener({ true })
         web_view.isLongClickable = false
         web_view.isHapticFeedbackEnabled = false
-        web_view.webChromeClient = WebClient(this, project.title)
+        web_view.webChromeClient = WebClient(this, editor.cleanText)
         web_view.setLayerType(if (Build.VERSION.SDK_INT >= 19) View.LAYER_TYPE_HARDWARE else View.LAYER_TYPE_SOFTWARE, null)
 
         web_view.postDelayed({ web_view.loadDataWithBaseURL("file:///android-asset", editor.cleanText, "text/html", "UTF-8", null) }, 50)
     }
 
-    fun saveCode() {
-        val realmObject = realm.where(ProjectsRealmObject::class.java).equalTo("privateID", privateID).findFirst()
-
-        if (realmObject != null) {
-            realm.beginTransaction()
-            project.code = editor.cleanText
-            realmObject.updatedRealm = (System.currentTimeMillis() / 1000L).toString()
-            realmObject.synced = false
-            realm.commitTransaction()
-        }
-    }
 
     fun setFontSize(newSize: Int) {
         codeSize = newSize.constrain(min = 5, max = 50)
@@ -348,16 +327,30 @@ class EditorActivity : AppCompatActivity() {
 
 
 
+    fun saveCode() {
+
+        if (syncedPrivateID != null || !this.isConnected()) {
+
+            project = Realm.getDefaultInstance().where(ProjectsRealmObject::class.java).equalTo("privateID", syncedPrivateID).findFirst()
+
+            realm.executeTransaction { _ ->
+                project.code = editor.cleanText
+                project.updatedRealm = (System.currentTimeMillis() / 1000L).toString()
+                project.synced = false
+            }
+
+            ProjectsSync(this@EditorActivity)
+
+        }
+
+    }
 
 
-    fun getProject() {
-        if (privateID != null) {
-            project = realm.where(ProjectsRealmObject::class.java).equalTo("privateID", privateID).findFirst()
-            supportActionBar?.title = project.title
+    fun getProject(setText: Boolean) {
+        project = realm.where(ProjectsRealmObject::class.java).equalTo("privateID", if (syncedPrivateID != null) syncedPrivateID else firstPrivateID).findFirst()
+        supportActionBar?.title = project.title
+        if (setText) {
             editor.setText(project.code)
-            setCurrentView(VIEW_EDITOR)
-        } else {
-            setCurrentView(VIEW_LOADING)
         }
     }
 
@@ -365,8 +358,11 @@ class EditorActivity : AppCompatActivity() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(@Suppress("UNUSED_PARAMETER") event: ProjectsSyncEvent) {
         if (event.message.startsWith("synced_id_")) {
-            privateID = event.message.replace("synced_id_", "")
-            getProject()
+            syncedPrivateID = event.message.replace("synced_id_", "")
+            getProject(setText = false)
+
+            saveCode()
+
         }
 
     }
@@ -382,18 +378,22 @@ class EditorActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.fontplus -> {
                 setFontSize(codeSize + 1)
+                FirebaseAnalytics.getInstance(this).logEvent("projects_edit_font_plus", Bundle())
                 return true
             }
             R.id.fontminus -> {
                 setFontSize(codeSize - 1)
+                FirebaseAnalytics.getInstance(this).logEvent("projects_edit_font_minus", Bundle())
                 return true
             }
             R.id.reload -> {
                 loadResult()
+                FirebaseAnalytics.getInstance(this).logEvent("projects_edit_reload", Bundle())
                 return true
             }
             R.id.colorpicker -> {
                 chooseColor(this, 0xffffffff.toInt())
+                FirebaseAnalytics.getInstance(this).logEvent("projects_edit_colorpicker", Bundle())
                 return true
             }
             android.R.id.home -> {

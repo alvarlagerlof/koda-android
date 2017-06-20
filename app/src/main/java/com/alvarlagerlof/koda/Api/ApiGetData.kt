@@ -1,12 +1,15 @@
 package com.alvarlagerlof.koda.Api
 
 import android.content.Context
+import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import com.alvarlagerlof.koda.Cookies.PersistentCookieStore
 import com.alvarlagerlof.koda.Extensions.isConnected
 import com.alvarlagerlof.koda.Universal.UniversalLoadingObject
 import com.alvarlagerlof.koda.Universal.UniversalOfflineObject
+import com.alvarlagerlof.koda.Vars
 import com.arasthel.asyncjob.AsyncJob
+import com.google.firebase.analytics.FirebaseAnalytics
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.internal.JavaNetCookieJar
@@ -77,6 +80,12 @@ class ApiGetData(private val context: Context, private val url: String, private 
                 list.clear()
                 list.add(UniversalOfflineObject())
                 AsyncJob.doOnMainThread { adapter.notifyDataSetChanged() }
+
+                when (url) {
+                    Vars.URL_API_2D -> FirebaseAnalytics.getInstance(context).logEvent("api_tab_2d", Bundle())
+                    Vars.URL_API_3D -> FirebaseAnalytics.getInstance(context).logEvent("api_tab_3d", Bundle())
+                }
+
             }
         }
     }

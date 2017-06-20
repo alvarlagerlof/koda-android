@@ -1,18 +1,20 @@
 package com.alvarlagerlof.koda.Projects
 
 import android.content.Context
+import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.WindowManager
 import android.widget.EditText
 import com.alvarlagerlof.koda.R
+import com.google.firebase.analytics.FirebaseAnalytics
 import io.realm.Realm
 
 /**
  * Created by alvar on 2016-11-08.
  */
 
-internal class ProjectsAddDialog(context: Context) {
+internal class ProjectsAdd(context: Context) {
 
 
     init {
@@ -27,7 +29,7 @@ internal class ProjectsAddDialog(context: Context) {
                     val title = if (input.text.toString() == "") "Namnlös" else input.text.toString()
 
                     // Temporary privateID
-                    val tmpPrivateID = "ny_" + System.currentTimeMillis().toString()
+                    val tmpPrivateID = "ny_ny_" + System.currentTimeMillis().toString()
 
                     // Add to realm
                     Realm.getDefaultInstance().executeTransaction { realm ->
@@ -49,6 +51,9 @@ internal class ProjectsAddDialog(context: Context) {
 
                     // Sync
                     ProjectsSync(context, tmpPrivateID)
+
+                    FirebaseAnalytics.getInstance(context).logEvent("projects_add", Bundle())
+
 
                 }
                 .setNegativeButton("Avbryt") {

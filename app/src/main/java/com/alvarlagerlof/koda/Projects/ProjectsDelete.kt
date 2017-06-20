@@ -1,8 +1,8 @@
 package com.alvarlagerlof.koda.Projects
 
 import android.content.Context
-import com.alvarlagerlof.koda.Vars
 import com.alvarlagerlof.koda.RequestQueue.RequestQueueAdd
+import com.alvarlagerlof.koda.Vars
 import io.realm.Realm
 
 /**
@@ -18,7 +18,7 @@ class ProjectsDelete internal constructor(context: Context, privateID: String) {
 
             RequestQueueAdd(context, Vars.URL_PROJECTS_DELETE + item.privateID)
 
-            item.deleteFromRealm()
+            item?.deleteFromRealm()
         }
 
     }

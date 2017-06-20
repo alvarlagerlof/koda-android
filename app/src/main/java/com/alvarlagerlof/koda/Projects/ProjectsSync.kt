@@ -35,8 +35,6 @@ class ProjectsSync {
     constructor(context: Context) {
         this.context = context
 
-
-
         if (context.isConnected()) {
             sendToServer()
         } else {
@@ -51,7 +49,9 @@ class ProjectsSync {
         this.openPrivateID = openPrivateID
 
         if (context.isConnected()) {
-            context.startActivity(Intent(context, EditorActivity::class.java))
+            val intent = Intent(context, EditorActivity::class.java)
+            intent.putExtra("privateID", openPrivateID)
+            context.startActivity(intent)
             sendToServer()
 
         } else {
@@ -248,6 +248,12 @@ class ProjectsSync {
 
                         }
                     }
+
+                    /*val deleteProjects = realm.where(ProjectsRealmObject::class.java).contains("privateID", "ny_ny_").findAll()
+                    realm.beginTransaction()
+                    deleteProjects.deleteAllFromRealm()
+                    realm.commitTransaction()*/
+
                 } else {
                     EventBus.getDefault().post(ProjectsSyncEvent(message = "offline"))
                 }

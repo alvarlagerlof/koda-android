@@ -10,6 +10,7 @@ import com.alvarlagerlof.koda.Extensions.hide
 import com.alvarlagerlof.koda.Extensions.show
 import com.alvarlagerlof.koda.Play.PlayActivity
 import com.alvarlagerlof.koda.R
+import com.google.firebase.analytics.FirebaseAnalytics
 import kotlinx.android.synthetic.main.qr_scanner_activity.*
 import org.json.JSONException
 import org.json.JSONObject
@@ -31,6 +32,8 @@ class QrScanner : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.qr_scanner_activity)
 
+        FirebaseAnalytics.getInstance(this).logEvent("qr_scan_open", Bundle())
+
 
         // Set up toolbar
         setSupportActionBar(toolbar)
@@ -51,6 +54,9 @@ class QrScanner : AppCompatActivity() {
                 intent.putExtra("author", jsonObject.getString("author").base64Decode())
                 startActivity(intent)
                 qr_scanner.setQRDecodingEnabled(false)
+
+                FirebaseAnalytics.getInstance(this).logEvent("qr_scan_success", Bundle())
+
 
             } catch (ex: JSONException) {
                 ex.printStackTrace()

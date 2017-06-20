@@ -85,7 +85,7 @@ class ProjectsFragment : Fragment() {
 
 
         fab?.setOnClickListener {
-            ProjectsAddDialog(context)
+            ProjectsAdd(context)
         }
     }
 
@@ -127,6 +127,8 @@ class ProjectsFragment : Fragment() {
 
         // Notify adapter
         adapter.notifyDataSetChanged()
+
+        //d("list", projectsList.toString())
 
         if (recycler_view != null) {
             recycler_view.smoothScrollToPosition(0)

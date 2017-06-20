@@ -13,6 +13,7 @@ import com.alvarlagerlof.koda.Login.LoginActivity
 import com.alvarlagerlof.koda.R
 import com.alvarlagerlof.koda.Settings.About.AboutActivity
 import com.alvarlagerlof.koda.Vars
+import com.google.firebase.analytics.FirebaseAnalytics
 import io.realm.Realm
 import kotlinx.android.synthetic.main.settings_activity.*
 
@@ -30,6 +31,9 @@ class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.settings_activity)
+
+        FirebaseAnalytics.getInstance(this).logEvent("settings_open", Bundle())
+
 
 
         // Setup toolbar
@@ -83,6 +87,8 @@ class SettingsActivity : AppCompatActivity() {
 
     fun setupLogout() {
         logout.setOnClickListener {
+            FirebaseAnalytics.getInstance(this).logEvent("settings_about_open", Bundle())
+
             PersistentCookieStore(this@SettingsActivity).removeAll()
 
             editor.putString(Vars.PREF_NICK, null)
