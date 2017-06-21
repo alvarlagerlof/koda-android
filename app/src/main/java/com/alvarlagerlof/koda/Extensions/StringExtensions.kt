@@ -54,7 +54,7 @@ fun String.timeStampToDate(): String {
 
     } else {
         val date = Date(Integer.parseInt(this) * 1000L) // *1000 is to convert seconds to milliseconds
-        val sdf = SimpleDateFormat("HH:mm:ss, d MMMM, yyyy") // the format of your meta
+        val sdf = SimpleDateFormat("d MMMM yyyy, HH:mm") // the format of your meta
 
         return sdf.format(date)
 

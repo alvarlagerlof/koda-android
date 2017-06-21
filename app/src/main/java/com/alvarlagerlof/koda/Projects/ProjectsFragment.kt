@@ -165,8 +165,6 @@ class ProjectsFragment : Fragment() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(@Suppress("UNUSED_PARAMETER") event: ProjectsSyncEvent) {
         when (event.message) {
-            "show" -> showSync()
-            "hide" -> hideSync()
             "offline" -> loadList()
         }
         loadList()

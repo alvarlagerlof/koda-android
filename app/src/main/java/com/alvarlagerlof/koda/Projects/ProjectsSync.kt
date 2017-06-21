@@ -249,10 +249,6 @@ class ProjectsSync {
                         }
                     }
 
-                    /*val deleteProjects = realm.where(ProjectsRealmObject::class.java).contains("privateID", "ny_ny_").findAll()
-                    realm.beginTransaction()
-                    deleteProjects.deleteAllFromRealm()
-                    realm.commitTransaction()*/
 
                 } else {
                     EventBus.getDefault().post(ProjectsSyncEvent(message = "offline"))

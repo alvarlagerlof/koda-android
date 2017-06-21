@@ -13,12 +13,9 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.alvarlagerlof.koda.Api.ApiFragment
-import com.alvarlagerlof.koda.BuildConfig
 import com.alvarlagerlof.koda.Extensions.isConnected
 import com.alvarlagerlof.koda.Extensions.replaceFragment
 import com.alvarlagerlof.koda.Killswitch.KillswitchActivity
-import com.alvarlagerlof.koda.Login.LoginActivity
-import com.alvarlagerlof.koda.Login.LoginOpenEvent
 import com.alvarlagerlof.koda.Login.LoginSync
 import com.alvarlagerlof.koda.MigrationRealm
 import com.alvarlagerlof.koda.Projects.ProjectsFragment
@@ -93,10 +90,10 @@ class MainActivity : AppCompatActivity() {
     fun setupRemoteConfig() {
         val firebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
         firebaseRemoteConfig.setConfigSettings(FirebaseRemoteConfigSettings.Builder()
-                .setDeveloperModeEnabled(BuildConfig.DEBUG)
+                //.setDeveloperModeEnabled(BuildConfig.DEBUG)
                 .build())
         firebaseRemoteConfig.setDefaults(R.xml.remote_config_defaults)
-        firebaseRemoteConfig.fetch((if (firebaseRemoteConfig.info.configSettings.isDeveloperModeEnabled) 0 else 60).toLong())
+        firebaseRemoteConfig.fetch((if (firebaseRemoteConfig.info.configSettings.isDeveloperModeEnabled) 0 else 60*5).toLong())
                 .addOnCompleteListener(this@MainActivity) { task ->
                     if (task.isSuccessful) {
                         firebaseRemoteConfig.activateFetched()
@@ -160,13 +157,6 @@ class MainActivity : AppCompatActivity() {
             }, 30)
         }
     }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onMessageEvent(event: LoginOpenEvent) {
-        val intent = Intent(this, LoginActivity::class.java)
-        this.startActivity(intent)
-    }
-
 
 
     // Boring stuff
