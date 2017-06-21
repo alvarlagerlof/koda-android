@@ -1,6 +1,7 @@
 # koda-android
 
-> Koda.nu is an app made to make it easy to code on a phone or tablet. 
+> Koda.nu is an app made to make it easy to code on a phone or tablet. <br /><br /> 
+> <img src="https://github.com/alvarlagerlof/koda-android/blob/master/assets/icon/Icon.png?raw=true" alt="Icon" width="70"> 
 
 ## Screenshots
 <img src="https://github.com/alvarlagerlof/koda-android/blob/master/assets/screenshots/1_final.png?raw=true" alt="Login" width="200"> <img src="https://github.com/alvarlagerlof/koda-android/blob/master/assets/screenshots/2_final.png?raw=true" alt="Projects" width="200"> <img src="https://github.com/alvarlagerlof/koda-android/blob/master/assets/screenshots/3_final.png?raw=true" alt="Edit a project" width="200"> <img src="https://github.com/alvarlagerlof/koda-android/blob/master/assets/screenshots/4_final.png?raw=true" alt="View the result" width="200">
