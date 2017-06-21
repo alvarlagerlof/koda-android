@@ -1,0 +1,21 @@
+final image size: 1080 x 1920
+
+1. https://developer.android.com/distribute/marketing-tools/device-art-generator.html
+
+2. add framed 
+
+4. scale width to 1180
+
+4. center
+
+5. statusbar to bottom
+
+4. zoom to 100%
+
+4. title 100px #3f51b5 5 steps down center
+
+5. sub-title 60px #2d3a82 10 steps down center
+
+
+
+
