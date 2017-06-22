@@ -91,7 +91,7 @@
         // Settings
         <activity
             android:name=".Settings.SettingsActivity"
-            android:label="Inställnigar"
+            android:label="Inställningar"
             android:parentActivityName=".Main.MainActivity"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden" />
