@@ -61,7 +61,7 @@ class ProjectsBottomSheetFragment(var privateID: String,
             } else {
                 val sendIntent = Intent()
                 sendIntent.action = Intent.ACTION_SEND
-                sendIntent.putExtra(Intent.EXTRA_TEXT, title + " på Koda.nu: https://koda.nu/arkivet/" + publicID)
+                sendIntent.putExtra(Intent.EXTRA_TEXT, title + " på Koda.nu: http://koda.nu/arkivet/" + publicID)
                 sendIntent.type = "text/plain"
                 startActivity(sendIntent)
             }
