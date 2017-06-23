@@ -59,14 +59,10 @@ class MainActivity : AppCompatActivity() {
 
         setupBottomBar()
 
-        
 
         if (savedInstanceState == null) {
             fragment_container.replaceFragment(supportFragmentManager, fragment_projects)
         }
-
-
-
 
 
     }
@@ -97,7 +93,6 @@ class MainActivity : AppCompatActivity() {
                 .addOnCompleteListener(this@MainActivity) { task ->
                     if (task.isSuccessful) {
                         firebaseRemoteConfig.activateFetched()
-
                         if (Vars.KILLSWITCH_ON) {
                             val intent = Intent(applicationContext, KillswitchActivity::class.java)
                             intent.putExtra("didNotFetch", false)

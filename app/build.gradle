@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'realm-android'
 apply plugin: 'com.google.firebase.firebase-perf'
 
 android {
@@ -11,8 +12,8 @@ android {
         applicationId "com.alvarlagerlof.koda"
         minSdkVersion 19
         targetSdkVersion 26
-        versionCode 18
-        versionName "1.5.9"
+        versionCode 19
+        versionName "1.5.10"
     }
     buildTypes {
         release {
@@ -28,7 +29,6 @@ android {
         exclude 'META-INF/LICENSE-FIREBASE.txt'
         exclude 'META-INF/NOTICE'
     }
-
 
 }
 
@@ -72,10 +72,8 @@ dependencies {
     compile 'com.arasthel:asyncjob-library:1.0.3'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.wang.avi:library:2.1.3'
-    compile 'com.android.support.constraint:constraint-layout:+'
     testCompile 'junit:junit:4.12'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0-RC0'
+    kapt 'com.github.bumptech.glide:compiler:4.0.0-RC0'
 }
 
 apply plugin: 'com.google.gms.google-services'
-apply plugin: 'realm-android'
