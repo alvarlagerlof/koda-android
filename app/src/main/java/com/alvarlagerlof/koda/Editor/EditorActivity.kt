@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.preference.PreferenceManager
 import android.support.design.widget.TabLayout
 import android.support.v7.app.AlertDialog
@@ -147,15 +148,21 @@ class EditorActivity : AppCompatActivity() {
 
         FirebaseAnalytics.getInstance(this).logEvent("projects_edit_play", Bundle())
 
+        // Hide keyboard
+        editor.hideKeyboard()
 
-        // Fix views
-        web_view_container.visibility = View.VISIBLE
-        editor_container.visibility = View.GONE
-        loading_container.visibility = View.GONE
-        special_chars.visibility = View.GONE
+        Handler().postDelayed({
+            // Fix views
+            web_view_container.visibility = View.VISIBLE
+            editor_container.visibility = View.GONE
+            loading_container.visibility = View.GONE
+            special_chars.visibility = View.GONE
 
-        // Load
-        loadResult()
+            // Load
+            loadResult()
+        }, 50)
+
+
 
         // Fix Toolbar
         toolbar.menu.hide(R.id.colorpicker)
@@ -163,7 +170,6 @@ class EditorActivity : AppCompatActivity() {
         toolbar.menu.hide(R.id.fontplus)
         toolbar.menu.show(R.id.reload)
 
-        editor.hideKeyboard()
 
         saveCode()
 
@@ -181,10 +187,10 @@ class EditorActivity : AppCompatActivity() {
         web_view.setOnLongClickListener({ true })
         web_view.isLongClickable = false
         web_view.isHapticFeedbackEnabled = false
-        web_view.webChromeClient = WebClient(this, editor.cleanText)
+        web_view.webChromeClient = WebClient(this, project.title)
         web_view.setLayerType(if (Build.VERSION.SDK_INT >= 19) View.LAYER_TYPE_HARDWARE else View.LAYER_TYPE_SOFTWARE, null)
+        web_view.loadData(filterString(editor.cleanText), "text/html", "UTF-8")
 
-        web_view.postDelayed({ web_view.loadDataWithBaseURL("file:///android-asset", editor.cleanText, "text/html", "UTF-8", null) }, 50)
     }
 
 
@@ -214,14 +220,13 @@ class EditorActivity : AppCompatActivity() {
 
 
     fun setUpSpecialCharsBar() {
-        val special_chars_list = listOf("(", ")", ";", "{", "}",
-                                        "\"", ":",
+        val special_chars_list = listOf("( )", "{ }", "[ ]", ";", "\" \"",
                                         "-", "+", "*", "/",
                                         "=", "!",
-                                        "<", ">",
-                                        "[", "]",
                                         "%", "?",
-                                        "&", "|")
+                                        "&", "|",
+                                        "<",  ">",
+                                        ":")
         val lastVisible = 5
         var overflowItems: MutableList<String> = mutableListOf()
 
@@ -242,7 +247,11 @@ class EditorActivity : AppCompatActivity() {
 
                 button.layoutParams = layoutParams
                 button.text = value
-                button.onClick { editor.text.insert(editor.selectionStart, button.text) }
+                button.onClick {
+                    var text = button.text.toString().replace(" ", "")
+                    editor.text.insert(editor.selectionStart, text)
+                    if (text.length == 2) { editor.setSelection(editor.selectionStart-1) }
+                }
 
                 special_chars.addView(button)
             } else {
@@ -423,4 +432,15 @@ class EditorActivity : AppCompatActivity() {
     }
 
 
+    fun filterString(code: String): String {
+        val partialFiltered: String = code.replace("/\\*.*\\*/", "");
+        val fullFiltered: String = partialFiltered.replace("//.*(?=\\n)", "")
+
+        return fullFiltered
+    }
+
+
+
 }
+
+

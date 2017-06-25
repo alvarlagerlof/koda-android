@@ -21,7 +21,7 @@ class WebClient(internal var context: Context, internal var title: String) : Web
 
     override fun onJsAlert(view: WebView, url: String, message: String, result: JsResult): Boolean {
         AlertDialog.Builder(context)
-                .setTitle(alertTitle)
+                //.setTitle(alertTitle)
                 .setMessage(message)
                 .setPositiveButton(android.R.string.ok) { _, _ ->
                     view.hideKeyboard()
@@ -36,7 +36,7 @@ class WebClient(internal var context: Context, internal var title: String) : Web
 
     override fun onJsConfirm(view: WebView, url: String, message: String, result: JsResult): Boolean {
         AlertDialog.Builder(context)
-                .setTitle(alertTitle)
+                //.setTitle(alertTitle)
                 .setMessage(message)
                 .setPositiveButton(android.R.string.ok) { _, _ ->
                     view.hideKeyboard()
@@ -61,7 +61,7 @@ class WebClient(internal var context: Context, internal var title: String) : Web
         prompt_message_text.text = message
 
         AlertDialog.Builder(context)
-                .setTitle(alertTitle)
+                //.setTitle(alertTitle)
                 .setView(v)
                 .setPositiveButton(android.R.string.ok) { _, _ ->
                     val value = prompt_input_field.text.toString()
@@ -77,4 +77,7 @@ class WebClient(internal var context: Context, internal var title: String) : Web
 
         return true
     }
+
+
+
 }

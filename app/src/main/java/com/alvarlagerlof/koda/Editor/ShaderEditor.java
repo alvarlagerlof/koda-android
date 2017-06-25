@@ -563,6 +563,7 @@ public class ShaderEditor extends AppCompatEditText {
                     start,
                     start+1,
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE );
+        // Was start, start+1
     }
 
     private class TabWidthSpan extends ReplacementSpan {
