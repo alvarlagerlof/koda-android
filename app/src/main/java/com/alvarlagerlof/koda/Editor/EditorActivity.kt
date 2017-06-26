@@ -189,8 +189,7 @@ class EditorActivity : AppCompatActivity() {
         web_view.isHapticFeedbackEnabled = false
         web_view.webChromeClient = WebClient(this, project.title)
         web_view.setLayerType(if (Build.VERSION.SDK_INT >= 19) View.LAYER_TYPE_HARDWARE else View.LAYER_TYPE_SOFTWARE, null)
-        web_view.loadData(filterString(editor.cleanText), "text/html", "UTF-8")
-
+        web_view.loadDataWithBaseURL("file:///android_asset/", editor.cleanText, "text/html", "UTF-8", null)
     }
 
 
@@ -429,14 +428,6 @@ class EditorActivity : AppCompatActivity() {
     public override fun onStop() {
         super.onStop()
         EventBus.getDefault().unregister(this)
-    }
-
-
-    fun filterString(code: String): String {
-        val partialFiltered: String = code.replace("/\\*.*\\*/", "");
-        val fullFiltered: String = partialFiltered.replace("//.*(?=\\n)", "")
-
-        return fullFiltered
     }
 
 
